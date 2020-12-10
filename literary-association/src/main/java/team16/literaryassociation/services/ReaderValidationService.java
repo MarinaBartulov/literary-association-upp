@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class ReaderValidationService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-
+        delegateExecution.setVariable("isValid", true);
+        System.out.println("postavio is valid");
     }
 }

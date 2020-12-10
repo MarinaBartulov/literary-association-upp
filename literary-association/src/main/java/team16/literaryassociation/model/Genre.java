@@ -1,11 +1,20 @@
 package team16.literaryassociation.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Genre {
 
     @Id
@@ -13,4 +22,9 @@ public class Genre {
     protected Long id;
     private String name;
     private String description;
+
+    public Genre(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
