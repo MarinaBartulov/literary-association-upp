@@ -69,11 +69,11 @@
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_07d7gvx" sourceRef="Task_Reader_Reg_Form" targetRef="Task_Reader_Validation" />
     <bpmn:sequenceFlow id="Flow_1lmz86l" sourceRef="Task_All_Genres_Retrieval" targetRef="Task_Reader_Reg_Form" />
-    <bpmn:serviceTask id="Task_All_Genres_Retrieval" name="All Genres Retrieval" camunda:class="team16.literaryassociation.services.AllGenresRetrievalService">
+    <bpmn:serviceTask id="Task_All_Genres_Retrieval" name="All Genres Retrieval" camunda:class="team16.literaryassociation.service.AllGenresRetrievalService">
       <bpmn:incoming>Flow_09055y7</bpmn:incoming>
       <bpmn:outgoing>Flow_1lmz86l</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_Reader_Validation" name="Reader Validation" camunda:class="team16.literaryassociation.services.ReaderValidationService">
+    <bpmn:serviceTask id="Task_Reader_Validation" name="Reader Validation" camunda:class="team16.literaryassociation.service.ReaderValidationService">
       <bpmn:incoming>Flow_07d7gvx</bpmn:incoming>
       <bpmn:outgoing>Flow_0y1wx3i</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -89,17 +89,17 @@
     <bpmn:sequenceFlow id="Flow_0uvc4uu" sourceRef="Gateway_05xrwvl" targetRef="Task_Save_Reader">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isValid == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="Task_Save_Reader" name="Save Reader" camunda:class="team16.literaryassociation.services.SaveReaderService">
+    <bpmn:serviceTask id="Task_Save_Reader" name="Save Reader" camunda:class="team16.literaryassociation.service.SaveReaderService">
       <bpmn:incoming>Flow_0uvc4uu</bpmn:incoming>
       <bpmn:outgoing>Flow_0lvogh3</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0lvogh3" sourceRef="Task_Save_Reader" targetRef="Task_Send_Email" />
-    <bpmn:serviceTask id="Task_Send_Email" name="Send Email" camunda:class="team16.literaryassociation.services.SendEmailService">
+    <bpmn:serviceTask id="Task_Send_Email" name="Send Email" camunda:class="team16.literaryassociation.service.SendEmailService">
       <bpmn:incoming>Flow_0lvogh3</bpmn:incoming>
       <bpmn:outgoing>Flow_0k4flf5</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_06zacrt" sourceRef="Event_0h0j32h" targetRef="Task_Remove_Reader" />
-    <bpmn:serviceTask id="Task_Remove_Reader" name="Remove Reader" camunda:class="team16.literaryassociation.services.RemoveReaderService">
+    <bpmn:serviceTask id="Task_Remove_Reader" name="Remove Reader" camunda:class="team16.literaryassociation.service.RemoveReaderService">
       <bpmn:incoming>Flow_06zacrt</bpmn:incoming>
       <bpmn:outgoing>Flow_1wqzceb</bpmn:outgoing>
     </bpmn:serviceTask>

@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team16.literaryassociation.config.RestConfig;
-import team16.literaryassociation.service.TestService;
+import team16.literaryassociation.services.TestService;
 
 import java.net.URISyntaxException;
 
