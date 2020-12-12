@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +11,19 @@ import team16.literaryassociation.model.User;
 import java.util.List;
 
 @Service
-public class SendEmailService implements JavaDelegate {
+public class RemoveNewUserService implements JavaDelegate {
 
     @Autowired
-    private MailService mailService;
+    private IdentityService identityService;
+
     @Autowired
     private UserService userService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        System.out.println("Uslo u EmailService");
 
+        //ova funkcija ce se moci koristiti i za pisca
+        System.out.println("Usao u RemoveNewUserService");
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("registrationData");
 
         String username = "";
@@ -29,8 +32,10 @@ public class SendEmailService implements JavaDelegate {
                 username = f.getFieldValue();
             }
         }
-        User user = this.userService.findByUsername(username);
-        mailService.sendConfirmRegMail(user, execution.getProcessInstanceId());
-
+        User notActivatedUser = this.userService.findByUsername(username);
+        if(notActivatedUser != null){
+            this.userService.deleteUser(notActivatedUser);
+            this.identityService.deleteUser(username);
+        }
     }
 }

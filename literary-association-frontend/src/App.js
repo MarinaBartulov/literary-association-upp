@@ -1,29 +1,35 @@
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import "./App.css";
-import Button from "react-bootstrap/Button";
-import { testService } from "./services/test-service";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import RegistrationConfirmation from "./components/RegistrationConfirmation";
+import RegistrationReader from "./components/RegistrationReader";
 
 function App() {
-  function pay() {
-    testService.test({ price: "200" });
-  }
-
   return (
-    <div className="App">
-      <h1>Literary association</h1>
-      <header className="App-header">
-        <p>
-          <Button
-            variant="dark"
-            onClick={() => {
-              pay();
-            }}
-          >
-            {" "}
-            Pay{" "}
-          </Button>{" "}
-        </p>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <div className="mainDiv">
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route exact path="/registrationReader">
+              <RegistrationReader />
+            </Route>
+            <Route exact path="/registrationConfirmation/:processId/:token">
+              <RegistrationConfirmation />
+            </Route>
+          </Switch>
+        </div>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

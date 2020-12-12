@@ -1,0 +1,224 @@
+import React, { useState, useEffect } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { readerService } from "../services/reader-service";
+import { genreService } from "../services/genre-service";
+import { useHistory } from "react-router-dom";
+
+const RegistrationReader = () => {
+  const [processInstanceId, setProcessInstanceId] = useState("");
+  const [taskId, setTaskId] = useState("");
+  const [formFields, setFormFields] = useState([]);
+  const [validated, setValidated] = useState(false);
+  const [genres, setGenres] = useState([]);
+  const [reader, setReader] = useState({});
+  const history = useHistory();
+
+  const getFormData = async () => {
+    const taskFormData = await readerService.regFormFields();
+    const allGenres = await genreService.allGenres();
+    setProcessInstanceId(taskFormData.processInstanceId);
+    setTaskId(taskFormData.taskId);
+    setFormFields(taskFormData.formFields);
+    setGenres(allGenres);
+
+    const readerTemp = new Object();
+    for (let f of taskFormData.formFields) {
+      if (f.typeName === "string") {
+        readerTemp[`${f.id}`] = "";
+      }
+      if (f.typeName === "long") {
+        readerTemp[`${f.id}`] = 0;
+      }
+      if (f.typeName === "boolean") {
+        readerTemp[`${f.id}`] = false;
+      }
+      if (f.typeName === "enum") {
+        readerTemp[`${f.id}`] = [];
+      }
+    }
+    setReader(readerTemp);
+    console.log(readerTemp);
+    console.log(reader);
+  };
+
+  useEffect(() => {
+    getFormData();
+  }, []);
+
+  const handleChange = (e) => {
+    console.log(e.target);
+    const { id, value } = e.target;
+    console.log(id);
+    console.log(value);
+    console.log(reader);
+    setReader((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
+
+  const registerReader = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    event.preventDefault();
+    setValidated(true);
+    console.log(reader);
+    const sendData = new Array();
+    for (let f in reader) {
+      if (f === "genres") {
+        sendData.push({ fieldId: f, genres: ["thriller", "crime"] });
+      } else if (f === "betaGenres") {
+        sendData.push({ fieldId: f, betaGenres: reader[f] });
+      } else {
+        sendData.push({ fieldId: f, fieldValue: reader[f] });
+      }
+    }
+    console.log(sendData);
+    const promise = readerService.regReader(sendData, taskId);
+    promise.then((res) => {
+      if (res.status === 200) {
+        history.push("/home");
+      } else {
+        alert("Posle reg:" + res.data);
+      }
+    });
+  };
+
+  return (
+    <div>
+      <h2>Reader registration</h2>
+      <Form
+        validated={validated}
+        style={{
+          width: "30%",
+          margin: "auto",
+        }}
+        onSubmit={registerReader}
+      >
+        {formFields.map((formField) => {
+          const { id, label, typeName } = formField;
+          return (
+            <Form.Group key={id} controlId={id}>
+              {typeName === "string" && (
+                <>
+                  <Form.Label>{label}:</Form.Label>
+                  <Form.Control
+                    type={
+                      id.includes("email")
+                        ? "email"
+                        : id.toLowerCase().includes("password")
+                        ? "password"
+                        : "text"
+                    }
+                    onChange={handleChange}
+                    placeholder={"Enter " + label}
+                    required={formField.validationConstraints.some(
+                      (c) => c.name === "required"
+                    )}
+                    readOnly={formField.validationConstraints.some(
+                      (c) => c.name === "readonly"
+                    )}
+                    minLength={
+                      formField.validationConstraints.some(
+                        (c) => c.name === "minlength"
+                      )
+                        ? formField.validationConstraints.find(
+                            (c) => c.name === "minlength"
+                          ).configuration
+                        : undefined
+                    }
+                    maxLength={
+                      formField.validationConstraints.some(
+                        (c) => c.name === "maxlength"
+                      )
+                        ? formField.validationConstraints.find(
+                            (c) => c.name === "maxlength"
+                          ).configuration
+                        : undefined
+                    }
+                  />
+                </>
+              )}
+              {typeName === "long" && (
+                <>
+                  <Form.Label>{label}:</Form.Label>
+                  <Form.Control
+                    type="number"
+                    onChange={handleChange}
+                    placeholder={"Enter " + label}
+                    required={formField.validationConstraints.some(
+                      (c) => c.name === "required"
+                    )}
+                    readOnly={formField.validationConstraints.some(
+                      (c) => c.name === "readonly"
+                    )}
+                    min={
+                      formField.validationConstraints.some(
+                        (c) => c.name === "min"
+                      )
+                        ? formField.validationConstraints.find(
+                            (c) => c.name === "min"
+                          ).configuration
+                        : undefined
+                    }
+                    max={
+                      formField.validationConstraints.some(
+                        (c) => c.name === "max"
+                      )
+                        ? formField.validationConstraints.find(
+                            (c) => c.name === "max"
+                          ).configuration
+                        : undefined
+                    }
+                  />
+                </>
+              )}
+              {typeName === "boolean" && (
+                <Form.Check
+                  type="checkbox"
+                  onChange={handleChange}
+                  required={formField.validationConstraints.some(
+                    (c) => c.name === "required"
+                  )}
+                  label={label}
+                />
+              )}
+              {typeName === "enum" && (
+                <>
+                  <Form.Label>{label}:</Form.Label>
+                  <Form.Control
+                    as="select"
+                    placeholder={"Enter " + label}
+                    onChange={handleChange}
+                    // required={formField.validationConstraints.some(
+                    //   (c) => c.name === "required"
+                    // )}
+                    multiple
+                  >
+                    {genres.map((genre) => {
+                      return (
+                        <option key={genre.id} value={genre.id}>
+                          {genre.name}
+                        </option>
+                      );
+                    })}
+                  </Form.Control>
+                </>
+              )}
+            </Form.Group>
+          );
+        })}
+
+        <Button variant="primary" type="submit" style={{ marginBottom: "1em" }}>
+          Register
+        </Button>
+      </Form>
+    </div>
+  );
+};
+
+export default RegistrationReader;
