@@ -1,4 +1,4 @@
-package team16.literaryassociation.service;
+package team16.literaryassociation.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import java.net.URISyntaxException;
 
 @Service
 public class TestService {
-
     @Autowired
     private RestTemplate restTemplate;
 
