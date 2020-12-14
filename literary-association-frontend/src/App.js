@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import RegistrationConfirmation from "./components/RegistrationConfirmation";
 import RegistrationReader from "./components/RegistrationReader";
+import PayTest from "./components/PayTest";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
             </Route>
             <Route exact path="/registrationConfirmation/:processId/:token">
               <RegistrationConfirmation />
+            </Route>
+            <Route exact path="/payTest">
+              <PayTest />
             </Route>
           </Switch>
         </div>
