@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import RegistrationConfirmation from "./components/RegistrationConfirmation";
 import RegistrationReader from "./components/RegistrationReader";
 import PayTest from "./components/PayTest";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -13,6 +14,17 @@ function App() {
       <div className="App">
         <Header />
         <div className="mainDiv">
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <Switch>
             <Route exact path="/">
               <Home />

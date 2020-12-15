@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { readerService } from "../services/reader-service";
 import { genreService } from "../services/genre-service";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RegistrationReader = () => {
   const [processInstanceId, setProcessInstanceId] = useState("");
@@ -22,7 +23,7 @@ const RegistrationReader = () => {
     setFormFields(taskFormData.formFields);
     setGenres(allGenres);
 
-    const readerTemp = new Object();
+    const readerTemp = {};
     for (let f of taskFormData.formFields) {
       if (f.typeName === "string") {
         readerTemp[`${f.id}`] = "";
@@ -31,7 +32,7 @@ const RegistrationReader = () => {
         readerTemp[`${f.id}`] = 0;
       }
       if (f.typeName === "boolean") {
-        readerTemp[`${f.id}`] = false;
+        readerTemp[`${f.id}`] = "off";
       }
       if (f.typeName === "enum") {
         readerTemp[`${f.id}`] = [];
@@ -59,20 +60,25 @@ const RegistrationReader = () => {
   };
 
   const registerReader = (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
     }
-    event.preventDefault();
     setValidated(true);
     console.log(reader);
-    const sendData = new Array();
+    const sendData = [];
     for (let f in reader) {
       if (f === "genres") {
         sendData.push({ fieldId: f, genres: ["thriller", "crime"] });
       } else if (f === "betaGenres") {
         sendData.push({ fieldId: f, betaGenres: reader[f] });
+      } else if (f === "betaReader") {
+        if (reader[f] == "on") {
+          sendData.push({ fieldId: f, fieldValue: true });
+        } else {
+          sendData.push({ fieldId: f, fieldValue: false });
+        }
       } else {
         sendData.push({ fieldId: f, fieldValue: reader[f] });
       }
@@ -81,6 +87,9 @@ const RegistrationReader = () => {
     const promise = readerService.regReader(sendData, taskId);
     promise.then((res) => {
       if (res.status === 200) {
+        toast.success("Registration successful! Email confirmation required.", {
+          hideProgressBar: true,
+        });
         history.push("/home");
       } else {
         alert("Posle reg:" + res.data);
@@ -199,10 +208,10 @@ const RegistrationReader = () => {
                     // )}
                     multiple
                   >
-                    {genres.map((genre) => {
+                    {Object.keys(formField.type.values).map((id) => {
                       return (
-                        <option key={genre.id} value={genre.id}>
-                          {genre.name}
+                        <option key={id} value={id}>
+                          {formField.type.values[id]}
                         </option>
                       );
                     })}

@@ -18,8 +18,6 @@ public class FormSubmissionDTO implements Serializable {
 
     @NotNull(message = "Form field id cannot be null.")
     private String fieldId;
-    private String fieldValue;
-    private List<String> genres = new ArrayList<String>();
-    private List<String> betaGenres = new ArrayList<String>();
+    private Object fieldValue;
 
 }

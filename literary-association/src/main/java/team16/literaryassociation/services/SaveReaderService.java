@@ -36,36 +36,36 @@ public class SaveReaderService implements JavaDelegate {
         for(FormSubmissionDTO f : formData){
 
              if(f.getFieldId().equals("firstName")){
-                 newReader.setFirstName(f.getFieldValue());
-                 cmdUser.setFirstName(f.getFieldValue());
+                 newReader.setFirstName((String)f.getFieldValue());
+                 cmdUser.setFirstName((String)f.getFieldValue());
              }
              if(f.getFieldId().equals("lastName")){
-                 newReader.setLastName(f.getFieldValue());
-                 cmdUser.setLastName(f.getFieldValue());
+                 newReader.setLastName((String)f.getFieldValue());
+                 cmdUser.setLastName((String)f.getFieldValue());
              }
              if(f.getFieldId().equals("email")){
-                 newReader.setEmail(f.getFieldValue());
-                 cmdUser.setEmail(f.getFieldValue());
+                 newReader.setEmail((String)f.getFieldValue());
+                 cmdUser.setEmail((String)f.getFieldValue());
              }
              if(f.getFieldId().equals("password")){
 //                 String pass = "";
 //                 String salt = BCrypt.gensalt();
 //                 pass = BCrypt.hashpw(f.getFieldValue(), salt);
-                 newReader.setPassword(f.getFieldValue());
-                 cmdUser.setPassword(f.getFieldValue());
+                 newReader.setPassword((String)f.getFieldValue());
+                 cmdUser.setPassword((String)f.getFieldValue());
              }
              if(f.getFieldId().equals("username")){
-                 newReader.setUsername(f.getFieldValue());
-                 cmdUser.setId(f.getFieldValue());
+                 newReader.setUsername((String)f.getFieldValue());
+                 cmdUser.setId((String)f.getFieldValue());
              }
              if(f.getFieldId().equals("city")){
-                 newReader.setCity(f.getFieldValue());
+                 newReader.setCity((String)f.getFieldValue());
              }
              if(f.getFieldId().equals("country")){
-                 newReader.setCountry(f.getFieldValue());
+                 newReader.setCountry((String)f.getFieldValue());
              }
              if(f.getFieldId().equals("betaReader")){
-                 newReader.setBetaReader(Boolean.parseBoolean(f.getFieldValue()));
+                 newReader.setBetaReader((boolean)f.getFieldValue());
              }
              //ovde treba dodati deo za zanrove
 
