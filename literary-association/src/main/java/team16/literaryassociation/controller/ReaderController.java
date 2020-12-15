@@ -70,16 +70,6 @@ public class ReaderController {
             if(dto.getFieldId() != null) {
                 retVal.put(dto.getFieldId(), dto.getFieldValue());
             }
-            else {
-                if (dto.getFieldId().equals("genres")) {
-                    retVal.put(dto.getFieldId(), dto.getGenres());
-                }
-                if (dto.getFieldId().equals("betaGenres")) {
-                    retVal.put(dto.getFieldId(), dto.getBetaGenres());
-                }
-
-            }
-
         }
         return retVal;
     }
@@ -89,39 +79,54 @@ public class ReaderController {
         Map<String, Object> fieldsMap = listFieldsToMap(formData);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         String processInstanceId = task.getProcessInstanceId();
+        System.out.println("Dodje dovde1");
 
-        for(FormSubmissionDTO item: formData){
-            if(!item.getFieldId().equals("genres") &&  !item.getFieldId().equals("betaGenres") && !item.getFieldId().equals("betaReader")){
-                if(item.getFieldValue() == null || item.getFieldValue().equals("")){
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-                }
-            }else if(item.getFieldId().equals("betaReader")){
-                if(!item.getFieldValue().equals("true") && !item.getFieldValue().equals("false")){
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-                }
-            }
-
-            //ovaj deo je za zanrove
-            /*else if(item.getFieldId().equals("genres") && item.getGenres().size() == 0) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            } else if(item.getFieldId().equals("betaGenres") && item.getBetaGenres().size() < 0) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }*/
+        if(!fieldsMap.containsKey("firstName") || !fieldsMap.containsKey("lastName") || !fieldsMap.containsKey("city")
+        ||!fieldsMap.containsKey("country") || !fieldsMap.containsKey("username") || !fieldsMap.containsKey("password") ||
+                !fieldsMap.containsKey("confirmPassword") || !fieldsMap.containsKey("email") || !fieldsMap.containsKey("betaReader")
+        || !fieldsMap.containsKey("genres") || !fieldsMap.containsKey("betaGenres")){
+            return ResponseEntity.badRequest().body("Validation failed. All fields are required.");
         }
+        System.out.println("Dodje dovde1");
+        System.out.println(fieldsMap.get("firstName"));
+        System.out.println(fieldsMap.get("lastName"));
+        System.out.println(fieldsMap.get("city"));
+        System.out.println(fieldsMap.get("country"));
+        System.out.println(fieldsMap.get("email"));
+        System.out.println(fieldsMap.get("username"));
+        System.out.println(fieldsMap.get("password"));
+        System.out.println(fieldsMap.get("confirmPassword"));
+
+        boolean v1 = fieldsMap.get("firstName") != null && (!fieldsMap.get("firstName").equals(""));
+        boolean v2 = fieldsMap.get("lastName") != null && (!fieldsMap.get("lastName").equals(""));
+        boolean v3 = fieldsMap.get("city") != null && (!fieldsMap.get("city").equals(""));
+        boolean v4 = fieldsMap.get("country") != null && (!fieldsMap.get("country").equals(""));
+        boolean v5 = fieldsMap.get("email") != null && (!fieldsMap.get("email").equals(""));
+        boolean v6 = fieldsMap.get("username") != null && (!fieldsMap.get("username").equals(""));
+        boolean v7 = fieldsMap.get("password") != null && (!fieldsMap.get("password").equals("")) && ((String)fieldsMap.get("password")).length() >=8;
+        boolean v8 = fieldsMap.get("confirmPassword") != null && (!fieldsMap.get("confirmPassword").equals("")) && ((String)fieldsMap.get("confirmPassword")).length() >=8;
+        //betaReader
+        //genres
+        //betaGenres
+        System.out.println("Dodje dovde1");
+
+        if(!(v1 && v2 && v3 && v4 && v5 && v6 && v7 && v7 && v8)){
+            return ResponseEntity.badRequest().body("Validation failed. All fields are required.");
+        }
+        runtimeService.setVariable(processInstanceId, "registrationData", formData);
 
         try{
-            runtimeService.setVariable(processInstanceId, "registrationData", formData);
             System.out.println("Dodje dovde1");
             formService.submitTaskForm(taskId, fieldsMap);
             System.out.println("Dodje dovde2");
 
         } catch(FormFieldValidationException e){
 
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body("Validation failed");
         }
 
-        System.out.println("MIBIBIKISIŠ");
-        return new ResponseEntity<>(HttpStatus.OK);
+        System.out.println("Doslo do kraja");
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/activateAccount/{processId}/{token}")

@@ -11,7 +11,7 @@ const Footer = () => {
       </p>
       <p className="footerPar">Finesa Books</p>
       <p className="footerPar">Harfa & Pametnica</p>
-      <p className="footerPar">Geo politika</p>
+      <p className="footerPar">Geo poetika</p>
     </div>
   );
 };
