@@ -1,9 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import PayTest from "./PayTest";
 
-const Home = () => {
-
+const SuccessfulTransaction = () => {
 
   return (
     <div className="homeDiv">
@@ -15,11 +13,10 @@ const Home = () => {
           backgroundColor: "rgb(207, 97, 64)",
         }}
       >
-        <h1>Welcome to Literary Association</h1>
+        <h1>Successful payment transaction!</h1>
       </Card>
-      <PayTest></PayTest>
     </div>
   );
 };
 
-export default Home;
+export default SuccessfulTransaction;

@@ -4,10 +4,12 @@ import { ROUTES } from "../constants";
 class TestService extends HttpService {
   test = async (payload) => {
     try {
-      const response = await this.client.get(ROUTES.TEST);
-      console.log(response);
-      window.open(response.data.body)
-      return response;
+      console.log(payload);
+      const { data } = await this.client.post(ROUTES.TEST, payload);
+      console.log(data);
+      window.open(data.body.redirectionURL);
+      //localStorage.setItem("merchantId", data.body.merchantId);
+      return data;
     } catch (e) {
       console.log(e);
     }

@@ -1,10 +1,13 @@
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import "./App.css";
+import ErrorTransaction from "./components/ErrorTransaction";
+import FailedTransaction from "./components/FailedTransaction";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import RegistrationConfirmation from "./components/RegistrationConfirmation";
 import RegistrationReader from "./components/RegistrationReader";
+import SuccessfulTransaction from "./components/SuccessfulTransaction";
 
 function App() {
   return (
@@ -24,6 +27,15 @@ function App() {
             </Route>
             <Route exact path="/registrationConfirmation/:processId/:token">
               <RegistrationConfirmation />
+            </Route>
+            <Route exact path="/success">
+              <SuccessfulTransaction />
+            </Route>
+            <Route exact path="/failed">
+              <FailedTransaction />
+            </Route>
+            <Route exact path="/error">
+              <ErrorTransaction />
             </Route>
           </Switch>
         </div>
