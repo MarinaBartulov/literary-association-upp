@@ -51,10 +51,16 @@
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="genres" label="Genres" type="enum">
+            <camunda:properties>
+              <camunda:property id="multiselect" value="multiselect" />
+            </camunda:properties>
             <camunda:value id="none" name="---" />
           </camunda:formField>
           <camunda:formField id="betaReader" label="Beta-reader" type="boolean" />
           <camunda:formField id="betaGenres" label="Genres for beta-reader" type="enum">
+            <camunda:properties>
+              <camunda:property id="multiselect" value="multiselect" />
+            </camunda:properties>
             <camunda:value id="none" name="---" />
           </camunda:formField>
         </camunda:formData>

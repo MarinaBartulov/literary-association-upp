@@ -5,6 +5,7 @@ import { readerService } from "../services/reader-service";
 import { genreService } from "../services/genre-service";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import Select from "react-dropdown-select";
 
 const RegistrationReader = () => {
   const [processInstanceId, setProcessInstanceId] = useState("");
@@ -17,11 +18,23 @@ const RegistrationReader = () => {
 
   const getFormData = async () => {
     const taskFormData = await readerService.regFormFields();
-    const allGenres = await genreService.allGenres();
     setProcessInstanceId(taskFormData.processInstanceId);
     setTaskId(taskFormData.taskId);
     setFormFields(taskFormData.formFields);
-    setGenres(allGenres);
+
+    const temp = [];
+    for (let f of taskFormData.formFields) {
+      if (f.typeName === "enum") {
+        Object.keys(f.type.values).map((id) => {
+          console.log(f.type.value);
+          console.log(id);
+          temp.push({ id: id, name: f.type.values[id] });
+        });
+        break;
+      }
+    }
+    console.log(temp);
+    setGenres(temp);
 
     const readerTemp = {};
     for (let f of taskFormData.formFields) {
@@ -38,6 +51,7 @@ const RegistrationReader = () => {
         readerTemp[`${f.id}`] = [];
       }
     }
+
     setReader(readerTemp);
     console.log(readerTemp);
     console.log(reader);
@@ -69,16 +83,21 @@ const RegistrationReader = () => {
     console.log(reader);
     const sendData = [];
     for (let f in reader) {
-      if (f === "genres") {
-        sendData.push({ fieldId: f, genres: ["thriller", "crime"] });
-      } else if (f === "betaGenres") {
-        sendData.push({ fieldId: f, betaGenres: reader[f] });
-      } else if (f === "betaReader") {
+      if (f === "betaReader") {
         if (reader[f] == "on") {
           sendData.push({ fieldId: f, fieldValue: true });
         } else {
           sendData.push({ fieldId: f, fieldValue: false });
         }
+      } else if (f === "genres" || f === "betaGenres") {
+        // const list = [];
+        // for (let i = 0; i < reader[f].length; i++) {
+        //   const map = {};
+        //   map["item_id"] = reader[f][i].id.toString();
+        //   map["item_name"] = reader[f][i].name;
+        //   list.push(map);
+        // }
+        // sendData.push({ fieldId: f, fieldValue: list });
       } else {
         sendData.push({ fieldId: f, fieldValue: reader[f] });
       }
@@ -86,14 +105,10 @@ const RegistrationReader = () => {
     console.log(sendData);
     const promise = readerService.regReader(sendData, taskId);
     promise.then((res) => {
-      if (res.status === 200) {
-        toast.success("Registration successful! Email confirmation required.", {
-          hideProgressBar: true,
-        });
-        history.push("/home");
-      } else {
-        alert("Posle reg:" + res.data);
-      }
+      toast.success("Registration successful! Email confirmation required.", {
+        hideProgressBar: true,
+      });
+      history.push("/home");
     });
   };
 
@@ -111,9 +126,9 @@ const RegistrationReader = () => {
         {formFields.map((formField) => {
           const { id, label, typeName } = formField;
           return (
-            <Form.Group key={id} controlId={id}>
+            <>
               {typeName === "string" && (
-                <>
+                <Form.Group key={id} controlId={id}>
                   <Form.Label>{label}:</Form.Label>
                   <Form.Control
                     type={
@@ -150,10 +165,10 @@ const RegistrationReader = () => {
                         : undefined
                     }
                   />
-                </>
+                </Form.Group>
               )}
               {typeName === "long" && (
-                <>
+                <Form.Group key={id} controlId={id}>
                   <Form.Label>{label}:</Form.Label>
                   <Form.Control
                     type="number"
@@ -184,45 +199,72 @@ const RegistrationReader = () => {
                         : undefined
                     }
                   />
-                </>
+                </Form.Group>
               )}
               {typeName === "boolean" && (
-                <Form.Check
-                  type="checkbox"
-                  onChange={handleChange}
-                  required={formField.validationConstraints.some(
-                    (c) => c.name === "required"
-                  )}
-                  label={label}
-                />
+                <Form.Group key={id} controlId={id}>
+                  <Form.Check
+                    type="checkbox"
+                    onChange={handleChange}
+                    required={formField.validationConstraints.some(
+                      (c) => c.name === "required"
+                    )}
+                    label={label}
+                  />
+                </Form.Group>
               )}
               {typeName === "enum" && (
+                // <Form.Group key={id} controlId={id}>
+                //   <Form.Label>{label}:</Form.Label>
+                //   <Form.Control
+                //     as="select"
+                //     placeholder={"Enter " + label}
+                //     onChange={handleChange}
+                //     // required={formField.validationConstraints.some(
+                //     //   (c) => c.name === "required"
+                //     // )}
+                //     multiple
+                //   >
+                //     {Object.keys(formField.type.values).map((id) => {
+                //       return (
+                //         <option key={id} value={id}>
+                //           {formField.type.values[id]}
+                //         </option>
+                //       );
+                //     })}
+                //   </Form.Control>
+                // </Form.Group>
                 <>
-                  <Form.Label>{label}:</Form.Label>
-                  <Form.Control
-                    as="select"
-                    placeholder={"Enter " + label}
-                    onChange={handleChange}
-                    // required={formField.validationConstraints.some(
-                    //   (c) => c.name === "required"
-                    // )}
-                    multiple
-                  >
-                    {Object.keys(formField.type.values).map((id) => {
-                      return (
-                        <option key={id} value={id}>
-                          {formField.type.values[id]}
-                        </option>
-                      );
-                    })}
-                  </Form.Control>
+                  <label>{label}</label>
+                  <Select
+                    key={id}
+                    placeholder={"Select " + label}
+                    multi
+                    required={formField.validationConstraints.some(
+                      (c) => c.name === "required"
+                    )}
+                    options={genres}
+                    style={{ backgroundColor: "white", marginBottom: "1em" }}
+                    labelField="name"
+                    valueField="id"
+                    onChange={(values) =>
+                      setReader((prevState) => ({
+                        ...prevState,
+                        [formField.id]: values,
+                      }))
+                    }
+                  />
                 </>
               )}
-            </Form.Group>
+            </>
           );
         })}
 
-        <Button variant="primary" type="submit" style={{ marginBottom: "1em" }}>
+        <Button
+          variant="primary"
+          type="submit"
+          style={{ marginBottom: "1em", marginTop: "1em" }}
+        >
           Register
         </Button>
       </Form>
