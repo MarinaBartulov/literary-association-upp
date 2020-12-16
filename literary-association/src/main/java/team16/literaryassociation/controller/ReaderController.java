@@ -84,7 +84,7 @@ public class ReaderController {
         if(!fieldsMap.containsKey("firstName") || !fieldsMap.containsKey("lastName") || !fieldsMap.containsKey("city")
         ||!fieldsMap.containsKey("country") || !fieldsMap.containsKey("username") || !fieldsMap.containsKey("password") ||
                 !fieldsMap.containsKey("confirmPassword") || !fieldsMap.containsKey("email") || !fieldsMap.containsKey("betaReader")
-        || !fieldsMap.containsKey("genres") || !fieldsMap.containsKey("betaGenres")){
+        ){
             return ResponseEntity.badRequest().body("Validation failed. All fields are required.");
         }
         System.out.println("Dodje dovde1");
@@ -105,10 +105,9 @@ public class ReaderController {
         boolean v6 = fieldsMap.get("username") != null && (!fieldsMap.get("username").equals(""));
         boolean v7 = fieldsMap.get("password") != null && (!fieldsMap.get("password").equals("")) && ((String)fieldsMap.get("password")).length() >=8;
         boolean v8 = fieldsMap.get("confirmPassword") != null && (!fieldsMap.get("confirmPassword").equals("")) && ((String)fieldsMap.get("confirmPassword")).length() >=8;
-        //betaReader
-        //genres
-        //betaGenres
+
         System.out.println("Dodje dovde1");
+
 
         if(!(v1 && v2 && v3 && v4 && v5 && v6 && v7 && v7 && v8)){
             return ResponseEntity.badRequest().body("Validation failed. All fields are required.");
