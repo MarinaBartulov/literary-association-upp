@@ -32,7 +32,7 @@ public class MailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         String confirmationUrl
-                =  "http://localhost:3000/registrationConfirmation/" + processInstanceId + "/" + token;
+                =  "https://localhost:3000/registrationConfirmation/" + processInstanceId + "/" + token;
         String link = "<a href='" + confirmationUrl + "'>" + confirmationUrl + "</a>";
         String htmlMsg = "Hello, \n " + user.getFirstName() + " " + user.getLastName() + ",\n\n Please confirm your registration by clicking on the link below: " +
                 " \n " + link;

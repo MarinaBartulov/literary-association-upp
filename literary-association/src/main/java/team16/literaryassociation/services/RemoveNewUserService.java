@@ -29,7 +29,7 @@ public class RemoveNewUserService implements JavaDelegate {
         String username = "";
         for(FormSubmissionDTO f: formData){
             if(f.getFieldId().equals("username")){
-                username = f.getFieldValue();
+                username = (String)f.getFieldValue();
             }
         }
         User notActivatedUser = this.userService.findByUsername(username);
