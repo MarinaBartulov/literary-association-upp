@@ -1,3 +1,6 @@
+insert into merchant (merchant_id, password, error_url, failed_url, success_url)
+values ('46QfIZh9KGe62AMDAStgnRbsK1fcX4', 'Merchant123!', 'http://localhost:3000/error', 'http://localhost:3000/failed', 'http://localhost:3000/success');
+
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, beta_reader, penalty_points)
 value ('Reader', 'reader@gmail.com', 'bojana', 'reader', 'Bojana', 'Kliska', 'Beska', 'Srbija', true, true, 3);
 

@@ -4,13 +4,11 @@ import { testService } from "../services/test-service";
 
 const PayTest = () => {
   function pay() {
-    testService.test({ price: "200" });
+    let payload = {price: "200"};
+    testService.test(payload);
   }
   return (
     <div>
-      <h1>Literary association</h1>
-      <header className="App-header">
-        <p>
           <Button
             variant="dark"
             onClick={() => {
@@ -20,8 +18,7 @@ const PayTest = () => {
             {" "}
             Pay{" "}
           </Button>{" "}
-        </p>
-      </header>
+        
     </div>
   );
 };
