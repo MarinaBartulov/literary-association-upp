@@ -8,7 +8,6 @@ class TestService extends HttpService {
       const { data } = await this.client.post(ROUTES.TEST, payload);
       console.log(data);
       window.open(data.body.redirectionURL);
-      //localStorage.setItem("merchantId", data.body.merchantId);
       return data;
     } catch (e) {
       console.log(e);
