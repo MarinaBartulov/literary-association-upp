@@ -5,23 +5,22 @@ import { testService } from "../services/test-service";
 const PayTest = () => {
   function pay() {
     let payload = {
-      price: "200",
-      currency: "RSD"
+      price: "10",
+      currency: "USD",
     };
     testService.test(payload);
   }
   return (
     <div>
-          <Button
-            variant="dark"
-            onClick={() => {
-              pay();
-            }}
-          >
-            {" "}
-            Pay{" "}
-          </Button>{" "}
-        
+      <Button
+        variant="dark"
+        onClick={() => {
+          pay();
+        }}
+      >
+        {" "}
+        Pay{" "}
+      </Button>{" "}
     </div>
   );
 };
