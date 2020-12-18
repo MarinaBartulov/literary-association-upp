@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import team16.literaryassociation.config.EndpointConfig;
 import team16.literaryassociation.config.RestConfig;
-import team16.literaryassociation.dto.FirstPCResponseDTO;
-import team16.literaryassociation.dto.PaymentDetailsDTO;
-import team16.literaryassociation.dto.PaymentRequestDTO;
+import team16.literaryassociation.dto.*;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.repository.MerchantRepository;
 
@@ -27,20 +25,22 @@ public class TestService {
     @Autowired
     private MerchantRepository merchantRepository;
 
-    public ResponseEntity<?> getResponseFromPC(PaymentRequestDTO price) throws Exception {
+    public ResponseEntity<?> getResponseFromPC(PaymentRequestDTO dto) throws Exception {
         // dobaviti MERCHANT_ID prodavca ovog LU-a ili ako imamo vise prodavaca u LU, onda prodavca onih proizvoda koji su izabrani
         Merchant merchant = merchantRepository.getOne(1L);
-        // cenu dobijam sa front-a iz korpe
-        double priceD;
+        // cenu i valutu dobijam sa front-a iz korpe
+        double price;
         try {
-            priceD = Double.parseDouble(price.getPrice());
+            price = Double.parseDouble(dto.getPrice());
         } catch (Exception e) {
             throw new Exception("Price must be decimal value.");
         }
-        ResponseEntity<FirstPCResponseDTO> response
+        ResponseEntity<OrderResponseDTO> response
                 = restTemplate.postForEntity(getEndpoint(),
-                new PaymentDetailsDTO(1L, merchant.getMerchant_id(), merchant.getPassword(), priceD), FirstPCResponseDTO.class);
-        System.out.println(response.getBody());
+                new OrderDTO(null, merchant.getMerchantId(), merchant.getMerchantEmail(), merchant.getPassword(),
+                        dto.getCurrency(), price, merchant.getMerchantSuccessUrl(), merchant.getMerchantFailedUrl(),
+                        merchant.getMerchantErrorUrl()), OrderResponseDTO.class);
+        System.out.println(response.getBody().getOrderId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

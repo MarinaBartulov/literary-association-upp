@@ -4,7 +4,10 @@ import { testService } from "../services/test-service";
 
 const PayTest = () => {
   function pay() {
-    let payload = {price: "200"};
+    let payload = {
+      price: "200",
+      currency: "RSD"
+    };
     testService.test(payload);
   }
   return (
