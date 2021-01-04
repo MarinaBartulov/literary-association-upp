@@ -24,7 +24,7 @@ public class RemoveNewUserService implements JavaDelegate {
 
         //ova funkcija ce se moci koristiti i za pisca
         System.out.println("Usao u RemoveNewUserService");
-        List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("registrationData");
+        List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
 
         String username = "";
         for(FormSubmissionDTO f: formData){

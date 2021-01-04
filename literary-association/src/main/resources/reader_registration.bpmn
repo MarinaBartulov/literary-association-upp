@@ -29,6 +29,9 @@
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="email" label="Email" type="string">
+            <camunda:properties>
+              <camunda:property id="email" value="email" />
+            </camunda:properties>
             <camunda:validation>
               <camunda:constraint name="required" />
             </camunda:validation>
@@ -39,12 +42,18 @@
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="password" label="Password" type="string">
+            <camunda:properties>
+              <camunda:property id="password" value="password" />
+            </camunda:properties>
             <camunda:validation>
               <camunda:constraint name="required" />
               <camunda:constraint name="minlength" config="8" />
             </camunda:validation>
           </camunda:formField>
           <camunda:formField id="confirmPassword" label="Confirm password" type="string">
+            <camunda:properties>
+              <camunda:property id="password" value="password" />
+            </camunda:properties>
             <camunda:validation>
               <camunda:constraint name="required" />
               <camunda:constraint name="minlength" config="8" />
@@ -54,14 +63,12 @@
             <camunda:properties>
               <camunda:property id="multiselect" value="multiselect" />
             </camunda:properties>
-            <camunda:value id="none" name="---" />
           </camunda:formField>
           <camunda:formField id="betaReader" label="Beta-reader" type="boolean" />
           <camunda:formField id="betaGenres" label="Genres for beta-reader" type="enum">
             <camunda:properties>
               <camunda:property id="multiselect" value="multiselect" />
             </camunda:properties>
-            <camunda:value id="none" name="---" />
           </camunda:formField>
         </camunda:formData>
         <camunda:taskListener delegateExpression="${getAllGenresListener}" event="create" />
@@ -113,66 +120,100 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1wqzceb" sourceRef="Task_Remove_Reader" targetRef="Event_1b0da0o" />
     <bpmn:endEvent id="Event_08t9t8u">
-      <bpmn:incoming>Flow_01vatei</bpmn:incoming>
+      <bpmn:incoming>Flow_0qn4yd7</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_01vatei" sourceRef="Task_Activation_Reader" targetRef="Event_08t9t8u" />
+    <bpmn:sequenceFlow id="Flow_01vatei" sourceRef="Task_Activation_Reader" targetRef="Activity_1im0f7r" />
     <bpmn:userTask id="Task_Activation_Reader" name="Activation Reader" camunda:assignee="${newReader}">
       <bpmn:incoming>Flow_0k4flf5</bpmn:incoming>
       <bpmn:outgoing>Flow_01vatei</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0qn4yd7" sourceRef="Activity_1im0f7r" targetRef="Event_08t9t8u" />
+    <bpmn:serviceTask id="Activity_1im0f7r" name="Activate reader" camunda:class="team16.literaryassociation.services.ActivateUserService">
+      <bpmn:incoming>Flow_01vatei</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qn4yd7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="Event_04upx0x" name="Activation failed" attachedToRef="Activity_1im0f7r">
+      <bpmn:outgoing>Flow_0vpm5hj</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1q2nrxa" camunda:errorCodeVariable="ACCOUNT_ACTIVATION_FAILED" />
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="Event_0guyz7m">
+      <bpmn:incoming>Flow_0vpm5hj</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0vpm5hj" sourceRef="Event_04upx0x" targetRef="Event_0guyz7m" />
+    <bpmn:endEvent id="Event_0zym7oh">
+      <bpmn:incoming>Flow_0824bpg</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0824bpg" sourceRef="Event_083y1nv" targetRef="Event_0zym7oh" />
+    <bpmn:boundaryEvent id="Event_083y1nv" attachedToRef="Task_Save_Reader">
+      <bpmn:outgoing>Flow_0824bpg</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_09ujw99" camunda:errorCodeVariable="SAVE_CAMUNDA_USER_FAILED" />
+    </bpmn:boundaryEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_Reader_Reg">
       <bpmndi:BPMNEdge id="Flow_01vatei_di" bpmnElement="Flow_01vatei">
-        <di:waypoint x="1200" y="277" />
-        <di:waypoint x="1252" y="277" />
+        <di:waypoint x="1170" y="277" />
+        <di:waypoint x="1230" y="277" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1wqzceb_di" bpmnElement="Flow_1wqzceb">
-        <di:waypoint x="1200" y="120" />
+        <di:waypoint x="1170" y="120" />
         <di:waypoint x="1252" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0k4flf5_di" bpmnElement="Flow_0k4flf5">
-        <di:waypoint x="1050" y="277" />
-        <di:waypoint x="1100" y="277" />
+        <di:waypoint x="980" y="277" />
+        <di:waypoint x="1070" y="277" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_06zacrt_di" bpmnElement="Flow_06zacrt">
-        <di:waypoint x="1150" y="219" />
-        <di:waypoint x="1150" y="160" />
+        <di:waypoint x="1120" y="219" />
+        <di:waypoint x="1120" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0lvogh3_di" bpmnElement="Flow_0lvogh3">
-        <di:waypoint x="900" y="277" />
-        <di:waypoint x="950" y="277" />
+        <di:waypoint x="820" y="277" />
+        <di:waypoint x="880" y="277" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0uvc4uu_di" bpmnElement="Flow_0uvc4uu">
-        <di:waypoint x="705" y="277" />
-        <di:waypoint x="800" y="277" />
+        <di:waypoint x="645" y="277" />
+        <di:waypoint x="720" y="277" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="723" y="246" width="54" height="27" />
+          <dc:Bounds x="633" y="236" width="54" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_012nxvq_di" bpmnElement="Flow_012nxvq">
-        <di:waypoint x="680" y="302" />
-        <di:waypoint x="680" y="370" />
+        <di:waypoint x="620" y="302" />
+        <di:waypoint x="620" y="370" />
         <di:waypoint x="370" y="370" />
         <di:waypoint x="370" y="317" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="489" y="352" width="76" height="14" />
+          <dc:Bounds x="459" y="352" width="76" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0y1wx3i_di" bpmnElement="Flow_0y1wx3i">
-        <di:waypoint x="600" y="277" />
-        <di:waypoint x="655" y="277" />
+        <di:waypoint x="560" y="277" />
+        <di:waypoint x="595" y="277" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="601" y="276" width="54" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_07d7gvx_di" bpmnElement="Flow_07d7gvx">
         <di:waypoint x="420" y="277" />
-        <di:waypoint x="500" y="277" />
+        <di:waypoint x="460" y="277" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_09055y7_di" bpmnElement="Flow_09055y7">
         <di:waypoint x="215" y="277" />
         <di:waypoint x="320" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qn4yd7_di" bpmnElement="Flow_0qn4yd7">
+        <di:waypoint x="1330" y="277" />
+        <di:waypoint x="1382" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vpm5hj_di" bpmnElement="Flow_0vpm5hj">
+        <di:waypoint x="1280" y="219" />
+        <di:waypoint x="1280" y="200" />
+        <di:waypoint x="1382" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0824bpg_di" bpmnElement="Flow_0824bpg">
+        <di:waypoint x="770" y="219" />
+        <di:waypoint x="770" y="178" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="259" width="36" height="36" />
@@ -180,32 +221,50 @@
       <bpmndi:BPMNShape id="Activity_193rjeb_di" bpmnElement="Task_Reader_Reg_Form">
         <dc:Bounds x="320" y="237" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0bvrfri_di" bpmnElement="Task_Reader_Validation">
-        <dc:Bounds x="500" y="237" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_05xrwvl_di" bpmnElement="Gateway_05xrwvl" isMarkerVisible="true">
-        <dc:Bounds x="655" y="252" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0h4oepz_di" bpmnElement="Task_Save_Reader">
-        <dc:Bounds x="800" y="237" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1qzr1b1_di" bpmnElement="Task_Send_Email">
-        <dc:Bounds x="950" y="237" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0l0cd5v_di" bpmnElement="Task_Remove_Reader">
-        <dc:Bounds x="1100" y="80" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1b0da0o_di" bpmnElement="Event_1b0da0o">
         <dc:Bounds x="1252" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_08t9t8u_di" bpmnElement="Event_08t9t8u">
-        <dc:Bounds x="1252" y="259" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_0bvrfri_di" bpmnElement="Task_Reader_Validation">
+        <dc:Bounds x="460" y="237" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_05xrwvl_di" bpmnElement="Gateway_05xrwvl" isMarkerVisible="true">
+        <dc:Bounds x="595" y="252" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1bzjv8r_di" bpmnElement="Task_Activation_Reader">
-        <dc:Bounds x="1100" y="237" width="100" height="80" />
+        <dc:Bounds x="1070" y="237" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0l0cd5v_di" bpmnElement="Task_Remove_Reader">
+        <dc:Bounds x="1070" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qvc3m9_di" bpmnElement="Activity_1im0f7r">
+        <dc:Bounds x="1230" y="237" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0guyz7m_di" bpmnElement="Event_0guyz7m">
+        <dc:Bounds x="1382" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_08t9t8u_di" bpmnElement="Event_08t9t8u">
+        <dc:Bounds x="1382" y="259" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qzr1b1_di" bpmnElement="Task_Send_Email">
+        <dc:Bounds x="880" y="237" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0h4oepz_di" bpmnElement="Task_Save_Reader">
+        <dc:Bounds x="720" y="237" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0zym7oh_di" bpmnElement="Event_0zym7oh">
+        <dc:Bounds x="752" y="142" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0outvys_di" bpmnElement="Event_0h0j32h">
-        <dc:Bounds x="1132" y="219" width="36" height="36" />
+        <dc:Bounds x="1102" y="219" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1yopgsn_di" bpmnElement="Event_04upx0x">
+        <dc:Bounds x="1262" y="219" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1241" y="183" width="77" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0q1wglc_di" bpmnElement="Event_083y1nv">
+        <dc:Bounds x="752" y="219" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -3,25 +3,31 @@ package team16.literaryassociation.services;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.model.User;
 
+import javax.mail.internet.MimeMessage;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SendEmailService implements JavaDelegate {
 
     @Autowired
-    private MailService mailService;
+    private EmailService emailService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private VerificationTokenService verificationTokenService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
+
         System.out.println("Uslo u EmailService");
 
-        List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("registrationData");
+        List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
 
         String username = "";
         for(FormSubmissionDTO f: formData){
@@ -30,7 +36,17 @@ public class SendEmailService implements JavaDelegate {
             }
         }
         User user = this.userService.findByUsername(username);
-        mailService.sendConfirmRegMail(user, execution.getProcessInstanceId());
+
+        String token = UUID.randomUUID().toString();
+        this.verificationTokenService.createVerificationToken(user, token);
+        String confirmationUrl
+                =  "https://localhost:3000/registrationConfirmation/" + execution.getProcessInstanceId() + "/" + token;
+        String text = "Hello " + user.getFirstName() + " " + user.getLastName() + ",\n\nPlease confirm your registration by clicking on the link below: " +
+                " \n" + confirmationUrl + "\n\nBest regards,\nLiterary association";
+
+        String subject = "Literary association account activation.";
+
+        emailService.sendEmail(user.getEmail(), subject, text);
 
     }
 }

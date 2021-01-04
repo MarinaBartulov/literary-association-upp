@@ -1,60 +1,67 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { readerService } from "../services/reader-service";
-import { genreService } from "../services/genre-service";
-import { useHistory } from "react-router-dom";
+import { taskService } from "../services/task-service";
+import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Select from "react-dropdown-select";
 
 const RegistrationReader = () => {
-  const [processInstanceId, setProcessInstanceId] = useState("");
-  const [taskId, setTaskId] = useState("");
+  const params = useParams();
+  const [processId, setProcessId] = useState(params.processId);
+  const [taskId, setTaskId] = useState(params.taskId);
   const [formFields, setFormFields] = useState([]);
   const [validated, setValidated] = useState(false);
-  const [genres, setGenres] = useState([]);
-  const [reader, setReader] = useState({});
+  const [enumValues, setEnumValues] = useState([]);
+  const [data, setData] = useState({});
   const history = useHistory();
 
   const getFormData = async () => {
-    const taskFormData = await readerService.regFormFields();
-    setProcessInstanceId(taskFormData.processInstanceId);
-    setTaskId(taskFormData.taskId);
-    setFormFields(taskFormData.formFields);
+    try {
+      const taskFormData = await taskService.getFormFields(taskId);
+      setFormFields(taskFormData.formFields);
 
-    const temp = [];
-    for (let f of taskFormData.formFields) {
-      if (f.typeName === "enum") {
-        Object.keys(f.type.values).map((id) => {
-          console.log(f.type.value);
-          console.log(id);
-          temp.push({ id: id, name: f.type.values[id] });
-        });
-        break;
+      const temp = [];
+      for (let f of taskFormData.formFields) {
+        if (f.typeName === "enum") {
+          Object.keys(f.type.values).map((id) => {
+            console.log(f.type.value);
+            console.log(id);
+            temp.push({ id: id, name: f.type.values[id] });
+          });
+          break;
+        }
       }
+      console.log(temp);
+      setEnumValues(temp);
+
+      const dataTemp = {};
+      for (let f of taskFormData.formFields) {
+        if (f.typeName === "string") {
+          dataTemp[`${f.id}`] = "";
+        }
+        if (f.typeName === "long") {
+          dataTemp[`${f.id}`] = 0;
+        }
+        if (f.typeName === "boolean") {
+          dataTemp[`${f.id}`] = false;
+        }
+        if (f.typeName === "enum") {
+          dataTemp[`${f.id}`] = [];
+        }
+      }
+
+      setData(dataTemp);
+      console.log(dataTemp);
+      console.log(data);
+    } catch (error) {
+      if (error.response) {
+        console.log("Error: " + JSON.stringify(error.response));
+      }
+      toast.error(error.response ? error.response.data : error.message, {
+        hideProgressBar: true,
+      });
     }
-    console.log(temp);
-    setGenres(temp);
-
-    const readerTemp = {};
-    for (let f of taskFormData.formFields) {
-      if (f.typeName === "string") {
-        readerTemp[`${f.id}`] = "";
-      }
-      if (f.typeName === "long") {
-        readerTemp[`${f.id}`] = 0;
-      }
-      if (f.typeName === "boolean") {
-        readerTemp[`${f.id}`] = "off";
-      }
-      if (f.typeName === "enum") {
-        readerTemp[`${f.id}`] = [];
-      }
-    }
-
-    setReader(readerTemp);
-    console.log(readerTemp);
-    console.log(reader);
   };
 
   useEffect(() => {
@@ -66,50 +73,43 @@ const RegistrationReader = () => {
     const { id, value } = e.target;
     console.log(id);
     console.log(value);
-    console.log(reader);
-    setReader((prevState) => ({
+    console.log(data);
+    setData((prevState) => ({
       ...prevState,
       [id]: value,
     }));
   };
 
-  const registerReader = (event) => {
+  const commitForm = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.stopPropagation();
     }
     setValidated(true);
-    console.log(reader);
+    console.log(data);
     const sendData = [];
-    for (let f in reader) {
-      if (f === "betaReader") {
-        if (reader[f] == "on") {
-          sendData.push({ fieldId: f, fieldValue: true });
-        } else {
-          sendData.push({ fieldId: f, fieldValue: false });
-        }
-      } else if (f === "genres" || f === "betaGenres") {
-        // const list = [];
-        // for (let i = 0; i < reader[f].length; i++) {
-        //   const map = {};
-        //   map["item_id"] = reader[f][i].id.toString();
-        //   map["item_name"] = reader[f][i].name;
-        //   list.push(map);
-        // }
-        // sendData.push({ fieldId: f, fieldValue: list });
-      } else {
-        sendData.push({ fieldId: f, fieldValue: reader[f] });
-      }
+
+    for (let f in data) {
+      sendData.push({ fieldId: f, fieldValue: data[f] });
     }
     console.log(sendData);
-    const promise = readerService.regReader(sendData, taskId);
-    promise.then((res) => {
-      toast.success("Registration successful! Email confirmation required.", {
+
+    try {
+      const response = await taskService.commitForm(sendData, taskId);
+      console.log(response);
+      toast.success(response, {
         hideProgressBar: true,
       });
       history.push("/home");
-    });
+    } catch (error) {
+      if (error.response) {
+        console.log("Error: " + JSON.stringify(error.response));
+      }
+      toast.error(error.response ? error.response.data : error.message, {
+        hideProgressBar: true,
+      });
+    }
   };
 
   return (
@@ -121,10 +121,10 @@ const RegistrationReader = () => {
           width: "30%",
           margin: "auto",
         }}
-        onSubmit={registerReader}
+        onSubmit={commitForm}
       >
         {formFields.map((formField) => {
-          const { id, label, typeName } = formField;
+          const { id, label, typeName, properties } = formField;
           return (
             <>
               {typeName === "string" && (
@@ -132,9 +132,9 @@ const RegistrationReader = () => {
                   <Form.Label>{label}:</Form.Label>
                   <Form.Control
                     type={
-                      id.includes("email")
+                      properties.email !== undefined
                         ? "email"
-                        : id.toLowerCase().includes("password")
+                        : properties.password !== undefined
                         ? "password"
                         : "text"
                     }
@@ -205,7 +205,12 @@ const RegistrationReader = () => {
                 <Form.Group key={id} controlId={id}>
                   <Form.Check
                     type="checkbox"
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setData((prevState) => ({
+                        ...prevState,
+                        [formField.id]: e.target.value === "on" ? true : false,
+                      }))
+                    }
                     required={formField.validationConstraints.some(
                       (c) => c.name === "required"
                     )}
@@ -214,41 +219,21 @@ const RegistrationReader = () => {
                 </Form.Group>
               )}
               {typeName === "enum" && (
-                // <Form.Group key={id} controlId={id}>
-                //   <Form.Label>{label}:</Form.Label>
-                //   <Form.Control
-                //     as="select"
-                //     placeholder={"Enter " + label}
-                //     onChange={handleChange}
-                //     // required={formField.validationConstraints.some(
-                //     //   (c) => c.name === "required"
-                //     // )}
-                //     multiple
-                //   >
-                //     {Object.keys(formField.type.values).map((id) => {
-                //       return (
-                //         <option key={id} value={id}>
-                //           {formField.type.values[id]}
-                //         </option>
-                //       );
-                //     })}
-                //   </Form.Control>
-                // </Form.Group>
                 <>
-                  <label>{label}</label>
+                  <label key={"label-" + id}>{label}</label>
                   <Select
                     key={id}
                     placeholder={"Select " + label}
-                    multi
+                    multi={properties.multiselect !== undefined}
                     required={formField.validationConstraints.some(
                       (c) => c.name === "required"
                     )}
-                    options={genres}
+                    options={enumValues}
                     style={{ backgroundColor: "white", marginBottom: "1em" }}
                     labelField="name"
                     valueField="id"
                     onChange={(values) =>
-                      setReader((prevState) => ({
+                      setData((prevState) => ({
                         ...prevState,
                         [formField.id]: values,
                       }))
