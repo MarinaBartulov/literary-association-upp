@@ -1,20 +1,45 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import { useHistory } from "react-router-dom";
+import { readerService } from "../services/reader-service";
+import { toast } from "react-toastify";
 
 const Header = () => {
+  const history = useHistory();
+
+  const startRegistration = async () => {
+    console.log("Registration starting...");
+    try {
+      const response = await readerService.startReg();
+      history.push(
+        "/registrationReader/" + response.processId + "/" + response.taskId
+      );
+    } catch (error) {
+      if (error.response) {
+        console.log("Error: " + JSON.stringify(error.response));
+      }
+      toast.error(error.response ? error.response.data : error.message, {
+        hideProgressBar: true,
+      });
+    }
+  };
+
+  const goToHomePage = () => {
+    history.push("/home");
+  };
   return (
     <div>
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="#home">Literary Association</Navbar.Brand>
         <Nav className="mr-auto">
-          <Link className="ml-2" to="/home">
+          <Button className="ml-2" variant="link" onClick={goToHomePage}>
             Home
-          </Link>
-          <Link className="ml-2" to="/registrationReader">
+          </Button>
+          <Button className="ml-2" variant="link" onClick={startRegistration}>
             Register reader
-          </Link>
+          </Button>
         </Nav>
       </Navbar>
     </div>

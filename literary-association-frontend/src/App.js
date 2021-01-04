@@ -35,7 +35,7 @@ function App() {
             <Route exact path="/home">
               <Home />
             </Route>
-            <Route exact path="/registrationReader">
+            <Route exact path="/registrationReader/:processId/:taskId">
               <RegistrationReader />
             </Route>
             <Route exact path="/registrationConfirmation/:processId/:token">

@@ -30,7 +30,6 @@ public class GetAllGenresListener implements TaskListener {
                     HashMap<String, String> items = (HashMap<String, String>) f.getType().getInformation("values");
                     items.clear();
                     for(Genre g: allGenres){
-                        System.out.println(g.getName());
                         items.put(g.getId().toString(),g.getName());
                     }
                 }
