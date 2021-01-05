@@ -1,10 +1,10 @@
 package team16.literaryassociation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team16.literaryassociation.dto.PaymentRequestDTO;
+import team16.literaryassociation.dto.SubscriptionRequestDTO;
 import team16.literaryassociation.services.TestService;
 
 @RestController
@@ -21,8 +21,9 @@ public class TestController {
         return response;
     }
 
-    @GetMapping(value="/pay", produces = "application/json")
-    public ResponseEntity<?> pay(){
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping(value="/subscribe", produces = "application/json")
+    public ResponseEntity<?> subscribe(@RequestBody SubscriptionRequestDTO dto) throws Exception {
+        ResponseEntity<?> response = testService.sendSubscriptionToPC(dto);
+        return response;
     }
 }
