@@ -8,7 +8,14 @@ const PayTest = () => {
       price: "10",
       currency: "USD",
     };
-    testService.test(payload);
+    testService.pay(payload);
+  }
+  function subscribe() {
+    let payload = {
+      price: "10",
+      currency: "USD",
+    };
+    testService.subscribe(payload);
   }
   return (
     <div>
@@ -21,6 +28,15 @@ const PayTest = () => {
         {" "}
         Pay{" "}
       </Button>{" "}
+      <Button
+        variant="warning"
+        onClick={() => {
+          subscribe();
+        }}
+      >
+        {" "}
+        Subscribe{" "}
+      </Button>
     </div>
   );
 };

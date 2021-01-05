@@ -1,5 +1,6 @@
 export const ROUTES = {
-  TEST: "/test/pay",
+  PAY: "/test/pay",
+  SUBSCRIBE: "/test/subscribe",
   READER_START_REG: "/reader/start-process-register",
   READER_ACTIVATION: "/reader/activateAccount",
   //READER_REG_FORM: "/reader/get-form-fields",
