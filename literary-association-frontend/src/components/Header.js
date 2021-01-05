@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 const Header = () => {
   const history = useHistory();
 
-  const startRegistration = async () => {
+  const startReaderRegistration = async () => {
     console.log("Registration starting...");
     try {
       const response = await readerService.startReg();
@@ -26,6 +26,8 @@ const Header = () => {
     }
   };
 
+  const startWriterRegistration = async () => {};
+
   const goToHomePage = () => {
     history.push("/home");
   };
@@ -37,8 +39,19 @@ const Header = () => {
           <Button className="ml-2" variant="link" onClick={goToHomePage}>
             Home
           </Button>
-          <Button className="ml-2" variant="link" onClick={startRegistration}>
+          <Button
+            className="ml-2"
+            variant="link"
+            onClick={startReaderRegistration}
+          >
             Register reader
+          </Button>
+          <Button
+            className="ml-2"
+            variant="link"
+            onClick={startWriterRegistration}
+          >
+            Register writer
           </Button>
         </Nav>
       </Navbar>

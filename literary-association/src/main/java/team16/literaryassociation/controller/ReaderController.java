@@ -45,15 +45,14 @@ public class ReaderController {
 
         System.out.println(processId);
         System.out.println(token);
-        List<Task> tasks = new ArrayList<>();
 
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processId).list();
+        Task activationTask = null;
         try {
-            tasks = taskService.createTaskQuery().processInstanceId(processId).list();
-        }catch(Exception e){ //ako se proces vec zavrsio, sto znaci da je isteklo vreme za aktivaciju
+            activationTask = tasks.get(0);
+        }catch(Exception e){//ako se proces vec zavrsio, sto znaci da je isteklo vreme za aktivaciju
             return ResponseEntity.badRequest().body("Account activation failed. Token expired.");
         }
-
-        Task activationTask = tasks.get(0);
         runtimeService.setVariable(processId, "token", token);
         HashMap<String, Object> map = new HashMap<>();
         formService.submitTaskForm(activationTask.getId(), map);
