@@ -37,8 +37,8 @@ public class TaskController {
         return new FormFieldsDTO(properties);
     }
 
-    @PostMapping(value = "/commit-form/{taskId}", produces = "application/json")
-    public ResponseEntity<?> commitForm(@Valid @RequestBody List<FormSubmissionDTO> formData, @PathVariable("taskId") String taskId) {
+    @PostMapping(value = "/submit-form/{taskId}", produces = "application/json")
+    public ResponseEntity<?> submitForm(@Valid @RequestBody List<FormSubmissionDTO> formData, @PathVariable("taskId") String taskId) {
 
         Map<String, Object> fieldsMap = listFieldsToMap(formData);
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();

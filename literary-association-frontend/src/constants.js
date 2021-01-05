@@ -6,5 +6,5 @@ export const ROUTES = {
   //READER_REGISTER: "/reader/register",
   GENRES: "/genre",
   TASK_FORM_FIELDS: "/task/get-form-fields",
-  TASK_COMMIT_FORM: "/task/commit-form",
+  TASK_SUBMIT_FORM: "/task/submit-form",
 };

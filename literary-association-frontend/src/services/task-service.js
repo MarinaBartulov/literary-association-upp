@@ -10,9 +10,9 @@ class TaskService extends HttpService {
     return response.data;
   };
 
-  commitForm = async (payload, taskId) => {
+  submitForm = async (payload, taskId) => {
     const response = await this.client.post(
-      ROUTES.TASK_COMMIT_FORM + "/" + taskId,
+      ROUTES.TASK_SUBMIT_FORM + "/" + taskId,
       payload
     );
     console.log(response.data);
