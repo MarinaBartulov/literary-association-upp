@@ -1,5 +1,5 @@
 insert into merchant (merchant_id, merchant_email, password, error_url, failed_url, success_url)
-values ('46QfIZh9KGe62AMDAStgnRbsK1fcX4', 'sb-nsr1z4072854@business.example.com', 'Merchant123!', 'https://localhost:3000/error', 'https://localhost:3000/failed', 'https://localhost:3000/success');
+values ('/yPS+cpGJ93Lzl5Lxw9m2mbi10QXeVEQuMG0DjNAFAU=|44QQKfRdORs1xRzU6Rd1eQ==', 'sb-nsr1z4072854@business.example.com', 'FPdIPGgwKU64+46+qJ54wA==|k7xwlTvPFeQ9aTT/XornBA==', 'https://localhost:3000/error', 'https://localhost:3000/failed', 'https://localhost:3000/success');
 
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, beta_reader, penalty_points)
 value ('Reader', 'reader@gmail.com', 'bojana', 'reader', 'Bojana', 'Kliska', 'Beska', 'Srbija', true, true, 3);

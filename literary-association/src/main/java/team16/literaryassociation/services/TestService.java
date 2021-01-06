@@ -28,6 +28,9 @@ public class TestService {
     public ResponseEntity<?> getResponseFromPC(PaymentRequestDTO dto) throws Exception {
         // dobaviti MERCHANT_ID prodavca ovog LU-a ili ako imamo vise prodavaca u LU, onda prodavca onih proizvoda koji su izabrani
         Merchant merchant = merchantRepository.getOne(1L);
+        System.out.println("Merchant: ");
+        System.out.println(merchant.getMerchantId());
+        System.out.println(merchant.getPassword());
         // cenu i valutu dobijam sa front-a iz korpe
         double price;
         try {
