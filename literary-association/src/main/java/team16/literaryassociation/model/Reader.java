@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,10 +25,10 @@ public class Reader extends User {
     @JoinTable(name = "reader_genre",
             joinColumns = @JoinColumn(name = "reader_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
-    private Set<Genre> genres;
+    private Set<Genre> genres = new HashSet<>();
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "beta_reader_genre",
             joinColumns = @JoinColumn(name = "beta_reader_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
-    private Set<Genre> betaGenres;
+    private Set<Genre> betaGenres = new HashSet<>();
 }

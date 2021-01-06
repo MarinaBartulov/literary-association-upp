@@ -2,12 +2,22 @@ import { HttpService } from "./http-service";
 import { ROUTES } from "../constants";
 
 class TestService extends HttpService {
-  test = async (payload) => {
+  pay = async (payload) => {
     try {
-      console.log(payload);
-      const { data } = await this.client.post(ROUTES.TEST, payload);
+      const { data } = await this.client.post(ROUTES.PAY, payload);
       console.log(data);
       window.open(data.body.redirectionURL);
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  subscribe = async (payload) => {
+    try {
+      const { data } = await this.client.post(ROUTES.SUBSCRIBE, payload);
+      console.log(data);
+      window.open(data.body);
       return data;
     } catch (e) {
       console.log(e);

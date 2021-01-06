@@ -14,8 +14,8 @@ import java.util.List;
 @Setter
 public class FormFieldsDTO {
 
-    private String taskId;
+    //private String taskId;
     private List<FormField> formFields;
-    private String processInstanceId;
+    //private String processInstanceId;
 
 }

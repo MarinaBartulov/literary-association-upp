@@ -8,13 +8,13 @@ const RegistrationConfirmation = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const activate = async () => {
-    const response = await readerService.activateAccount(processId, token);
-    console.log(response);
-    if (response != undefined) {
+    try {
+      const response = await readerService.activateAccount(processId, token);
+      console.log(response);
       setShowSuccess(true);
-      setMessage(response.data);
-    } else {
-      setMessage("Account activation failed. Token expired.");
+      setMessage(response);
+    } catch (error) {
+      setMessage(error.response ? error.response.data : error.message);
     }
   };
 

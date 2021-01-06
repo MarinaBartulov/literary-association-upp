@@ -10,6 +10,7 @@ import RegistrationReader from "./components/RegistrationReader";
 import SuccessfulTransaction from "./components/SuccessfulTransaction";
 import PayTest from "./components/PayTest";
 import { ToastContainer } from "react-toastify";
+import RegistrationWriter from "./components/RegistrationWriter";
 
 function App() {
   return (
@@ -35,8 +36,11 @@ function App() {
             <Route exact path="/home">
               <Home />
             </Route>
-            <Route exact path="/registrationReader">
+            <Route exact path="/registrationReader/:processId/:taskId">
               <RegistrationReader />
+            </Route>
+            <Route exact path="/registrationWriter/:processId/:taskId">
+              <RegistrationWriter />
             </Route>
             <Route exact path="/registrationConfirmation/:processId/:token">
               <RegistrationConfirmation />
