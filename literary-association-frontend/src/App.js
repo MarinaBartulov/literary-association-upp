@@ -13,6 +13,7 @@ import Login from "./components/Login";
 
 import { ToastContainer } from "react-toastify";
 import RegistrationWriter from "./components/RegistrationWriter";
+import RegistrationMerchant from "./components/RegistrationMerchant";
 
 function App() {
   return (
@@ -61,6 +62,9 @@ function App() {
             </Route>
             <Route exact path="/login">
               <Login />
+            </Route>
+            <Route exact path="/registrationMerchant">
+              <RegistrationMerchant />
             </Route>
           </Switch>
         </div>

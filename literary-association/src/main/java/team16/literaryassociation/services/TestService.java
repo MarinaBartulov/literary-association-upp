@@ -33,7 +33,7 @@ public class TestService {
         Merchant merchant = merchantRepository.getOne(1L);
         System.out.println("Merchant: ");
         System.out.println(merchant.getMerchantId());
-        System.out.println(merchant.getPassword());
+        System.out.println(merchant.getMerchantPassword());
         // cenu i valutu dobijam sa front-a iz korpe
         double price;
         try {
@@ -43,7 +43,7 @@ public class TestService {
         }
         ResponseEntity<OrderResponseDTO> response
                 = restTemplate.postForEntity(getEndpoint(),
-                new OrderDTO(null, merchant.getMerchantId(), merchant.getMerchantEmail(), merchant.getPassword(),
+                new OrderDTO(null, merchant.getMerchantId(), merchant.getMerchantEmail(), merchant.getMerchantPassword(),
                         dto.getCurrency(), price, merchant.getMerchantSuccessUrl(), merchant.getMerchantFailedUrl(),
                         merchant.getMerchantErrorUrl()), OrderResponseDTO.class);
         System.out.println(response.getBody().getOrderId());
