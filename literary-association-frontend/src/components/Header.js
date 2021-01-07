@@ -31,6 +31,9 @@ const Header = () => {
   const goToHomePage = () => {
     history.push("/home");
   };
+  const goToLogin = () => {
+    history.push("/login");
+  };
   return (
     <div>
       <Navbar bg="dark" variant="dark">
@@ -52,6 +55,9 @@ const Header = () => {
             onClick={startWriterRegistration}
           >
             Register writer
+          </Button>
+          <Button className="ml-2" variant="link" onClick={goToLogin}>
+            Login
           </Button>
         </Nav>
       </Navbar>

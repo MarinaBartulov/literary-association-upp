@@ -9,6 +9,8 @@ import RegistrationConfirmation from "./components/RegistrationConfirmation";
 import RegistrationReader from "./components/RegistrationReader";
 import SuccessfulTransaction from "./components/SuccessfulTransaction";
 import PayTest from "./components/PayTest";
+import Login from "./components/Login";
+
 import { ToastContainer } from "react-toastify";
 import RegistrationWriter from "./components/RegistrationWriter";
 
@@ -56,6 +58,9 @@ function App() {
             </Route>
             <Route exact path="/payTest">
               <PayTest />
+            </Route>
+            <Route exact path="/login">
+              <Login />
             </Route>
           </Switch>
         </div>
