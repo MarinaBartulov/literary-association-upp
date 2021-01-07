@@ -5,11 +5,15 @@ import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.model.Genre;
 import team16.literaryassociation.model.Reader;
+import team16.literaryassociation.model.Role;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +27,10 @@ public class SaveReaderService implements JavaDelegate {
     private ReaderService readerService;
     @Autowired
     private GenreService genreService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -37,7 +44,10 @@ public class SaveReaderService implements JavaDelegate {
         newReader.setFirstName((String)map.get("firstName"));
         newReader.setLastName((String)map.get("lastName"));
         newReader.setEmail((String) map.get("email"));
-        newReader.setPassword((String) map.get("password")); //treba encode
+        System.out.println(passwordEncoder.encode((String) map.get("password")));
+        newReader.setPassword(passwordEncoder.encode((String) map.get("password")));
+        Role role = this.roleService.findByName("ROLE_READER");
+        newReader.getRoles().add(role);
         newReader.setUsername((String) map.get("username"));
         newReader.setCity((String) map.get("city"));
         newReader.setCountry((String) map.get("country"));

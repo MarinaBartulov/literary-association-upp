@@ -8,6 +8,7 @@ export const ROUTES = {
   GENRES: "/genre",
   TASK_FORM_FIELDS: "/task/get-form-fields",
   TASK_SUBMIT_FORM: "/task/submit-form",
+  AUTH_LOGIN: "/auth/login",
   WRITER_START_REG: "/writer/start-process-register",
   WRITER_ACTIVATION: "/writer/activateAccount",
 };
