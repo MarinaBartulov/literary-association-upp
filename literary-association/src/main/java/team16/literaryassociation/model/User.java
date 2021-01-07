@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import team16.literaryassociation.dto.BoardMemberDTO;
 
 import javax.persistence.*;
 import java.util.*;
@@ -45,6 +46,16 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
+
+    public User(BoardMemberDTO dto){
+        this.id = dto.getId();
+        this.firstName = dto.getFirstName();
+        this.lastName = dto.getLastName();
+        this.country = dto.getCountry();
+        this.city = dto.getCity();
+        this.email = dto.getEmail();
+        this.username = dto.getUsername();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

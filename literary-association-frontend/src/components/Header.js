@@ -4,6 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import { useHistory } from "react-router-dom";
 import { readerService } from "../services/reader-service";
+import { writerService } from "../services/writer-service";
 import { toast } from "react-toastify";
 
 const Header = () => {
@@ -26,7 +27,22 @@ const Header = () => {
     }
   };
 
-  const startWriterRegistration = async () => {};
+  const startWriterRegistration = async () => {
+    console.log("Registration starting...");
+    try {
+      const response = await writerService.startReg();
+      history.push(
+        "/registrationWriter/" + response.processId + "/" + response.taskId
+      );
+    } catch (error) {
+      if (error.response) {
+        console.log("Error: " + JSON.stringify(error.response));
+      }
+      toast.error(error.response ? error.response.data : error.message, {
+        hideProgressBar: true,
+      });
+    }
+  };
 
   const goToHomePage = () => {
     history.push("/home");
