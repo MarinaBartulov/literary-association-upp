@@ -87,7 +87,7 @@
       <bpmn:incoming>Flow_1s4vl2j</bpmn:incoming>
       <bpmn:outgoing>Flow_0kf3uqx</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0h1htzq" name="Remove Reader" camunda:class="team16.literaryassociation.services.RemoveNewUserService">
+    <bpmn:serviceTask id="Task_Remove_Writer" name="Remove Writer" camunda:class="team16.literaryassociation.services.RemoveNewUserService">
       <bpmn:incoming>Flow_10c1otj</bpmn:incoming>
       <bpmn:outgoing>Flow_1n7if2m</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -136,8 +136,8 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1s4vl2j" sourceRef="Task_Save_Writer" targetRef="Task_Send_Email" />
     <bpmn:sequenceFlow id="Flow_0kf3uqx" sourceRef="Task_Send_Email" targetRef="Task_Activation_Writer" />
-    <bpmn:sequenceFlow id="Flow_10c1otj" sourceRef="Event_13s10hy" targetRef="Activity_0h1htzq" />
-    <bpmn:sequenceFlow id="Flow_1n7if2m" sourceRef="Activity_0h1htzq" targetRef="Event_0suvted" />
+    <bpmn:sequenceFlow id="Flow_10c1otj" sourceRef="Event_13s10hy" targetRef="Task_Remove_Writer" />
+    <bpmn:sequenceFlow id="Flow_1n7if2m" sourceRef="Task_Remove_Writer" targetRef="Event_0suvted" />
     <bpmn:sequenceFlow id="Flow_0nrbnoi" sourceRef="Task_Activate_Writer" targetRef="Task_Create_MembershipApplication" />
     <bpmn:sequenceFlow id="Flow_10d1uj1" sourceRef="Task_Activation_Writer" targetRef="Task_Activate_Writer" />
     <bpmn:sequenceFlow id="Flow_0ltoy3t" sourceRef="Event_1hugquh" targetRef="Event_17gl8fk" />
@@ -327,7 +327,6 @@ return negativeOpinionCounter &gt;= len/2</bpmn:condition>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0ar0d0s" sourceRef="Activity_0iqe219" targetRef="TextAnnotation_195ekzw" />
   </bpmn:process>
-  <!--<bpmn:signal id="Signal_02y53to" />-->
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_Writer_Reg">
       <bpmndi:BPMNEdge id="Flow_1ny6b3r_di" bpmnElement="Flow_1ny6b3r">
@@ -514,11 +513,14 @@ return negativeOpinionCounter &gt;= len/2</bpmn:condition>
       <bpmndi:BPMNShape id="Activity_0vedahq_di" bpmnElement="Task_Send_Email">
         <dc:Bounds x="870" y="360" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0h1htzq_di" bpmnElement="Activity_0h1htzq">
+      <bpmndi:BPMNShape id="Activity_0h1htzq_di" bpmnElement="Task_Remove_Writer">
         <dc:Bounds x="1043" y="203" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0suvted_di" bpmnElement="Event_0suvted">
         <dc:Bounds x="1075" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1nl6cep_di" bpmnElement="Event_1nl6cep">
+        <dc:Bounds x="3322" y="382" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1kqcnsb_di" bpmnElement="Task_Activation_Writer">
         <dc:Bounds x="1043" y="360" width="100" height="80" />
@@ -534,27 +536,6 @@ return negativeOpinionCounter &gt;= len/2</bpmn:condition>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_02615x2_di" bpmnElement="Task_Upload_LiteraryWork">
         <dc:Bounds x="1640" y="360" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1nl6cep_di" bpmnElement="Event_1nl6cep">
-        <dc:Bounds x="3322" y="382" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_15g8kpr_di" bpmnElement="Task_MembershipFee_Payment">
-        <dc:Bounds x="3170" y="360" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0u5tjzn_di" bpmnElement="Task_Send_Email_6">
-        <dc:Bounds x="3170" y="500" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1ekr0gh_di" bpmnElement="Event_1ekr0gh">
-        <dc:Bounds x="3202" y="642" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1p2mqvn_di" bpmnElement="Task_MembershipApplication_Approval">
-        <dc:Bounds x="3040" y="360" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_05bsp1l_di" bpmnElement="Task_Send_Email_5">
-        <dc:Bounds x="2890" y="360" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0zel6kg_di" bpmnElement="Task_Send_Email_4">
-        <dc:Bounds x="2860" y="680" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0v542ks_di" bpmnElement="SubProcess_Give_Opinion" isExpanded="true">
         <dc:Bounds x="2110" y="280" width="580" height="252" />
@@ -625,11 +606,32 @@ return negativeOpinionCounter &gt;= len/2</bpmn:condition>
       <bpmndi:BPMNShape id="Event_0fofxeu_di" bpmnElement="Event_0fofxeu">
         <dc:Bounds x="3002" y="702" width="36" height="36" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0zel6kg_di" bpmnElement="Task_Send_Email_4">
+        <dc:Bounds x="2860" y="680" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_05bsp1l_di" bpmnElement="Task_Send_Email_5">
+        <dc:Bounds x="2890" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15g8kpr_di" bpmnElement="Task_MembershipFee_Payment">
+        <dc:Bounds x="3170" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1p2mqvn_di" bpmnElement="Task_MembershipApplication_Approval">
+        <dc:Bounds x="3040" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ekr0gh_di" bpmnElement="Event_1ekr0gh">
+        <dc:Bounds x="3202" y="642" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0u5tjzn_di" bpmnElement="Task_Send_Email_6">
+        <dc:Bounds x="3170" y="500" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1ewzv4t_di" bpmnElement="TextAnnotation_1ewzv4t">
         <dc:Bounds x="1350" y="230" width="140" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_195ekzw_di" bpmnElement="TextAnnotation_195ekzw">
         <dc:Bounds x="1570" y="229" width="130" height="61" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0omcldp_di" bpmnElement="Event_0dnmc4y">
+        <dc:Bounds x="3202" y="422" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0jou96l_di" bpmnElement="Event_1i3q84o">
         <dc:Bounds x="1822" y="822" width="36" height="36" />
@@ -663,9 +665,6 @@ return negativeOpinionCounter &gt;= len/2</bpmn:condition>
         <di:waypoint x="1568" y="360" />
         <di:waypoint x="1599" y="290" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Event_0omcldp_di" bpmnElement="Event_0dnmc4y">
-        <dc:Bounds x="3202" y="422" width="36" height="36" />
-      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

@@ -1,14 +1,86 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import team16.literaryassociation.dto.FormSubmissionDTO;
+import team16.literaryassociation.model.Genre;
+import team16.literaryassociation.model.Role;
+import team16.literaryassociation.model.Writer;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class SaveWriterService implements JavaDelegate {
 
-    @Override
-    public void execute(DelegateExecution delegateExecution) throws Exception {
+    @Autowired
+    private IdentityService identityService;
 
+    @Autowired
+    private WriterService writerService;
+
+    @Autowired
+    private GenreService genreService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Override
+    public void execute(DelegateExecution execution) throws Exception {
+        System.out.println("Uslo u SaveWriterService");
+
+        List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
+        Map<String, Object> map = this.listFieldsToMap(formData);
+
+        Writer newWriter = new Writer();
+        newWriter.setFirstName((String)map.get("firstName"));
+        newWriter.setLastName((String)map.get("lastName"));
+        newWriter.setEmail((String) map.get("email"));
+        System.out.println(passwordEncoder.encode((String) map.get("password")));
+        newWriter.setPassword(passwordEncoder.encode((String) map.get("password")));
+        Role role = this.roleService.findByName("ROLE_WRITER");
+        newWriter.getRoles().add(role);
+        newWriter.setUsername((String) map.get("username"));
+        newWriter.setCity((String) map.get("city"));
+        newWriter.setCountry((String) map.get("country"));
+
+        List<Map<String, String>> genres = (List<Map<String, String>>) map.get("genres");
+        for (Map<String, String> genre : genres) {
+            Genre g = this.genreService.findById(Long.parseLong(genre.get("id")));
+            newWriter.getGenres().add(g);
+        }
+
+        if(writerService.saveWriter(newWriter) != null){
+            org.camunda.bpm.engine.identity.User cmdUser = identityService.newUser(newWriter.getUsername());
+            cmdUser.setEmail(newWriter.getEmail());
+            cmdUser.setFirstName(newWriter.getFirstName());
+            cmdUser.setLastName(newWriter.getLastName());
+            cmdUser.setPassword(newWriter.getPassword());
+            try {
+                identityService.saveUser(cmdUser);
+            }catch(Exception e){
+                throw new BpmnError("SAVE_CAMUNDA_USER_FAILED", "Saving camunda user failed.");
+            }
+        }
+
+    }
+
+    private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {
+        Map<String, Object> retVal = new HashMap<>();
+        for(FormSubmissionDTO dto: formData) {
+            if(dto.getFieldId() != null) {
+                retVal.put(dto.getFieldId(), dto.getFieldValue());
+            }
+        }
+        return retVal;
     }
 }

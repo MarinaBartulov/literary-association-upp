@@ -35,6 +35,7 @@ public class ActivateUserService implements JavaDelegate {
         User user = vt.getUser();
         user.setVerified(true);
         user.setEnabled(true);
+        execution.setVariable("user_id", user.getId());
         this.userService.saveUser(user);
     }
 }
