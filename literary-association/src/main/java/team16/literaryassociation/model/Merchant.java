@@ -20,17 +20,20 @@ public class Merchant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Convert(converter = SensitiveDataConverter.class)
-    @Column(nullable = false, unique = true) // length = 30
-    private String merchantId;
+    @Column(nullable = false)
+    private String merchantName;
 
     @Column(nullable = false, unique = true)
     private String merchantEmail;
 
     @Convert(converter = SensitiveDataConverter.class)
-    @Column(nullable = false)
-    //@Size(min = 10, max = 100)
-    private String password;
+    @Column(unique = true) // length = 30
+    private String merchantId;
+
+    @Convert(converter = SensitiveDataConverter.class)
+    private String merchantPassword;
+
+    private boolean activated; //aktivira se kad zavrsi registraciju na PC
 
     @Column(name = "success_url")
     private String merchantSuccessUrl;

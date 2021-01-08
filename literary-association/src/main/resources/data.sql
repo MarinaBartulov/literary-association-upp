@@ -5,8 +5,8 @@ insert into permission (name) values ('create_order');
 
 insert into role_permissions (role_id, permission_id) values (1,1);
 
-insert into merchant (merchant_id, merchant_email, password, error_url, failed_url, success_url)
-values ('/yPS+cpGJ93Lzl5Lxw9m2mbi10QXeVEQuMG0DjNAFAU=|44QQKfRdORs1xRzU6Rd1eQ==', 'sb-nsr1z4072854@business.example.com', 'FPdIPGgwKU64+46+qJ54wA==|k7xwlTvPFeQ9aTT/XornBA==', 'https://localhost:3000/error', 'https://localhost:3000/failed', 'https://localhost:3000/success');
+insert into merchant (merchant_id, merchant_name, merchant_email, merchant_password, activated, error_url, failed_url, success_url)
+values ('/yPS+cpGJ93Lzl5Lxw9m2mbi10QXeVEQuMG0DjNAFAU=|44QQKfRdORs1xRzU6Rd1eQ==', 'Vulkan knjizare', 'sb-nsr1z4072854@business.example.com', 'FPdIPGgwKU64+46+qJ54wA==|k7xwlTvPFeQ9aTT/XornBA==', true, 'https://localhost:3000/error', 'https://localhost:3000/failed', 'https://localhost:3000/success');
 
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled, beta_reader, penalty_points)
 value ('Reader', 'reader@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'reader123', 'Bojana', 'Kliska', 'Beska', 'Srbija', true, true, true, 3);

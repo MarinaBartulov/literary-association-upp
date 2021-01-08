@@ -9,4 +9,5 @@ import team16.literaryassociation.model.Merchant;
 public interface MerchantRepository extends JpaRepository<Merchant, Long> {
 
     Merchant findMerchantByMerchantId(String merchantId);
+    Merchant findByMerchantEmail(String email);
 }

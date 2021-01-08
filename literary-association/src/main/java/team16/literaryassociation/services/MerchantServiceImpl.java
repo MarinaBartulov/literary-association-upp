@@ -1,13 +1,31 @@
 package team16.literaryassociation.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import team16.literaryassociation.dto.*;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.repository.MerchantRepository;
 
+@Service
 public class MerchantServiceImpl implements MerchantService {
 
     @Autowired
     private MerchantRepository merchantRepository;
+
+    @Value("${application_id}")
+    private String appId;
+    @Value("${success_url}")
+    private String successUrl;
+    @Value("${failed_url}")
+    private String failedUrl;
+    @Value("${error_url}")
+    private String errorUrl;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public Merchant findOne(Long id) {
@@ -20,28 +38,45 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public Merchant create(Merchant merchant) {
-        return merchantRepository.save(merchant);
+    public Merchant findByEmail(String email) {
+        return this.merchantRepository.findByMerchantEmail(email);
     }
 
-//    @Override
-//    public Merchant createInitial() {
-//        Merchant merchant = new Merchant();
-//        String generatedString = RandomStringUtils.random(30, true, true);
-//        merchant.setMerchant_id(generatedString);
-//        String password = "Merchant123!";
-//        merchant.setPassword(password);
-//        merchant.setMerchant_success_url("http://localhost:3000/success");
-//        merchant.setMerchant_failed_url("http://localhost:3000/failed");
-//        merchant.setMerchant_error_url("http://localhost:3000/error");
-//        return merchantRepository.save(merchant);
-//    }
+    @Override
+    public MerchantDTO registerNewMerchant(MerchantDTO merchantDTO) {
 
-    // ne radi sa Camunda
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void createMerchantOnAppStart() {
-//        Merchant merchant = createInitial();
-//        System.out.println("On app start.");
-//        System.out.println(merchant.getId());
-//    }
+        Merchant newMerchant = new Merchant();
+        newMerchant.setMerchantName(merchantDTO.getName());
+        newMerchant.setMerchantEmail(merchantDTO.getEmail());
+        newMerchant.setActivated(false);
+
+        MerchantPCDTO pcDTO = new MerchantPCDTO();
+        pcDTO.setMerchantName(merchantDTO.getName());
+        pcDTO.setMerchantEmail(merchantDTO.getEmail());
+        pcDTO.setActivationUrl("https://localhost:8000/api/merchant/activate");
+        pcDTO.setAppId(this.appId);
+        pcDTO.setSuccessUrl(this.successUrl);
+        pcDTO.setFailedUrl(this.failedUrl);
+        pcDTO.setErrorUrl(this.errorUrl);
+        ResponseEntity<MerchantPCDTO> response
+                = restTemplate.postForEntity("https://localhost:8083/psp-service/api/merchant",
+                pcDTO, MerchantPCDTO.class);
+
+        this.merchantRepository.save(newMerchant);
+        return new MerchantDTO(newMerchant);
+    }
+
+    @Override
+    public void finishRegistration(MerchantActivationDTO mbi) {
+
+        Merchant m = this.merchantRepository.findByMerchantEmail(mbi.getMerchantEmail());
+        m.setActivated(true);
+        if(mbi.isBankPaymentMethod()) {
+            m.setMerchantId(mbi.getMerchantId());
+            m.setMerchantPassword(mbi.getMerchantPassword());
+        }
+        this.merchantRepository.save(m);
+    }
+
+
 }
