@@ -15,7 +15,7 @@ import java.util.Date;
 @Component
 public class TokenUtils {
 
-    @Value("user-microservice")
+    @Value("Literary Association")
     private String APP_NAME;
 
     @Value("somesecret")

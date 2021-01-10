@@ -9,6 +9,10 @@ import team16.literaryassociation.dto.*;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.repository.MerchantRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class MerchantServiceImpl implements MerchantService {
 
@@ -49,11 +53,14 @@ public class MerchantServiceImpl implements MerchantService {
         newMerchant.setMerchantName(merchantDTO.getName());
         newMerchant.setMerchantEmail(merchantDTO.getEmail());
         newMerchant.setActivated(false);
+        newMerchant.setMerchantSuccessUrl(this.successUrl);
+        newMerchant.setMerchantFailedUrl(this.failedUrl);
+        newMerchant.setMerchantErrorUrl(this.errorUrl);
 
         MerchantPCDTO pcDTO = new MerchantPCDTO();
         pcDTO.setMerchantName(merchantDTO.getName());
         pcDTO.setMerchantEmail(merchantDTO.getEmail());
-        pcDTO.setActivationUrl("https://localhost:8000/api/merchant/activate");
+        pcDTO.setActivationUrl("https://localhost:8080/api/merchant/activate");
         pcDTO.setAppId(this.appId);
         pcDTO.setSuccessUrl(this.successUrl);
         pcDTO.setFailedUrl(this.failedUrl);
@@ -71,11 +78,18 @@ public class MerchantServiceImpl implements MerchantService {
 
         Merchant m = this.merchantRepository.findByMerchantEmail(mbi.getMerchantEmail());
         m.setActivated(true);
-        if(mbi.isBankPaymentMethod()) {
-            m.setMerchantId(mbi.getMerchantId());
-            m.setMerchantPassword(mbi.getMerchantPassword());
-        }
+//        if(mbi.isBankPaymentMethod()) {
+//            m.setMerchantId(mbi.getMerchantId());
+//            m.setMerchantPassword(mbi.getMerchantPassword());
+//        }
         this.merchantRepository.save(m);
+    }
+
+    @Override
+    public List<MerchantDTO> findAllActiveMerchants() {
+        List<Merchant> merchants = this.merchantRepository.findAllActiveMerchants();
+        List<MerchantDTO> ms = merchants.stream().map(m -> new MerchantDTO(m.getId(), m.getMerchantName(), m.getMerchantEmail())).collect(Collectors.toList());
+        return ms;
     }
 
 

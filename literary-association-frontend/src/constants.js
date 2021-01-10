@@ -10,6 +10,8 @@ export const ROUTES = {
   TASK_SUBMIT_FORM: "/task/submit-form",
   AUTH_LOGIN: "/auth/login",
   MERCHANT_REGISTER: "/merchant",
+  MERCHANT_ALL_ACTIVE: "/merchant/active",
   WRITER_START_REG: "/writer/start-process-register",
   WRITER_ACTIVATION: "/writer/activateAccount",
+  ORDER: "/order",
 };
