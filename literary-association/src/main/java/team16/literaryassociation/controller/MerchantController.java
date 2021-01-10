@@ -37,7 +37,7 @@ public class MerchantController {
 
     }
 
-    @PostMapping(value = "/activate")
+    @PutMapping(value = "/activate")
     public ResponseEntity finishMerchantRegistration(@RequestBody @Valid MerchantActivationDTO merchantActivationDTO){
 
         Merchant merchant = this.merchantService.findByEmail(merchantActivationDTO.getMerchantEmail());
@@ -46,6 +46,12 @@ public class MerchantController {
         }
         this.merchantService.finishRegistration(merchantActivationDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/active")
+    public ResponseEntity getAllActiveMerchants(){
+
+        return ResponseEntity.ok(this.merchantService.findAllActiveMerchants());
     }
 
 
