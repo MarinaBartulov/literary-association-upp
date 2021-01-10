@@ -12,4 +12,5 @@ export const ROUTES = {
   MERCHANT_REGISTER: "/merchant",
   WRITER_START_REG: "/writer/start-process-register",
   WRITER_ACTIVATION: "/writer/activateAccount",
+  WRITER_GET_TASK_ID: "/writer/getTaskId",
 };

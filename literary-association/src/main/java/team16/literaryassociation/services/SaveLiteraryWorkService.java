@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SaveLiteraryWorkService implements JavaDelegate {
     @Override
-    public void execute(DelegateExecution delegateExecution) throws Exception {
-
+    public void execute(DelegateExecution execution) throws Exception {
+        System.out.println("Usao u save literary work service");
+        execution.setVariable("negativeOpinionCounter", 0);
     }
 }
