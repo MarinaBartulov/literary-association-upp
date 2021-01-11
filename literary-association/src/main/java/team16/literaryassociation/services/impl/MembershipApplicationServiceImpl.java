@@ -16,4 +16,9 @@ public class MembershipApplicationServiceImpl implements MembershipApplicationSe
     public MembershipApplication save(MembershipApplication membershipApplication) {
         return membershipApplicationRepository.save(membershipApplication);
     }
+
+    @Override
+    public MembershipApplication getOne(Long id) {
+        return membershipApplicationRepository.getOne(id);
+    }
 }

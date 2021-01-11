@@ -9,6 +9,6 @@ public class SaveOpinionAndCommentService implements JavaDelegate {
     
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-
+        System.out.println("Usao u save opinion and comment");
     }
 }

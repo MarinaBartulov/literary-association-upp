@@ -5,4 +5,5 @@ import team16.literaryassociation.model.MembershipApplication;
 public interface MembershipApplicationService {
 
     MembershipApplication save(MembershipApplication membershipApplication);
+    MembershipApplication getOne(Long id);
 }

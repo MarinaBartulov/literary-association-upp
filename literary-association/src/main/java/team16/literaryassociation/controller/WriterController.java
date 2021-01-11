@@ -42,8 +42,9 @@ public class WriterController {
     @PutMapping(value = "/activateAccount/{processId}/{token}")
     public ResponseEntity<?> activateAccount(@PathVariable String processId, @PathVariable String token){
 
-        System.out.println(processId);
-        System.out.println(token);
+        System.out.println("Usao u Activate account");
+        System.out.println("Process Id: " + processId);
+        System.out.println("Token Id :" + token);
 
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processId).list();
         Task activationTask = null;
@@ -58,4 +59,16 @@ public class WriterController {
 
         return ResponseEntity.ok().body("Account activation successful");
     }
+
+    @GetMapping(value = "/getTaskId/{processId}")
+    public ResponseEntity<?> getUploadLWTaskId(@PathVariable String processId) {
+
+        System.out.println("Usao u getUploadLWTaskId");
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processId).list();
+        Task task = tasks.get(0);
+        System.out.println("U get Upload LW Task Id: " + task.getId());
+        StartProcessDTO sp = new StartProcessDTO(processId, task.getId());
+        return new ResponseEntity(sp, HttpStatus.OK);
+    }
+
 }

@@ -134,8 +134,11 @@ const GenericForm = (props) => {
                         ? "email"
                         : properties.password !== undefined
                         ? "password"
+                        : properties.file !== undefined
+                        ? "file"
                         : "text"
                     }
+                    multiple={properties.multiple !== undefined ? true : false}
                     onChange={handleChange}
                     placeholder={"Enter " + label}
                     required={formField.validationConstraints.some(
