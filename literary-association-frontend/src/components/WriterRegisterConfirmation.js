@@ -23,7 +23,7 @@ const WriterRegistrationConfirmation = () => {
   const getUploadLWTaskId = async () => {
     try {
       const response = await writerService.getUploadLWTaskId(processId);
-      console.log("taskId");
+      console.log("Odgovor iz getUploadLWTaskId - taskId");
       console.log(response.taskId);
       history.push(
         "/uploadLiteraryWork/" + response.processId + "/" + response.taskId
@@ -41,7 +41,12 @@ const WriterRegistrationConfirmation = () => {
     <div>
       <h2 style={{ color: showSuccess ? "green" : "red" }}>{message}</h2>
       {showSuccess}
-      <Button className="ml-2" variant="success" onClick={getUploadLWTaskId}>
+      <Button
+        style={{ marginTop: "1em" }}
+        className="ml-2"
+        variant="info"
+        onClick={getUploadLWTaskId}
+      >
         Continue registration process
       </Button>
     </div>

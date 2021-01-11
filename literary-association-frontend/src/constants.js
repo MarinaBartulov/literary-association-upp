@@ -13,4 +13,5 @@ export const ROUTES = {
   WRITER_START_REG: "/writer/start-process-register",
   WRITER_ACTIVATION: "/writer/activateAccount",
   WRITER_GET_TASK_ID: "/writer/getTaskId",
+  LITERARY_WORK_UPLOAD: "/literaryWork/upload",
 };

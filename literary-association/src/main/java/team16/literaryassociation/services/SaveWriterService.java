@@ -72,6 +72,8 @@ public class SaveWriterService implements JavaDelegate {
             }
         }
 
+        execution.setVariable("currentUser", newWriter.getUsername());
+
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {

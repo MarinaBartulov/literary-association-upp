@@ -22,8 +22,6 @@ class WriterService extends HttpService {
     const response = await this.client.get(
       ROUTES.WRITER_GET_TASK_ID + "/" + processId
     );
-    console.log("Odgovor iz getUploadLWTaskId");
-    console.log(response.data);
     return response.data;
   };
 }
