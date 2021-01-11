@@ -6,6 +6,11 @@ class MerchantService extends HttpService {
     const response = await this.client.post(ROUTES.MERCHANT_REGISTER, payload);
     return response.data;
   };
+
+  getActiveMerchants = async () => {
+    const response = await this.client.get(ROUTES.MERCHANT_ALL_ACTIVE);
+    return response.data;
+  };
 }
 
 export const merchantService = new MerchantService();

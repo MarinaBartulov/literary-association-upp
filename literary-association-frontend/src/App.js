@@ -16,6 +16,7 @@ import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
 import RegistrationWriter from "./components/RegistrationWriter";
 import RegistrationMerchant from "./components/RegistrationMerchant";
+import ShoppingCart from "./components/ShoppingCart";
 
 function App() {
   return (
@@ -76,6 +77,9 @@ function App() {
             </Route>
             <Route exact path="/registrationMerchant">
               <RegistrationMerchant />
+            </Route>
+            <Route exact path="/shoppingCart">
+              <ShoppingCart />
             </Route>
           </Switch>
         </div>

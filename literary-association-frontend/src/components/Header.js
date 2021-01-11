@@ -50,6 +50,12 @@ const Header = () => {
   const goToLogin = () => {
     history.push("/login");
   };
+  const goToRegisterMerchant = () => {
+    history.push("/registrationMerchant");
+  };
+  const goToShoppingCart = () => {
+    history.push("/shoppingCart");
+  };
   return (
     <div>
       <Navbar bg="dark" variant="dark">
@@ -63,14 +69,24 @@ const Header = () => {
             variant="link"
             onClick={startReaderRegistration}
           >
-            Register reader
+            Reader registration
           </Button>
           <Button
             className="ml-2"
             variant="link"
             onClick={startWriterRegistration}
           >
-            Register writer
+            Writer registration
+          </Button>
+          <Button
+            className="ml-2"
+            variant="link"
+            onClick={goToRegisterMerchant}
+          >
+            Register merchant
+          </Button>
+          <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
+            Shopping cart
           </Button>
           <Button className="ml-2" variant="link" onClick={goToLogin}>
             Login

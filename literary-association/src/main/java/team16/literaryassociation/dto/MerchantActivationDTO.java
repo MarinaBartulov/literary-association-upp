@@ -17,7 +17,7 @@ public class MerchantActivationDTO {
     @NotNull
     @Email
     private String merchantEmail;
-    private boolean bankPaymentMethod;
-    private String merchantId;
-    private String merchantPassword;
+    //private boolean bankPaymentMethod;
+    //private String merchantId;
+    //private String merchantPassword;
 }
