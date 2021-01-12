@@ -163,7 +163,7 @@
       <bpmn:startEvent id="Event_1lairto">
         <bpmn:outgoing>Flow_14sbgrr</bpmn:outgoing>
       </bpmn:startEvent>
-      <bpmn:userTask id="Task_Give_Opinion" name="Board Members Give Opinion" camunda:assignee="${boardMember}">
+      <bpmn:userTask id="Task_Give_Opinion" name="Board Members Give Opinion" camunda:assignee="${boardMember.username}">
         <bpmn:extensionElements>
           <camunda:formData>
             <camunda:formField id="opinion" label="Opinion" type="enum" />
@@ -173,7 +173,7 @@
               </camunda:properties>
             </camunda:formField>
           </camunda:formData>
-          <camunda:taskListener delegateExpression="${getAllOpinions}" event="create" />
+          <camunda:taskListener delegateExpression="${getAllOpinionsListener}" event="create" />
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_14sbgrr</bpmn:incoming>
         <bpmn:outgoing>Flow_16aosqh</bpmn:outgoing>
@@ -198,8 +198,7 @@
     <bpmn:boundaryEvent id="Event_0c7wxil" name="More  than a half board members gave negative opinion " attachedToRef="SubProcess_Give_Opinion">
       <bpmn:outgoing>Flow_1a5l4wb</bpmn:outgoing>
       <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_00a7wpd">
-        <bpmn:condition xsi:type="bpmn:tFormalExpression" language="JavaScript">var len = boardMembers.length;
-return negativeOpinionCounter &gt;= len/2</bpmn:condition>
+        <bpmn:condition xsi:type="bpmn:tFormalExpression">${negativeOpinionCounter &gt;= 1}</bpmn:condition>
       </bpmn:conditionalEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:endEvent id="Event_1lj6s61">

@@ -60,6 +60,9 @@ public class TestService {
         if(merchant == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        System.out.println("Merchant: ");
+        System.out.println(merchant.getMerchantId());
+        System.out.println(merchant.getMerchantEmail());
         dto.setMerchantEmail(merchant.getMerchantEmail());
         dto.setMerchantId(merchant.getMerchantId());
 

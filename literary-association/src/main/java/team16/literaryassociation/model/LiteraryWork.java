@@ -24,4 +24,10 @@ public class LiteraryWork {
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private MembershipApplication membershipApplication;
+
+    public LiteraryWork(String title, String pdf)
+    {
+        this.title = title;
+        this.pdf = pdf;
+    }
 }

@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import RegistrationConfirmation from "./components/RegistrationConfirmation";
+import WriterRegistrationConfirmation from "./components/WriterRegisterConfirmation";
+import UploadLiteraryWork from "./components/UploadLiteraryWork";
 import RegistrationReader from "./components/RegistrationReader";
 import SuccessfulTransaction from "./components/SuccessfulTransaction";
 import PayTest from "./components/PayTest";
@@ -48,6 +50,15 @@ function App() {
             </Route>
             <Route exact path="/registrationConfirmation/:processId/:token">
               <RegistrationConfirmation />
+            </Route>
+            <Route
+              exact
+              path="/registrationConfirmation/writer/:processId/:token"
+            >
+              <WriterRegistrationConfirmation />
+            </Route>
+            <Route exact path="/uploadLiteraryWork/:processId/:taskId">
+              <UploadLiteraryWork />
             </Route>
             <Route exact path="/success">
               <SuccessfulTransaction />

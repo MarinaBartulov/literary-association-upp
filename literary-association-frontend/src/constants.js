@@ -11,7 +11,9 @@ export const ROUTES = {
   AUTH_LOGIN: "/auth/login",
   MERCHANT_REGISTER: "/merchant",
   MERCHANT_ALL_ACTIVE: "/merchant/active",
+  ORDER: "/order",
   WRITER_START_REG: "/writer/start-process-register",
   WRITER_ACTIVATION: "/writer/activateAccount",
-  ORDER: "/order",
+  WRITER_GET_TASK_ID: "/writer/getTaskId",
+  LITERARY_WORK_UPLOAD: "/literaryWork/upload",
 };
