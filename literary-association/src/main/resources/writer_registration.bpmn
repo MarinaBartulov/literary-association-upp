@@ -471,7 +471,7 @@ return negativeOpinionCounter &gt;= len/2</bpmn:condition>
         <di:waypoint x="618" y="400" />
         <di:waypoint x="693" y="400" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="606" y="359" width="54" height="27" />
+          <dc:Bounds x="623" y="366" width="54" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0hgquz3_di" bpmnElement="Flow_0hgquz3">
