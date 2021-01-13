@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.model.MembershipApplication;
 import team16.literaryassociation.model.Writer;
+import team16.literaryassociation.services.interfaces.UserService;
 
 @Service
 public class CreateMembershipApplicationService implements JavaDelegate {

@@ -1,9 +1,10 @@
-package team16.literaryassociation.services;
+package team16.literaryassociation.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.model.Reader;
 import team16.literaryassociation.repository.ReaderRepository;
+import team16.literaryassociation.services.interfaces.ReaderService;
 
 @Service
 public class ReaderServiceImpl implements ReaderService {

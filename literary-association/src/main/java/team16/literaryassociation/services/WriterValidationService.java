@@ -5,6 +5,8 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
+import team16.literaryassociation.services.interfaces.GenreService;
+import team16.literaryassociation.services.interfaces.UserService;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;

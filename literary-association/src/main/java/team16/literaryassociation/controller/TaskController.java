@@ -56,7 +56,7 @@ public class TaskController {
         }
 
         System.out.println("Doslo do kraja");
-        return ResponseEntity.ok().body("Registration successful! Email confirmation required.");
+        return ResponseEntity.ok().body("Form successfully submitted.");
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {

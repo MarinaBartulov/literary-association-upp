@@ -1,4 +1,4 @@
-package team16.literaryassociation.services;
+package team16.literaryassociation.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import team16.literaryassociation.dto.GenreDTO;
 import team16.literaryassociation.mapper.GenreMapper;
 import team16.literaryassociation.model.Genre;
 import team16.literaryassociation.repository.GenreRepository;
+import team16.literaryassociation.services.interfaces.GenreService;
 
 import java.util.List;
 import java.util.stream.Collectors;

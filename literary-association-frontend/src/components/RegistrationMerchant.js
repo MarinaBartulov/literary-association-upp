@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { merchantService } from "../services/merchant-service";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import Header from "./Header";
 
 const RegistrationMerchant = () => {
   const formik = useFormik({
@@ -37,53 +38,56 @@ const RegistrationMerchant = () => {
   });
 
   return (
-    <div className="pt-5">
-      <div
-        className="card mr-auto ml-auto mt-5"
-        style={{
-          width: "30%",
-          backgroundColor: "#bdbbbb",
-        }}
-      >
-        <h2 className="card-title">Register a new merchant</h2>
-        <form
-          onSubmit={formik.handleSubmit}
-          style={{ width: "90%", margin: "auto" }}
+    <div>
+      <Header />
+      <div className="pt-5">
+        <div
+          className="card mr-auto ml-auto mt-5"
+          style={{
+            width: "30%",
+            backgroundColor: "#bdbbbb",
+          }}
         >
-          <div className="form-group">
-            <label htmlFor="name">Name:</label>
-            <input
-              className="form-control"
-              id="name"
-              name="name"
-              type="text"
-              placeholder="Enter name"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-            />
-            {formik.touched.name && formik.errors.name ? (
-              <p style={{ color: "red" }}>{formik.errors.name}</p>
-            ) : null}
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              className="form-control"
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter email"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <p style={{ color: "red" }}>{formik.errors.email}</p>
-            ) : null}
-          </div>
-          <button type="submit" className="btn btn-primary mb-1">
-            Submit
-          </button>
-        </form>
+          <h2 className="card-title">Register a new merchant</h2>
+          <form
+            onSubmit={formik.handleSubmit}
+            style={{ width: "90%", margin: "auto" }}
+          >
+            <div className="form-group">
+              <label htmlFor="name">Name:</label>
+              <input
+                className="form-control"
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter name"
+                onChange={formik.handleChange}
+                value={formik.values.name}
+              />
+              {formik.touched.name && formik.errors.name ? (
+                <p style={{ color: "red" }}>{formik.errors.name}</p>
+              ) : null}
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email:</label>
+              <input
+                className="form-control"
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter email"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <p style={{ color: "red" }}>{formik.errors.email}</p>
+              ) : null}
+            </div>
+            <button type="submit" className="btn btn-primary mb-1">
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

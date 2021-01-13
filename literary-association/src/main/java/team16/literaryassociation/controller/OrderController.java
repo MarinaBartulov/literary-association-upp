@@ -12,7 +12,7 @@ import team16.literaryassociation.dto.OrderDTO;
 import team16.literaryassociation.dto.OrderRequestDTO;
 import team16.literaryassociation.dto.OrderResponseDTO;
 import team16.literaryassociation.model.Merchant;
-import team16.literaryassociation.services.MerchantService;
+import team16.literaryassociation.services.interfaces.MerchantService;
 
 @RestController
 @RequestMapping("/api/order")

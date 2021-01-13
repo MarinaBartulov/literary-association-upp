@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import { useHistory } from "react-router-dom";
 import { readerService } from "../services/reader-service";
 import { writerService } from "../services/writer-service";
+import { bookRequestService } from "../services/book-request-service";
 import { toast } from "react-toastify";
 
 const Header = () => {
@@ -68,6 +69,21 @@ const Header = () => {
   const goToShoppingCart = () => {
     history.push("/shoppingCart");
   };
+
+  const startBookPublishing = async () => {
+    console.log("Publishing started...");
+    try {
+      const response = await bookRequestService.startBookPublishing();
+      history.push("/newBook/" + response.processId + "/" + response.taskId);
+    } catch (error) {
+      if (error.response) {
+        console.log("Error: " + JSON.stringify(error.response));
+      }
+      toast.error(error.response ? error.response.data : error.message, {
+        hideProgressBar: true,
+      });
+    }
+  };
   return (
     <div>
       <Navbar bg="dark" variant="dark">
@@ -94,13 +110,22 @@ const Header = () => {
               Writer registration
             </Button>
           )}
-          {!loggedIn && (
+          {loggedIn && role === "ROLE_ADMIN" && (
             <Button
               className="ml-2"
               variant="link"
               onClick={goToRegisterMerchant}
             >
               Register merchant
+            </Button>
+          )}
+          {loggedIn && role === "ROLE_WRITER" && (
+            <Button
+              className="ml-2"
+              variant="link"
+              onClick={startBookPublishing}
+            >
+              Publish a book
             </Button>
           )}
 

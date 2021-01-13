@@ -3,11 +3,10 @@ package team16.literaryassociation.services;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
-import team16.literaryassociation.dto.GenreDTO;
+import team16.literaryassociation.services.interfaces.GenreService;
+import team16.literaryassociation.services.interfaces.UserService;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;

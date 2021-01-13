@@ -6,4 +6,6 @@ import team16.literaryassociation.model.Writer;
 
 @Repository
 public interface WriterRepository extends JpaRepository<Writer, Long> {
+
+    Writer findByUsername(String username);
 }

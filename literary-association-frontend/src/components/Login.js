@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { authService } from "../services/auth-service";
 import { useHistory } from "react-router-dom";
+import Header from "./Header";
 
 const Login = () => {
   const formik = useFormik({
@@ -39,65 +40,68 @@ const Login = () => {
   const history = useHistory();
 
   return (
-    <div className="pt-5">
-      <div
-        className="card mr-auto ml-auto mt-5"
-        style={{
-          width: "30%",
-          backgroundColor: "#bdbbbb",
-        }}
-      >
-        <h2 className="card-title">Login</h2>
-        <form
-          onSubmit={formik.handleSubmit}
-          style={{ width: "90%", margin: "auto" }}
-        >
-          <div className="form-group">
-            <label htmlFor="username">Username:</label>
-            <input
-              className="form-control"
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Enter username"
-              onChange={formik.handleChange}
-              value={formik.values.username}
-            />
-            {formik.touched.username && formik.errors.username ? (
-              <p style={{ color: "red" }}>{formik.errors.username}</p>
-            ) : null}
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              className="form-control"
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Enter password"
-              onChange={formik.handleChange}
-              value={formik.values.password}
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <p style={{ color: "red" }}>{formik.errors.password}</p>
-            ) : null}
-          </div>
-          <button type="submit" className="btn btn-primary mb-1">
-            Submit
-          </button>
-        </form>
-      </div>
-      {showErrorMsg && (
+    <div>
+      <Header />
+      <div className="pt-5">
         <div
-          className="card mt-3 mr-auto ml-auto"
+          className="card mr-auto ml-auto mt-5"
           style={{
-            width: "40%",
-            backgroundColor: "#ff7e75",
+            width: "30%",
+            backgroundColor: "#bdbbbb",
           }}
         >
-          <h4>{errorMsg}</h4>
+          <h2 className="card-title">Login</h2>
+          <form
+            onSubmit={formik.handleSubmit}
+            style={{ width: "90%", margin: "auto" }}
+          >
+            <div className="form-group">
+              <label htmlFor="username">Username:</label>
+              <input
+                className="form-control"
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Enter username"
+                onChange={formik.handleChange}
+                value={formik.values.username}
+              />
+              {formik.touched.username && formik.errors.username ? (
+                <p style={{ color: "red" }}>{formik.errors.username}</p>
+              ) : null}
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password:</label>
+              <input
+                className="form-control"
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+              />
+              {formik.touched.password && formik.errors.password ? (
+                <p style={{ color: "red" }}>{formik.errors.password}</p>
+              ) : null}
+            </div>
+            <button type="submit" className="btn btn-primary mb-1">
+              Submit
+            </button>
+          </form>
         </div>
-      )}
+        {showErrorMsg && (
+          <div
+            className="card mt-3 mr-auto ml-auto"
+            style={{
+              width: "40%",
+              backgroundColor: "#ff7e75",
+            }}
+          >
+            <h4>{errorMsg}</h4>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
