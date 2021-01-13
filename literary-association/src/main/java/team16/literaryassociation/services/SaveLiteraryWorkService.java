@@ -40,7 +40,10 @@ public class SaveLiteraryWorkService implements JavaDelegate {
         {
             int i = 0;
             System.out.println("Pravi Literary Work");
-            LiteraryWork literaryWork = new LiteraryWork((String)dto.getFieldValue(), (String)execution.getVariable("pdfFileLocation"+i));
+            String title = (String)dto.getFieldValue();
+            String path = (String)execution.getVariable("pdfFileLocation"+i);
+            String url = (String)execution.getVariable("url"+i);
+            LiteraryWork literaryWork = new LiteraryWork(title, path, url);
             literaryWork.setMembershipApplication(membershipApplication);
             literaryWorkService.save(literaryWork);
             i++;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
@@ -8,6 +8,11 @@ import { writerService } from "../services/writer-service";
 import { toast } from "react-toastify";
 
 const Header = () => {
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem("token") !== "null" &&
+      localStorage.getItem("token") !== null
+  );
+  const [role, setRole] = useState(localStorage.getItem("role"));
   const history = useHistory();
 
   const startReaderRegistration = async () => {
@@ -43,7 +48,14 @@ const Header = () => {
       });
     }
   };
-
+  const logout = () => {
+    localStorage.setItem("token", null);
+    localStorage.setItem("role", null);
+    setLoggedIn(false);
+    toast.success("Logged Out Successfully", {
+      hideProgressBar: true,
+    });
+  };
   const goToHomePage = () => {
     history.push("/home");
   };
@@ -64,33 +76,47 @@ const Header = () => {
           <Button className="ml-2" variant="link" onClick={goToHomePage}>
             Home
           </Button>
-          <Button
-            className="ml-2"
-            variant="link"
-            onClick={startReaderRegistration}
-          >
-            Reader registration
-          </Button>
-          <Button
-            className="ml-2"
-            variant="link"
-            onClick={startWriterRegistration}
-          >
-            Writer registration
-          </Button>
-          <Button
-            className="ml-2"
-            variant="link"
-            onClick={goToRegisterMerchant}
-          >
-            Register merchant
-          </Button>
+          {!loggedIn && (
+            <Button
+              className="ml-2"
+              variant="link"
+              onClick={startReaderRegistration}
+            >
+              Reader registration
+            </Button>
+          )}
+          {!loggedIn && (
+            <Button
+              className="ml-2"
+              variant="link"
+              onClick={startWriterRegistration}
+            >
+              Writer registration
+            </Button>
+          )}
+          {!loggedIn && (
+            <Button
+              className="ml-2"
+              variant="link"
+              onClick={goToRegisterMerchant}
+            >
+              Register merchant
+            </Button>
+          )}
+
           <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
             Shopping cart
           </Button>
-          <Button className="ml-2" variant="link" onClick={goToLogin}>
-            Login
-          </Button>
+          {!loggedIn && (
+            <Button className="ml-2" variant="link" onClick={goToLogin}>
+              Login
+            </Button>
+          )}
+          {loggedIn && (
+            <Button className="ml-2" variant="link" onClick={logout}>
+              Logout
+            </Button>
+          )}
         </Nav>
       </Navbar>
     </div>

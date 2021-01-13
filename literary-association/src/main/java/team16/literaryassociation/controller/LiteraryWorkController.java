@@ -41,7 +41,7 @@ public class LiteraryWorkController {
                 return  new ResponseEntity<>("Failed to upload file", HttpStatus.EXPECTATION_FAILED);
             }
 
-            runtimeService.setVariable(processId, "pdf"+counter, fileDownloadUrl);
+            runtimeService.setVariable(processId, "url"+counter, fileDownloadUrl);
 
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             String path = "literary-work-dir/" + username + "/" + processId + "/" + fileName;

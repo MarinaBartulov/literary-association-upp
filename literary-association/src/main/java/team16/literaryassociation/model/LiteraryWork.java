@@ -20,14 +20,18 @@ public class LiteraryWork {
     private String title;
 
     @Column
-    private String pdf;
+    private String path;
+
+    @Column
+    private String downloadUrl;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private MembershipApplication membershipApplication;
 
-    public LiteraryWork(String title, String pdf)
+    public LiteraryWork(String title, String path, String downloadUrl)
     {
         this.title = title;
-        this.pdf = pdf;
+        this.path = path;
+        this.downloadUrl = downloadUrl;
     }
 }

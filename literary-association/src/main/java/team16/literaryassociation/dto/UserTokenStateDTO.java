@@ -13,4 +13,5 @@ public class UserTokenStateDTO {
 
     private String accessToken;
     private int expiresIn;
+    private String role;
 }

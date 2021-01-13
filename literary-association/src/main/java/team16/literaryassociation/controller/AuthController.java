@@ -48,7 +48,8 @@ public class AuthController {
         User user = (User) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
+        String role = user.getRoles().iterator().next().getName();
         identityService.setAuthenticatedUserId(authenticationRequest.getUsername());
-        return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
+        return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn, role));
     }
 }
