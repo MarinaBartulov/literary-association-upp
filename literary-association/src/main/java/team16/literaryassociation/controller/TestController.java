@@ -2,11 +2,10 @@ package team16.literaryassociation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import team16.literaryassociation.dto.PaymentRequestDTO;
 import team16.literaryassociation.dto.SubscriptionRequestDTO;
-import team16.literaryassociation.services.TestService;
+import team16.literaryassociation.services.impl.TestService;
 
 @RestController
 @RequestMapping(value = "/api/test")

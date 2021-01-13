@@ -125,7 +125,7 @@ const GenericForm = (props) => {
           const { id, label, typeName, properties } = formField;
           return (
             <>
-              {typeName === "string" && (
+              {typeName === "string" && properties.text_area === undefined && (
                 <Form.Group key={id} controlId={id}>
                   <Form.Label>{label}:</Form.Label>
                   <Form.Control
@@ -165,6 +165,23 @@ const GenericForm = (props) => {
                           ).configuration
                         : undefined
                     }
+                  />
+                </Form.Group>
+              )}
+              {typeName === "string" && properties.text_area !== undefined && (
+                <Form.Group key={id} controlId={id}>
+                  <Form.Label>{label}</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    onChange={handleChange}
+                    placeholder={"Enter " + label}
+                    required={formField.validationConstraints.some(
+                      (c) => c.name === "required"
+                    )}
+                    readOnly={formField.validationConstraints.some(
+                      (c) => c.name === "readonly"
+                    )}
+                    rows={3}
                   />
                 </Form.Group>
               )}

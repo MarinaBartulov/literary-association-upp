@@ -4,16 +4,15 @@ import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.camunda.bpm.engine.history.HistoricTaskInstance;
-import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.model.User;
 import team16.literaryassociation.model.Writer;
+import team16.literaryassociation.services.impl.EmailService;
+import team16.literaryassociation.services.interfaces.UserService;
+import team16.literaryassociation.services.interfaces.VerificationTokenService;
 
-import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,11 +25,6 @@ public class SendEmailService implements JavaDelegate {
     private UserService userService;
     @Autowired
     private VerificationTokenService verificationTokenService;
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private HistoryService historyService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {

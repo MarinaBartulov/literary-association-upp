@@ -11,6 +11,9 @@ import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.model.Genre;
 import team16.literaryassociation.model.Role;
 import team16.literaryassociation.model.Writer;
+import team16.literaryassociation.services.interfaces.GenreService;
+import team16.literaryassociation.services.interfaces.RoleService;
+import team16.literaryassociation.services.interfaces.WriterService;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,4 +1,4 @@
-package team16.literaryassociation.services;
+package team16.literaryassociation.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,8 +8,8 @@ import org.springframework.web.client.RestTemplate;
 import team16.literaryassociation.dto.*;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.repository.MerchantRepository;
+import team16.literaryassociation.services.interfaces.MerchantService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

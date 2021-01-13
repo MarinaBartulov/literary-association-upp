@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import team16.literaryassociation.security.TokenUtils;
 import team16.literaryassociation.security.auth.JwtAuthenticationFilter;
 import team16.literaryassociation.security.auth.RestAuthenticationEntryPoint;
-import team16.literaryassociation.services.CustomUserDetailsService;
+import team16.literaryassociation.services.impl.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
