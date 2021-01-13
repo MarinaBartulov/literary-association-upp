@@ -3,7 +3,6 @@ import "./App.css";
 import ErrorTransaction from "./components/ErrorTransaction";
 import FailedTransaction from "./components/FailedTransaction";
 import Footer from "./components/Footer";
-import Header from "./components/Header";
 import Home from "./components/Home";
 import RegistrationConfirmation from "./components/RegistrationConfirmation";
 import WriterRegistrationConfirmation from "./components/WriterRegisterConfirmation";
@@ -22,7 +21,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
         <div className="mainDiv">
           <ToastContainer
             position="top-right"

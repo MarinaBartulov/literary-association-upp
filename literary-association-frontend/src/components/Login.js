@@ -22,6 +22,7 @@ const Login = () => {
         const response = await authService.login(values);
         console.log(response);
         localStorage.setItem("token", response.accessToken);
+        localStorage.setItem("role", response.role);
         history.push("/home");
       } catch (error) {
         if (error.response) {
