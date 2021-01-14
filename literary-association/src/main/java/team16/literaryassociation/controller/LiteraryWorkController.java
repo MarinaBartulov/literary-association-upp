@@ -2,12 +2,15 @@ package team16.literaryassociation.controller;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import team16.literaryassociation.services.LiteraryWorkService;
+import team16.literaryassociation.services.interfaces.LiteraryWorkService;
 
 @RestController
 @RequestMapping(value = "/api/literaryWork")
@@ -26,7 +29,7 @@ public class LiteraryWorkController {
         System.out.println("**********************************************************");
         System.out.println("Usao u upload fajla");
         System.out.println("ProcessID" + processId);
-
+        System.out.println("Counter: " + counter);
         String username = (String) runtimeService.getVariable(processId,"currentUser");
         System.out.println("Username: " + username);
 
@@ -34,7 +37,6 @@ public class LiteraryWorkController {
         {
             String fileDownloadUrl = "";
             try {
-                System.out.println("Upload " + counter + ". fajla");
                 fileDownloadUrl = literaryWorkService.store(file, processId, username);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -53,4 +55,11 @@ public class LiteraryWorkController {
 
     }
 
+    @GetMapping("/download/{username}/{processId}/{fileName:.+}")
+    public ResponseEntity<?> downloadFileFromLocal(@PathVariable String username, @PathVariable String processId, @PathVariable String fileName) {
+        Resource resource = this.literaryWorkService.downloadFile(processId,username, fileName);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
 }

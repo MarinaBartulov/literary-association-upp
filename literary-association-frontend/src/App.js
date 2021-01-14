@@ -11,11 +11,14 @@ import RegistrationReader from "./components/RegistrationReader";
 import SuccessfulTransaction from "./components/SuccessfulTransaction";
 import PayTest from "./components/PayTest";
 import Login from "./components/Login";
+import BoardMemberPanel from "./components/BoardMemberPanel";
 
 import { ToastContainer } from "react-toastify";
 import RegistrationWriter from "./components/RegistrationWriter";
 import RegistrationMerchant from "./components/RegistrationMerchant";
 import ShoppingCart from "./components/ShoppingCart";
+import MembershipApplication from "./components/MembershipApplication";
+import GiveOpinion from "./components/GiveOpinion";
 import NewBook from "./components/NewBook";
 
 function App() {
@@ -82,6 +85,15 @@ function App() {
             </Route>
             <Route exact path="/newBook/:processId/:taskId">
               <NewBook />
+            </Route>
+            <Route exact path="/boardMember">
+              <BoardMemberPanel />
+            </Route>
+            <Route exact path="/membershipApplication/:id/:processId">
+              <MembershipApplication />
+            </Route>
+            <Route exact path="/giveOpinion/:processId/:taskId">
+              <GiveOpinion />
             </Route>
           </Switch>
         </div>

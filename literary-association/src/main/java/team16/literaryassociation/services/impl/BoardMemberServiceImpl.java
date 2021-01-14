@@ -6,7 +6,7 @@ import team16.literaryassociation.dto.BoardMemberDTO;
 import team16.literaryassociation.mapper.BoardMemberMapper;
 import team16.literaryassociation.model.BoardMember;
 import team16.literaryassociation.repository.BoardMemberRepository;
-import team16.literaryassociation.services.BoardMemberService;
+import team16.literaryassociation.services.interfaces.BoardMemberService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,12 +22,19 @@ public class BoardMemberServiceImpl implements BoardMemberService {
 
 
     @Override
-    public List<BoardMemberDTO> getAllBoardMembers() {
-        return this.boardMemberRepository.findAll().stream().map( bm -> boardMemberMapper.toDto(bm)).collect(Collectors.toList());
+    public List<BoardMemberDTO> getAllBoardMembersDTO() {
+        return boardMemberRepository.findAll().stream().map( bm -> boardMemberMapper.toDto(bm)).collect(Collectors.toList());
     }
 
     @Override
     public List<BoardMember> findAll() {
         return boardMemberRepository.findAll();
     }
+
+    @Override
+    public BoardMember getOne(Long id) {
+        return boardMemberRepository.getOne(id);
+    }
+
+
 }

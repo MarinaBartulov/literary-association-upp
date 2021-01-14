@@ -19,6 +19,9 @@ public class Comment {
     @Column
     private String content;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private MembershipApplication membershipApplication;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private BoardMember boardMember;
 }
