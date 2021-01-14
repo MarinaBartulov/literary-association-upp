@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.BoardMemberDTO;
+import team16.literaryassociation.services.interfaces.BoardMemberService;
 
 import java.util.List;
 

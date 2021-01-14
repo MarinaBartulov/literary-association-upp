@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import team16.literaryassociation.model.LiteraryWork;
 import team16.literaryassociation.repository.LiteraryWorkRepository;
-import team16.literaryassociation.services.LiteraryWorkService;
+import team16.literaryassociation.services.interfaces.LiteraryWorkService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

@@ -8,8 +8,8 @@ import team16.literaryassociation.mapper.MembershipApplicationMapper;
 import team16.literaryassociation.model.LiteraryWork;
 import team16.literaryassociation.model.MembershipApplication;
 import team16.literaryassociation.repository.MembershipApplicationRepository;
-import team16.literaryassociation.services.LiteraryWorkService;
-import team16.literaryassociation.services.MembershipApplicationService;
+import team16.literaryassociation.services.interfaces.LiteraryWorkService;
+import team16.literaryassociation.services.interfaces.MembershipApplicationService;
 
 import java.util.List;
 import java.util.stream.Collectors;

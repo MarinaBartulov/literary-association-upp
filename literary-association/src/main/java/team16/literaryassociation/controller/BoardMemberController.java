@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team16.literaryassociation.dto.MembershipApplicationDTO;;
 import team16.literaryassociation.dto.MembershipApplicationInfoDTO;
-import team16.literaryassociation.services.MembershipApplicationService;
+import team16.literaryassociation.services.interfaces.MembershipApplicationService;
 
 import java.util.List;
 

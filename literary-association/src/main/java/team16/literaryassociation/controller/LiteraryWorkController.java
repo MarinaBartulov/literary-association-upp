@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import team16.literaryassociation.services.LiteraryWorkService;
+import team16.literaryassociation.services.interfaces.LiteraryWorkService;
 
 @RestController
 @RequestMapping(value = "/api/literaryWork")

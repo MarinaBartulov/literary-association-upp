@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.model.Comment;
 import team16.literaryassociation.repository.CommentRepository;
-import team16.literaryassociation.services.CommentService;
+import team16.literaryassociation.services.interfaces.CommentService;
 
 @Service
 public class CommentServiceImpl implements CommentService {

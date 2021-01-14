@@ -1,4 +1,4 @@
-package team16.literaryassociation.services;
+package team16.literaryassociation.services.interfaces;
 
 import org.springframework.web.multipart.MultipartFile;
 import team16.literaryassociation.model.LiteraryWork;

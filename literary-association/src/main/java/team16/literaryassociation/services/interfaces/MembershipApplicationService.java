@@ -1,4 +1,4 @@
-package team16.literaryassociation.services;
+package team16.literaryassociation.services.interfaces;
 
 import team16.literaryassociation.dto.MembershipApplicationDTO;
 import team16.literaryassociation.dto.MembershipApplicationInfoDTO;

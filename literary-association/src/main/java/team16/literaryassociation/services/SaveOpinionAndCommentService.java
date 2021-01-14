@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.enums.Opinion;
 import team16.literaryassociation.model.*;
+import team16.literaryassociation.services.interfaces.BoardOpinionService;
+import team16.literaryassociation.services.interfaces.CommentService;
+import team16.literaryassociation.services.interfaces.MembershipApplicationService;
 
 import java.util.HashMap;
 import java.util.List;

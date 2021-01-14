@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.model.LiteraryWork;
 import team16.literaryassociation.model.MembershipApplication;
+import team16.literaryassociation.services.interfaces.LiteraryWorkService;
+import team16.literaryassociation.services.interfaces.MembershipApplicationService;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import team16.literaryassociation.dto.BoardMemberDTO;
 import team16.literaryassociation.mapper.BoardMemberMapper;
 import team16.literaryassociation.model.BoardMember;
 import team16.literaryassociation.repository.BoardMemberRepository;
-import team16.literaryassociation.services.BoardMemberService;
+import team16.literaryassociation.services.interfaces.BoardMemberService;
 
 import java.util.List;
 import java.util.stream.Collectors;
