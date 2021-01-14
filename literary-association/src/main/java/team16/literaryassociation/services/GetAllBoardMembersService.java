@@ -21,7 +21,7 @@ public class GetAllBoardMembersService  implements JavaDelegate {
         List<BoardMemberDTO> boardMembersDTO = boardMemberService.getAllBoardMembersDTO();
 
         execution.setVariable("boardMembers", boardMembersDTO);
-        execution.setVariable("cycles", 0);
+        execution.setVariable("cycleNumber", 0);
     }
 
 }

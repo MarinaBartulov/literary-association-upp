@@ -11,6 +11,7 @@ import team16.literaryassociation.model.*;
 import team16.literaryassociation.services.interfaces.BoardOpinionService;
 import team16.literaryassociation.services.interfaces.CommentService;
 import team16.literaryassociation.services.interfaces.MembershipApplicationService;
+import team16.literaryassociation.services.interfaces.UserService;
 
 import java.util.HashMap;
 import java.util.List;
