@@ -3,8 +3,6 @@ export const ROUTES = {
   SUBSCRIBE: "/test/subscribe",
   READER_START_REG: "/reader/start-process-register",
   READER_ACTIVATION: "/reader/activateAccount",
-  //READER_REG_FORM: "/reader/get-form-fields",
-  //READER_REGISTER: "/reader/register",
   GENRES: "/genre",
   TASK_FORM_FIELDS: "/task/get-form-fields",
   TASK_SUBMIT_FORM: "/task/submit-form",
@@ -19,4 +17,5 @@ export const ROUTES = {
   LITERARY_WORK_UPLOAD: "/literaryWork/upload",
   GET_MEMBERSHIP_APPLICATIONS: "/boardMember/membershipApplications",
   GET_MEMBERSHIP_APPLICATION: "/boardMember/membershipApplication",
+  BOOK_REQUEST_START_PUBLISHING: "/bookRequest/start-process-book-publishing",
 };

@@ -5,15 +5,16 @@ import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.model.Genre;
 import team16.literaryassociation.model.Reader;
 import team16.literaryassociation.model.Role;
+import team16.literaryassociation.services.interfaces.GenreService;
+import team16.literaryassociation.services.interfaces.ReaderService;
+import team16.literaryassociation.services.interfaces.RoleService;
 
-import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

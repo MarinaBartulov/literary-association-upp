@@ -1,10 +1,11 @@
-package team16.literaryassociation.services;
+package team16.literaryassociation.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.model.User;
 import team16.literaryassociation.model.VerificationToken;
 import team16.literaryassociation.repository.VerificationTokenRepository;
+import team16.literaryassociation.services.interfaces.VerificationTokenService;
 
 @Service
 public class VerificationTokenServiceImpl implements VerificationTokenService {

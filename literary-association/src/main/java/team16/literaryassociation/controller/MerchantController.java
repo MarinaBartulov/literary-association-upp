@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import team16.literaryassociation.dto.MerchantActivationDTO;
 import team16.literaryassociation.dto.MerchantDTO;
 import team16.literaryassociation.model.Merchant;
-import team16.literaryassociation.services.MerchantService;
+import team16.literaryassociation.services.interfaces.MerchantService;
 
 import javax.validation.Valid;
 

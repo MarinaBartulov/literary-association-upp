@@ -26,7 +26,7 @@ public class GetAllGenresListener implements TaskListener {
         List<FormField> formFields = taskFormData.getFormFields();
         if(formFields != null){
             for(FormField f: formFields){
-                if(f.getId().equals("genres") || f.getId().equals("betaGenres")){
+                if(f.getId().equals("genres") || f.getId().equals("betaGenres") || f.getId().equals("genre")){
                     HashMap<String, String> items = (HashMap<String, String>) f.getType().getInformation("values");
                     items.clear();
                     for(Genre g: allGenres){

@@ -1,8 +1,6 @@
 package team16.literaryassociation.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,6 +11,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class Writer extends User {
 
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -26,4 +26,7 @@ public class Writer extends User {
             joinColumns = @JoinColumn(name = "writer_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private Set<Genre> genres = new HashSet<>();
+
+    @OneToMany(mappedBy = "writer")
+    private Set<BookRequest> bookRequests = new HashSet<>();
 }

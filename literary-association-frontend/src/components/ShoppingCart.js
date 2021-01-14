@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 
 import { toast } from "react-toastify";
 import { Table } from "react-bootstrap";
+import Header from "./Header";
 
 const ShoppingCart = () => {
   const [merchants, setMerchants] = useState([]);
@@ -49,6 +50,7 @@ const ShoppingCart = () => {
 
   return (
     <div>
+      <Header />
       <h2>Shopping cart</h2>
       <div
         style={{ width: "40%", backgroundColor: "#bdbbbb" }}

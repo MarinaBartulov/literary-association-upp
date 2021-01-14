@@ -19,6 +19,7 @@ import RegistrationMerchant from "./components/RegistrationMerchant";
 import ShoppingCart from "./components/ShoppingCart";
 import MembershipApplication from "./components/MembershipApplication";
 import GiveOpinion from "./components/GiveOpinion";
+import NewBook from "./components/NewBook";
 
 function App() {
   return (
@@ -81,6 +82,9 @@ function App() {
             </Route>
             <Route exact path="/shoppingCart">
               <ShoppingCart />
+            </Route>
+            <Route exact path="/newBook/:processId/:taskId">
+              <NewBook />
             </Route>
             <Route exact path="/boardMember">
               <BoardMemberPanel />
