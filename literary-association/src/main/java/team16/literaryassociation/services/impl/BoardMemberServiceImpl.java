@@ -22,12 +22,19 @@ public class BoardMemberServiceImpl implements BoardMemberService {
 
 
     @Override
-    public List<BoardMemberDTO> getAllBoardMembers() {
-        return this.boardMemberRepository.findAll().stream().map( bm -> boardMemberMapper.toDto(bm)).collect(Collectors.toList());
+    public List<BoardMemberDTO> getAllBoardMembersDTO() {
+        return boardMemberRepository.findAll().stream().map( bm -> boardMemberMapper.toDto(bm)).collect(Collectors.toList());
     }
 
     @Override
     public List<BoardMember> findAll() {
         return boardMemberRepository.findAll();
     }
+
+    @Override
+    public BoardMember getOne(Long id) {
+        return boardMemberRepository.getOne(id);
+    }
+
+
 }

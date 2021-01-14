@@ -17,13 +17,10 @@ public class GetAllBoardMembersService  implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         System.out.println("Usao u GetAllBoardMembers Service");
-        List<BoardMemberDTO> boardMembersDTO = boardMemberService.getAllBoardMembers();
-
-        System.out.println("Velicina boardMembersDTO niza: " + boardMembersDTO.size());
+        List<BoardMemberDTO> boardMembersDTO = boardMemberService.getAllBoardMembersDTO();
 
         execution.setVariable("boardMembers", boardMembersDTO);
         execution.setVariable("cycles", 0);
-        System.out.println("U get all board members: " + execution.getVariable("boardMembers"));
     }
 
 }

@@ -22,8 +22,8 @@ public class CreateMembershipApplicationService implements JavaDelegate {
         Long userId = (Long) execution.getVariable("user_id");
         Writer writer = (Writer)userService.getOne(userId);
 
-        MembershipApplication membershipApplication = membershipApplicationService.save(new MembershipApplication(writer));
+        String processId = execution.getProcessInstanceId();
+        MembershipApplication membershipApplication = membershipApplicationService.save(new MembershipApplication(writer, processId));
         execution.setVariable("membership_application_id", membershipApplication.getId());
-        System.out.println("Postavljena varijabla membership application ID " + membershipApplication.getId());
     }
 }

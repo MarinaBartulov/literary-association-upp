@@ -169,8 +169,11 @@
             <camunda:formField id="opinion" label="Opinion" type="enum" />
             <camunda:formField id="comment" label="Comment" type="string">
               <camunda:properties>
-                <camunda:property id="textArea" value="textArea" />
+                <camunda:property id="text_area" value="textArea" />
               </camunda:properties>
+              <camunda:validation>
+                <camunda:constraint name="required" />
+              </camunda:validation>
             </camunda:formField>
           </camunda:formData>
           <camunda:taskListener delegateExpression="${getAllOpinionsListener}" event="create" />

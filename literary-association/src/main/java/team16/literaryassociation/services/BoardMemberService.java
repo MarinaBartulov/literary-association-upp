@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface BoardMemberService {
 
-    List<BoardMemberDTO> getAllBoardMembers();
+    List<BoardMemberDTO> getAllBoardMembersDTO();
     List<BoardMember> findAll();
+    BoardMember getOne(Long id);
 }

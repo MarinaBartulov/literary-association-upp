@@ -23,4 +23,7 @@ public class BoardOpinion {
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private MembershipApplication membershipApplication;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private BoardMember boardMember;
 }

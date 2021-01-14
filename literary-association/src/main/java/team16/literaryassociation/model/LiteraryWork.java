@@ -25,7 +25,7 @@ public class LiteraryWork {
     @Column
     private String downloadUrl;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MembershipApplication membershipApplication;
 
     public LiteraryWork(String title, String path, String downloadUrl)

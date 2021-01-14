@@ -1,6 +1,8 @@
 package team16.literaryassociation.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,9 +12,12 @@ import team16.literaryassociation.repository.LiteraryWorkRepository;
 import team16.literaryassociation.services.LiteraryWorkService;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Service
 public class LiteraryWorkServiceImpl implements LiteraryWorkService {
@@ -23,6 +28,11 @@ public class LiteraryWorkServiceImpl implements LiteraryWorkService {
     @Override
     public LiteraryWork save(LiteraryWork literaryWork) {
         return literaryWorkRepository.save(literaryWork);
+    }
+
+    @Override
+    public List<LiteraryWork> findAllWithMembershipApplicationId(Long id) {
+        return literaryWorkRepository.findAllWithMembershipApplicationId(id);
     }
 
     @Override
@@ -60,10 +70,24 @@ public class LiteraryWorkServiceImpl implements LiteraryWorkService {
             throw new RuntimeException("FAIL!");
         }
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/literaryWork/download/")
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/literaryWork/download/")
                 .path(username + "/" + processId+"/"+fileName).toUriString();
         System.out.println("U store servisu - download URL:");
         System.out.println(fileDownloadUri);
         return fileDownloadUri;
     }
+
+    @Override
+    public Resource downloadFile(String processId, String username, String fileName) {
+        Path path = Paths.get("literary-works-dir/"+ username + "/" + processId + "/" + fileName);
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return resource;
+    }
+
+
 }

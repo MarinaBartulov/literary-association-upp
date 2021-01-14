@@ -247,7 +247,7 @@ const GenericForm = (props) => {
         })}
 
         <Button
-          variant="primary"
+          variant="dark"
           type="submit"
           style={{ marginBottom: "1em", marginTop: "1em" }}
         >
