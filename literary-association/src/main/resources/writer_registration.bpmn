@@ -169,8 +169,11 @@
             <camunda:formField id="opinion" label="Opinion" type="enum" />
             <camunda:formField id="comment" label="Comment" type="string">
               <camunda:properties>
-                <camunda:property id="textArea" value="textArea" />
+                <camunda:property id="text_area" value="textArea" />
               </camunda:properties>
+              <camunda:validation>
+                <camunda:constraint name="required" />
+              </camunda:validation>
             </camunda:formField>
           </camunda:formData>
           <camunda:taskListener delegateExpression="${getAllOpinionsListener}" event="create" />
@@ -198,19 +201,19 @@
     <bpmn:boundaryEvent id="Event_0c7wxil" name="More  than a half board members gave negative opinion " attachedToRef="SubProcess_Give_Opinion">
       <bpmn:outgoing>Flow_1a5l4wb</bpmn:outgoing>
       <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_00a7wpd">
-        <bpmn:condition xsi:type="bpmn:tFormalExpression">${negativeOpinionCounter &gt;= 1}</bpmn:condition>
+        <bpmn:condition xsi:type="bpmn:tFormalExpression">${negativeOpinionCounter &gt; 1}</bpmn:condition>
       </bpmn:conditionalEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:endEvent id="Event_1lj6s61">
       <bpmn:incoming>Flow_0ag492a</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1a5l4wb" sourceRef="Event_0c7wxil" targetRef="Task_Send_Email_" />
-    <bpmn:serviceTask id="Task_Send_Email_2" name="Send Email" camunda:class="team16.literaryassociation.services.SendEmailService">
+    <bpmn:sequenceFlow id="Flow_1a5l4wb" sourceRef="Event_0c7wxil" targetRef="Task_Send_Email_Rejected" />
+    <bpmn:serviceTask id="Task_Send_Email_More_Material" name="Send Email" camunda:class="team16.literaryassociation.services.GenericSendEmailService">
       <bpmn:incoming>Flow_1w9m305</bpmn:incoming>
       <bpmn:outgoing>Flow_0zli1en</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0ag492a" sourceRef="Task_Send_Email_" targetRef="Event_1lj6s61" />
-    <bpmn:serviceTask id="Task_Send_Email_" name="Send Email" camunda:class="team16.literaryassociation.services.SendEmailService">
+    <bpmn:sequenceFlow id="Flow_0ag492a" sourceRef="Task_Send_Email_Rejected" targetRef="Event_1lj6s61" />
+    <bpmn:serviceTask id="Task_Send_Email_Rejected" name="Send Email" camunda:class="team16.literaryassociation.services.SendRejectedEmailToWriterService">
       <bpmn:incoming>Flow_1a5l4wb</bpmn:incoming>
       <bpmn:outgoing>Flow_0ag492a</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -220,7 +223,7 @@
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1khepp4" sourceRef="Activity_0iqe219" targetRef="Task_Upload_LiteraryWork" />
     <bpmn:sequenceFlow id="Flow_0gihwfh" sourceRef="Gateway_1j3g259" targetRef="Activity_08yi0iw" />
-    <bpmn:sequenceFlow id="Flow_0zli1en" sourceRef="Task_Send_Email_2" targetRef="Task_Upload_More_LiteraryWork" />
+    <bpmn:sequenceFlow id="Flow_0zli1en" sourceRef="Task_Send_Email_More_Material" targetRef="Task_Upload_More_LiteraryWork" />
     <bpmn:inclusiveGateway id="Gateway_1j3g259">
       <bpmn:incoming>Flow_055c655</bpmn:incoming>
       <bpmn:incoming>Flow_0n0mygy</bpmn:incoming>
@@ -243,8 +246,8 @@
       <bpmn:outgoing>Flow_12pheq1</bpmn:outgoing>
       <bpmn:outgoing>Flow_02vykmk</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_12pheq1" name="Appplication approved" sourceRef="Gateway_0ei4kay" targetRef="Task_Send_Email_5">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${moreMaterialNeededCounter == 0}</bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="Flow_12pheq1" name="Appplication approved" sourceRef="Gateway_0ei4kay" targetRef="Task_Send_Email_Approved">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${moreMaterialNeeded == 0}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_08yi0iw" name="Save Literary Work" camunda:class="team16.literaryassociation.services.SaveLiteraryWorkService">
       <bpmn:incoming>Flow_0gihwfh</bpmn:incoming>
@@ -252,7 +255,7 @@
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0w7b1h3" sourceRef="Activity_08yi0iw" targetRef="SubProcess_Give_Opinion" />
     <bpmn:sequenceFlow id="Flow_02vykmk" name="More material needed" sourceRef="Gateway_0ei4kay" targetRef="Task_Increment_Cycle">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${moreMaterialNeededCounter &gt; 0}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${moreMaterialNeeded &gt; 0}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0q2mil9" sourceRef="Event_1i3q84o" targetRef="Task_Send_Email_3" />
     <bpmn:serviceTask id="Task_Send_Email_3" name="Send Email" camunda:class="team16.literaryassociation.services.SendEmailService">
@@ -273,22 +276,22 @@
       <bpmn:outgoing>Flow_1w9m305</bpmn:outgoing>
       <bpmn:outgoing>Flow_1e7h9cj</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1w9m305" name="New cycle" sourceRef="Gateway_1phqlf9" targetRef="Task_Send_Email_2">
+    <bpmn:sequenceFlow id="Flow_1w9m305" name="New cycle" sourceRef="Gateway_1phqlf9" targetRef="Task_Send_Email_More_Material">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${cycleNumber &lt;= 3}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0fofxeu">
       <bpmn:incoming>Flow_07lpv7h</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1e7h9cj" name="End process" sourceRef="Gateway_1phqlf9" targetRef="Task_Send_Email_4">
+    <bpmn:sequenceFlow id="Flow_1e7h9cj" name="End process" sourceRef="Gateway_1phqlf9" targetRef="Task_Send_Email_Rejected_2">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${cycleNumber &gt; 3}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_07lpv7h" sourceRef="Task_Send_Email_4" targetRef="Event_0fofxeu" />
-    <bpmn:serviceTask id="Task_Send_Email_4" name="Send Email" camunda:class="team16.literaryassociation.services.SendEmailService">
+    <bpmn:sequenceFlow id="Flow_07lpv7h" sourceRef="Task_Send_Email_Rejected_2" targetRef="Event_0fofxeu" />
+    <bpmn:serviceTask id="Task_Send_Email_Rejected_2" name="Send Email" camunda:class="team16.literaryassociation.services.SendRejectedEmailToWriterService">
       <bpmn:incoming>Flow_1e7h9cj</bpmn:incoming>
       <bpmn:outgoing>Flow_07lpv7h</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1hxafy6" sourceRef="Task_Send_Email_5" targetRef="Task_MembershipApplication_Approval" />
-    <bpmn:serviceTask id="Task_Send_Email_5" name="Send Email" camunda:class="team16.literaryassociation.services.SendEmailService">
+    <bpmn:sequenceFlow id="Flow_1hxafy6" sourceRef="Task_Send_Email_Approved" targetRef="Task_MembershipApplication_Approval" />
+    <bpmn:serviceTask id="Task_Send_Email_Approved" name="Send Email" camunda:class="team16.literaryassociation.services.SendApprovedEmailToWriterService">
       <bpmn:incoming>Flow_12pheq1</bpmn:incoming>
       <bpmn:outgoing>Flow_1hxafy6</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -569,10 +572,10 @@
       <bpmndi:BPMNShape id="Event_1lj6s61_di" bpmnElement="Event_1lj6s61">
         <dc:Bounds x="2522" y="642" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06f2if9_di" bpmnElement="Task_Send_Email_2">
+      <bpmndi:BPMNShape id="Activity_06f2if9_di" bpmnElement="Task_Send_Email_More_Material">
         <dc:Bounds x="2230" y="760" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1m1uy66_di" bpmnElement="Task_Send_Email_">
+      <bpmndi:BPMNShape id="Activity_1m1uy66_di" bpmnElement="Task_Send_Email_Rejected">
         <dc:Bounds x="2340" y="620" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0iqe219_di" bpmnElement="Activity_0iqe219">
@@ -605,10 +608,10 @@
       <bpmndi:BPMNShape id="Event_0fofxeu_di" bpmnElement="Event_0fofxeu">
         <dc:Bounds x="3002" y="702" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0zel6kg_di" bpmnElement="Task_Send_Email_4">
+      <bpmndi:BPMNShape id="Activity_0zel6kg_di" bpmnElement="Task_Send_Email_Rejected_2">
         <dc:Bounds x="2860" y="680" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_05bsp1l_di" bpmnElement="Task_Send_Email_5">
+      <bpmndi:BPMNShape id="Activity_05bsp1l_di" bpmnElement="Task_Send_Email_Approved">
         <dc:Bounds x="2890" y="360" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_15g8kpr_di" bpmnElement="Task_MembershipFee_Payment">

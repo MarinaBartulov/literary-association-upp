@@ -52,6 +52,7 @@ const Header = () => {
   const logout = () => {
     localStorage.setItem("token", null);
     localStorage.setItem("role", null);
+    history.push("/home");
     setLoggedIn(false);
     toast.success("Logged Out Successfully", {
       hideProgressBar: true,
@@ -69,6 +70,10 @@ const Header = () => {
   };
   const goToShoppingCart = () => {
     history.push("/shoppingCart");
+  };
+
+  const goToBoardMemberPanel = () => {
+    history.push("/boardMember");
   };
 
   const startBookPublishing = async () => {
@@ -146,6 +151,15 @@ const Header = () => {
           {!loggedIn && (
             <Button className="ml-2" variant="link" onClick={goToLogin}>
               Login
+            </Button>
+          )}
+          {loggedIn && role === "ROLE_BOARD_MEMBER" && (
+            <Button
+              className="ml-2"
+              variant="link"
+              onClick={goToBoardMemberPanel}
+            >
+              Board Member
             </Button>
           )}
           {loggedIn && (

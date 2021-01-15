@@ -19,8 +19,11 @@ public class MembershipApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(nullable=false)
+    @Column
     private boolean approved;
+
+    @Column(nullable=false)
+    private boolean active;
 
     @Column(nullable=false)
     private Integer moreMaterialRequested;
@@ -37,7 +40,10 @@ public class MembershipApplication {
     @Column
     private LocalDateTime paymentDate;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column
+    private String processId;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "writer_id", referencedColumnName = "id")
     private Writer writer;
 
@@ -50,9 +56,10 @@ public class MembershipApplication {
     @OneToMany(mappedBy = "membershipApplication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<LiteraryWork> literaryWorks = new HashSet<>();
 
-    public MembershipApplication(Writer writer){
-        this.approved = false;
+    public MembershipApplication(Writer writer, String processId){
+        this.active = true;
         this.moreMaterialRequested = 0;
+        this.processId = processId;
         //deadline
         //price
         this.paid = false;

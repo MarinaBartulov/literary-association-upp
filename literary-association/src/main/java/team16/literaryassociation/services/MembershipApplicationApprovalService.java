@@ -9,6 +9,6 @@ public class MembershipApplicationApprovalService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-
+        System.out.println("Uslo u MembershipApplicationApprovalService");
     }
 }

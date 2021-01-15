@@ -45,6 +45,11 @@ class TaskService extends HttpService {
       ROUTES.TASK + "/taskId/" + processId
     );
     console.log(response.data);
+  };
+
+  getAssigneesTaskId = async (processId) => {
+    const response = await this.client.get(ROUTES.TASK_ID + "/" + processId);
+    console.log("Odgovor iz get assignees task id");
     return response.data;
   };
 }

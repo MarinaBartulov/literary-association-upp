@@ -187,7 +187,7 @@ const TaskForm = () => {
               )}
               {typeName === "string" && properties.text_area !== undefined && (
                 <Form.Group key={id} controlId={id}>
-                  <Form.Label>{label}</Form.Label>
+                  <Form.Label>{label}:</Form.Label>
                   <Form.Control
                     as="textarea"
                     onChange={handleChange}

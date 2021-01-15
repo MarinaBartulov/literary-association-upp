@@ -20,7 +20,7 @@ public class BookRequest {
     private String title;
     private String synopsis;
     private boolean accepted;
-    private String rejectExplanation;
+    private String reasonForRejection;
     @ManyToOne
     private Genre genre;
     @ManyToOne

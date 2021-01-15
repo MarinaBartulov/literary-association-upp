@@ -18,7 +18,7 @@ public class Writer extends User {
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private VerificationToken token;
 
-    @OneToOne(mappedBy = "writer", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "writer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MembershipApplication membershipApplication;
 
     @ManyToMany(fetch = FetchType.EAGER)

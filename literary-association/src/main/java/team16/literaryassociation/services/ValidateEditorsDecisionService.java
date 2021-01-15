@@ -22,8 +22,8 @@ public class ValidateEditorsDecisionService implements JavaDelegate {
 
         boolean accept = (boolean )map.get("accept");
         if(!accept) {
-            String explanation = (String) map.get("explanation");
-            if (explanation.trim().equals("")) {
+            String reasonForRejection = (String) map.get("reasonForRejection");
+            if (reasonForRejection.trim().equals("")) {
                 decisionIsValid = false;
                 execution.setVariable("globalError", true);
             }

@@ -19,12 +19,12 @@ public class SaveEditorsDecisionService implements JavaDelegate {
         System.out.println("Uslo u save editor's decision service");
 
         boolean accept = (boolean) execution.getVariable("accept");
-        String explanation = (String) execution.getVariable("explanation");
+        String reasonForRejection = (String) execution.getVariable("reasonForRejection");
         Long bookRequestId = (Long) execution.getVariable("bookRequestId");
         BookRequest br = this.bookRequestService.findById(bookRequestId);
         br.setAccepted(accept);
         if(!accept){
-            br.setRejectExplanation(explanation);
+            br.setReasonForRejection(reasonForRejection);
         }
         this.bookRequestService.save(br);
 
@@ -39,7 +39,7 @@ public class SaveEditorsDecisionService implements JavaDelegate {
         }else{
             System.out.println("Salje se mejl da je odbio");
             subject = "Book request rejected.";
-            text = "Hello " + br.getWriter().getFirstName() + " " + br.getWriter().getLastName() + ",\n\nYour request for book publishing has been rejected. Reason: " + explanation +
+            text = "Hello " + br.getWriter().getFirstName() + " " + br.getWriter().getLastName() + ",\n\nYour request for book publishing has been rejected. Reason for rejection: " + reasonForRejection +
                     "\n\nBest regards,\nLiterary association";
         }
 

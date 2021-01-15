@@ -7,6 +7,7 @@ export const ROUTES = {
   TASK: "/task",
   TASK_FORM_FIELDS: "/task/get-form-fields",
   TASK_SUBMIT_FORM: "/task/submit-form",
+  TASK_ID: "/task/get-assignees-task-id",
   AUTH_LOGIN: "/auth/login",
   MERCHANT_REGISTER: "/merchant",
   MERCHANT_ALL_ACTIVE: "/merchant/active",
@@ -15,5 +16,7 @@ export const ROUTES = {
   WRITER_ACTIVATION: "/writer/activateAccount",
   WRITER_GET_TASK_ID: "/writer/getTaskId",
   LITERARY_WORK_UPLOAD: "/literaryWork/upload",
+  GET_MEMBERSHIP_APPLICATIONS: "/boardMember/membershipApplications",
+  GET_MEMBERSHIP_APPLICATION: "/boardMember/membershipApplication",
   BOOK_REQUEST_START_PUBLISHING: "/bookRequest/start-process-book-publishing",
 };
