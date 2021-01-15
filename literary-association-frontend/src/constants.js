@@ -4,6 +4,7 @@ export const ROUTES = {
   READER_START_REG: "/reader/start-process-register",
   READER_ACTIVATION: "/reader/activateAccount",
   GENRES: "/genre",
+  TASK: "/task",
   TASK_FORM_FIELDS: "/task/get-form-fields",
   TASK_SUBMIT_FORM: "/task/submit-form",
   AUTH_LOGIN: "/auth/login",

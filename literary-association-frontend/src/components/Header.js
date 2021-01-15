@@ -56,6 +56,7 @@ const Header = () => {
     toast.success("Logged Out Successfully", {
       hideProgressBar: true,
     });
+    history.push("/home");
   };
   const goToHomePage = () => {
     history.push("/home");
@@ -74,7 +75,8 @@ const Header = () => {
     console.log("Publishing started...");
     try {
       const response = await bookRequestService.startBookPublishing();
-      history.push("/newBook/" + response.processId + "/" + response.taskId);
+      //history.push("/newBook/" + response.processId + "/" + response.taskId);
+      history.push("/task/" + response.taskId);
     } catch (error) {
       if (error.response) {
         console.log("Error: " + JSON.stringify(error.response));
@@ -83,6 +85,10 @@ const Header = () => {
         hideProgressBar: true,
       });
     }
+  };
+
+  const goToAllTasks = () => {
+    history.push("/allTasks");
   };
   return (
     <div>
@@ -132,6 +138,11 @@ const Header = () => {
           <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
             Shopping cart
           </Button>
+          {loggedIn && (
+            <Button className="ml-2" variant="link" onClick={goToAllTasks}>
+              My tasks
+            </Button>
+          )}
           {!loggedIn && (
             <Button className="ml-2" variant="link" onClick={goToLogin}>
               Login

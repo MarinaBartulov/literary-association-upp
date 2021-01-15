@@ -19,6 +19,8 @@ public class BookRequest {
     private Long id;
     private String title;
     private String synopsis;
+    private boolean accepted;
+    private String rejectExplanation;
     @ManyToOne
     private Genre genre;
     @ManyToOne

@@ -6,4 +6,6 @@ import team16.literaryassociation.model.Genre;
 
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
+
+    Genre findByName(String name);
 }
