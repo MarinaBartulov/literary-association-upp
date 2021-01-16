@@ -26,11 +26,18 @@ public class GetAllGenresListener implements TaskListener {
         List<FormField> formFields = taskFormData.getFormFields();
         if(formFields != null){
             for(FormField f: formFields){
-                if(f.getId().equals("genres") || f.getId().equals("betaGenres") || f.getId().equals("genre")){
+                if(f.getId().equals("genres") || f.getId().equals("betaGenres")){
                     HashMap<String, String> items = (HashMap<String, String>) f.getType().getInformation("values");
                     items.clear();
                     for(Genre g: allGenres){
                         items.put(g.getId().toString(),g.getName());
+                    }
+                }
+                if(f.getId().equals("genre")){
+                    HashMap<String, String> items = (HashMap<String, String>) f.getType().getInformation("values");
+                    items.clear();
+                    for(Genre g: allGenres){
+                        items.put(g.getName(),g.getName());
                     }
                 }
             }

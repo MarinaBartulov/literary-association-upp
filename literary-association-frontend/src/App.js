@@ -20,6 +20,8 @@ import ShoppingCart from "./components/ShoppingCart";
 import MembershipApplication from "./components/MembershipApplication";
 import GiveOpinion from "./components/GiveOpinion";
 import NewBook from "./components/NewBook";
+import TaskList from "./components/TaskList";
+import TaskForm from "./components/TaskForm";
 
 function App() {
   return (
@@ -85,6 +87,12 @@ function App() {
             </Route>
             <Route exact path="/newBook/:processId/:taskId">
               <NewBook />
+            </Route>
+            <Route exact path="/allTasks">
+              <TaskList />
+            </Route>
+            <Route exact path="/task/:taskId">
+              <TaskForm />
             </Route>
             <Route exact path="/boardMember">
               <BoardMemberPanel />

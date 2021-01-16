@@ -2,42 +2,35 @@ package team16.literaryassociation.services;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
-import team16.literaryassociation.model.Genre;
-import team16.literaryassociation.services.interfaces.GenreService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class BookRequestValidationService implements JavaDelegate {
-
-    @Autowired
-    private GenreService genreService;
+public class ValidateEditorsDecisionService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
+        System.out.println("Uslo u validate editor's decision service");
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
         Map<String, Object> map = this.listFieldsToMap(formData);
-        boolean bookIsValid = true;
+        boolean decisionIsValid = true;
 
-        if(((String)map.get("title")).equals("")){
-            bookIsValid = false;
-        }
-        if(((String)map.get("synopsis")).equals("")){
-            bookIsValid = false;
-        }
-
-        String genre = (String) map.get("genre");
-        if(this.genreService.findByName(genre) == null){
-            bookIsValid = false;
+        boolean accept = (boolean )map.get("accept");
+        if(!accept) {
+            String reasonForRejection = (String) map.get("reasonForRejection");
+            if (reasonForRejection.trim().equals("")) {
+                decisionIsValid = false;
+                execution.setVariable("globalError", true);
+            }
         }
 
-        execution.setVariable("bookIsValid", bookIsValid);
+        execution.setVariable("decisionIsValid", decisionIsValid);
+
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {

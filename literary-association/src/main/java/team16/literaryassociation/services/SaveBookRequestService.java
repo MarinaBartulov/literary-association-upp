@@ -35,8 +35,8 @@ public class SaveBookRequestService implements JavaDelegate {
         BookRequest br = new BookRequest();
         br.setTitle((String)map.get("title"));
         br.setSynopsis((String) map.get("synopsis"));
-        Map<String, String> genreMap = ((List<Map<String,String>>) map.get("genre")).get(0);
-        Genre genre = this.genreService.findById((Long.parseLong(genreMap.get("id"))));
+        String genreName = (String) map.get("genre");
+        Genre genre = this.genreService.findByName(genreName);
         br.setGenre(genre);
         String username = (String) execution.getVariable("writer");
         Writer writer = this.writerService.findByUsername(username);

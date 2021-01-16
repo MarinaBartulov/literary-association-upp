@@ -97,7 +97,7 @@ const GenericForm = (props) => {
     try {
       const response = await taskService.submitForm(sendData, taskId);
       console.log(response);
-      toast.success(response, {
+      toast.success("Form successfully submitted.", {
         hideProgressBar: true,
       });
       history.push("/home");
