@@ -8,6 +8,7 @@ export const ROUTES = {
   TASK_FORM_FIELDS: "/task/get-form-fields",
   TASK_SUBMIT_FORM: "/task/submit-form",
   TASK_ID: "/task/get-assignees-task-id",
+  TASK_UPLOAD: "/task/uploadFile",
   AUTH_LOGIN: "/auth/login",
   MERCHANT_REGISTER: "/merchant",
   MERCHANT_ALL_ACTIVE: "/merchant/active",

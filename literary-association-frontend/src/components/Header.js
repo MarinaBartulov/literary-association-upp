@@ -54,9 +54,9 @@ const Header = () => {
     localStorage.setItem("role", null);
     history.push("/home");
     setLoggedIn(false);
-    toast.success("Logged Out Successfully", {
-      hideProgressBar: true,
-    });
+    // toast.success("Logged Out Successfully", {
+    //   hideProgressBar: true,
+    // });
     history.push("/home");
   };
   const goToHomePage = () => {

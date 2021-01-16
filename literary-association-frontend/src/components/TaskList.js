@@ -38,13 +38,15 @@ const TaskList = () => {
       <Header />
       <h2>All my tasks</h2>
       <div
-        style={{ width: "40%", backgroundColor: "#bdbbbb" }}
+        style={{ width: "70%", backgroundColor: "#bdbbbb" }}
         className="ml-auto mr-auto"
       >
         <Table>
           <thead>
             <tr>
+              <th>#</th>
               <th>Task</th>
+              <th>Task ID</th>
               <th>See details</th>
             </tr>
           </thead>
@@ -52,7 +54,9 @@ const TaskList = () => {
             {tasks.map((task, i) => {
               return (
                 <tr key={i}>
+                  <td>{i + 1}</td>
                   <td>{task.name}</td>
+                  <td>{task.taskId}</td>
                   <td>
                     <Button
                       variant="dark"

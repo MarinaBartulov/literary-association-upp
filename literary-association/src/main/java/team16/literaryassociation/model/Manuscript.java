@@ -12,22 +12,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Setter
 @Getter
-public class BookRequest {
+public class Manuscript {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String synopsis;
+    private String pdf; //putanja do pdf fajla gde je sacuvan, ona ce da se menja sa objavljivanjem novih verzija
+    private boolean original;
     private boolean accepted;
     private String reasonForRejection;
-    @ManyToOne
-    private Genre genre;
-    @ManyToOne
-    private Writer writer;
-    @ManyToOne
-    private Editor editor;
-    @OneToOne(mappedBy = "bookRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Manuscript manuscript;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_request_id")
+    private BookRequest bookRequest;
 
 }

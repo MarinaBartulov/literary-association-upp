@@ -11,19 +11,25 @@ import org.camunda.bpm.engine.identity.Group;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import team16.literaryassociation.dto.FormFieldsDTO;
 import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.dto.TaskDTO;
 import team16.literaryassociation.dto.StartProcessDTO;
 import team16.literaryassociation.model.User;
 import team16.literaryassociation.security.auth.JwtBasedAuthentication;
+import team16.literaryassociation.services.interfaces.UploadDownloadService;
 
 import javax.validation.Valid;
+import javax.ws.rs.PathParam;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +47,8 @@ public class TaskController {
     private FormService formService;
     @Autowired
     private IdentityService identityService;
+    @Autowired
+    private UploadDownloadService uploadDownloadService;
 
     @GetMapping(value="/get-form-fields/{taskId}")
     public FormFieldsDTO getFormFields(@PathVariable("taskId") String taskId){
@@ -85,8 +93,22 @@ public class TaskController {
             }
         }
 
-        System.out.println("Doslo do kraja");
-        return ResponseEntity.ok().body("Form successfully submitted.");
+        //Proveri se da li ima odmah aktivan sledeci task
+        String username = identityService.getCurrentAuthentication().getUserId();
+        Task nextTask = taskService.createTaskQuery().taskAssignee(username).active()
+                .processInstanceId(processInstanceId).singleResult();
+
+        if (nextTask != null) {
+            System.out.println("Doslo do kraja1");
+            TaskFormData tfd = formService.getTaskFormData(nextTask.getId());
+            TaskDTO taskDTO = new TaskDTO(nextTask.getId(),nextTask.getProcessInstanceId(),nextTask.getName(),nextTask.getAssignee(),tfd.getFormFields());
+            return new ResponseEntity(taskDTO, HttpStatus.OK);
+        } else {
+            System.out.println("Doslo do kraja2");
+            return new ResponseEntity(new TaskDTO(), HttpStatus.OK);
+
+        }
+
     }
 
     @GetMapping
@@ -151,6 +173,35 @@ public class TaskController {
             return new ResponseEntity(task.getId(), HttpStatus.OK);
         } else {
             return ResponseEntity.ok().build();
+        }
+    }
+
+    @PostMapping(value = "/uploadFile")
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("processId") String processId, @RequestParam("counter") int counter){
+
+        System.out.println("Uslo u upload");
+        System.out.println(file.getOriginalFilename());
+        System.out.println(processId);
+        String filePath = "";
+        try {
+            filePath = uploadDownloadService.uploadFile(file, processId, counter);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return  new ResponseEntity<>("Failed to upload file", HttpStatus.EXPECTATION_FAILED);
+        }
+        return new ResponseEntity(filePath, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/downloadFile")
+    public ResponseEntity downloadFile(@RequestParam("filePath") String filePath){
+
+        try {
+            Resource resource = this.uploadDownloadService.downloadFile(filePath);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
