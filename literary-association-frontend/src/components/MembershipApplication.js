@@ -1,7 +1,7 @@
 import { useParams, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "./Header";
-import { taskService } from "../services/task-service";
+
 import { boardMemberService } from "../services/board-member-service";
 
 import Card from "react-bootstrap/Card";
@@ -11,37 +11,22 @@ import Table from "react-bootstrap/Table";
 import { toast } from "react-toastify";
 
 const MembershipApplication = () => {
-  const { id, processId } = useParams();
-  const [taskId, setTaskId] = useState("");
+  const { taskId, processId } = useParams();
   const [membershipApplication, setMembershipApplication] = useState({});
   const [literaryWorks, setLiteraryWorks] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
     getMembershipApplication();
-    getTaskId();
   }, []);
 
   const getMembershipApplication = async () => {
     try {
-      const response = await boardMemberService.getMembershipApplication(id);
+      const response = await boardMemberService.getMembershipApplication(
+        processId
+      );
       setMembershipApplication(response);
       setLiteraryWorks(response.literaryWorks);
-    } catch (error) {
-      if (error.response) {
-        console.log("Error: " + JSON.stringify(error.response));
-      }
-      toast.error(error.response ? error.response.data : error.message, {
-        hideProgressBar: true,
-      });
-    }
-  };
-
-  const getTaskId = async () => {
-    try {
-      const response = await taskService.getAssigneesTaskId(processId);
-      console.log("Task ID: " + response);
-      setTaskId(response);
     } catch (error) {
       if (error.response) {
         console.log("Error: " + JSON.stringify(error.response));
@@ -75,8 +60,7 @@ const MembershipApplication = () => {
             Writers Surname: {membershipApplication.writerLastName}
           </ListGroup.Item>
           <ListGroup.Item>
-            More material requested:{" "}
-            {membershipApplication.moreMaterialRequested} times
+            Price: {membershipApplication.price} $
           </ListGroup.Item>
         </ListGroup>
         <br />

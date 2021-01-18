@@ -36,15 +36,15 @@ public class MembershipApplicationServiceImpl implements MembershipApplicationSe
     }
 
     @Override
-    public List<MembershipApplicationDTO> getAllActiveMembershipApplicationsDTO() {
-        return membershipApplicationRepository.findAllActive().stream().map(ma -> membershipApplicationMapper.toDto(ma)).collect(Collectors.toList());
+    public List<MembershipApplicationDTO> getAllMembershipApplicationsDTO() {
+        return membershipApplicationRepository.findAll().stream().map(ma -> membershipApplicationMapper.toDto(ma)).collect(Collectors.toList());
     }
 
     @Override
-    public MembershipApplicationInfoDTO getMembershipApplicationInfoDTO(Long id) {
+    public MembershipApplicationInfoDTO getMembershipApplicationInfoDTO(String processId) {
 
-           MembershipApplication membershipApplication = membershipApplicationRepository.getOne(id);
-           List<LiteraryWork> literaryWorks = literaryWorkService.findAllWithMembershipApplicationId(id);
+           MembershipApplication membershipApplication = membershipApplicationRepository.getOneByProcessId(processId).get(0);
+           List<LiteraryWork> literaryWorks = literaryWorkService.findAllWithMembershipApplicationId(membershipApplication.getId());
 
            return new MembershipApplicationInfoDTO(membershipApplication, literaryWorks);
     }

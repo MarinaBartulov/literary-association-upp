@@ -22,24 +22,18 @@ public class MembershipApplicationInfoDTO {
 
     private String processId;
 
+    private Double price;
+
     //zbog fronta
 
     private String writerFirstName;
 
     private String writerLastName;
 
-    //private LocalDateTime deadline;
-
-    //private Double price;
-
-    //private boolean paid;
-
-    //private LocalDateTime paymentDate;
-
     public MembershipApplicationInfoDTO(MembershipApplication membershipApplication, List<LiteraryWork> literaryWorks)
     {
         this.id = membershipApplication.getId();
-        this.moreMaterialRequested = membershipApplication.getMoreMaterialRequested();
+        this.price = membershipApplication.getPrice();
         this.processId = membershipApplication.getProcessId();
         this.writerFirstName = membershipApplication.getWriter().getFirstName();
         this.writerLastName = membershipApplication.getWriter().getLastName();

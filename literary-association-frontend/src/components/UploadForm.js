@@ -47,11 +47,24 @@ const UploadForm = (props) => {
     setFilesNumber(0);
   };*/
 
-  const handleChange = (e) => {
+  const handleChange = (e, formField) => {
     selectedFiles = e.target.files;
     data = {};
     console.log("U HANDLE CHANGE");
     console.log("SELECTED FILES LENGTH: " + selectedFiles.length);
+
+    let length = e.target.files.length;
+    if (formField.properties.multiple !== undefined) {
+      if (formField.properties.minLengthFiles !== undefined) {
+        let minLength = parseInt(formField.properties.minLengthFiles);
+        if (length < minLength) {
+          toast.error("Required minimum " + minLength + " files", {
+            hideProgressBar: true,
+          });
+          //return;
+        }
+      }
+    }
     // nacin za cuvanje prethodno ucitanih fajlova
     //var counter = getMapSize(data);
     //console.log("COUNTER " + counter);
@@ -160,7 +173,7 @@ const UploadForm = (props) => {
                     }
                     multiple={properties.multiple !== undefined ? true : false}
                     required
-                    onChange={handleChange}
+                    onChange={(e) => handleChange(e, formField)}
                     placeholder={"Enter " + label}
                     readOnly={formField.validationConstraints.some(
                       (c) => c.name === "readonly"
