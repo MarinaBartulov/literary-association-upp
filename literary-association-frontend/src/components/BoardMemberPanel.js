@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Header from "./Header";
-import { boardMemberService } from "../services/board-member-service";
+import { taskService } from "../services/task-service";
 
 import Button from "react-bootstrap/Button";
 import { Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 const BoardMemberPanel = () => {
-  const [membershipApplications, setMembershipApplicatios] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
-    getMembershipApplications();
+    getAllTasks();
   }, []);
 
-  const getMembershipApplications = async () => {
+  const getAllTasks = async () => {
     try {
-      const response = await boardMemberService.getAllMembershipApplications();
-      setMembershipApplicatios(response);
+      const response = await taskService.getAllTasks();
+      console.log(response);
+      setTasks(response);
     } catch (error) {
       if (error.response) {
         console.log("Error: " + JSON.stringify(error.response));
@@ -29,10 +30,10 @@ const BoardMemberPanel = () => {
     }
   };
 
-  const checkoutMembershipApplication = (id, processId) => {
-    console.log(id);
+  const goToMembershipApplication = (taskId, processId) => {
+    console.log(taskId);
     console.log(processId);
-    history.push("/membershipApplication/" + id + "/" + processId);
+    history.push("/membershipApplication/" + taskId + "/" + processId);
   };
 
   return (
@@ -40,38 +41,33 @@ const BoardMemberPanel = () => {
       <Header />
       <h2> Membership Applications </h2>
       <div
-        style={{ width: "50%", backgroundColor: "#bdbbbb" }}
+        style={{ width: "70%", backgroundColor: "#bdbbbb" }}
         className="ml-auto mr-auto"
       >
         <Table>
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Writer name</th>
-              <th>Writer surname </th>
-              <th>More material requested</th>
-              <th>Checkout </th>
+              <th>#</th>
+              <th>Task</th>
+              <th>Task ID</th>
+              <th>See details</th>
             </tr>
           </thead>
           <tbody>
-            {membershipApplications.map((membershipApplication) => {
+            {tasks.map((task, i) => {
               return (
-                <tr key={membershipApplication.id}>
-                  <td> #{membershipApplication.id}</td>
-                  <td>{membershipApplication.writerFirstName}</td>
-                  <td>{membershipApplication.writerLastName}</td>
-                  <td>{membershipApplication.moreMaterialRequested}</td>
+                <tr key={i}>
+                  <td>{i + 1}</td>
+                  <td>{task.name}</td>
+                  <td>{task.taskId}</td>
                   <td>
                     <Button
                       variant="dark"
                       onClick={() => {
-                        checkoutMembershipApplication(
-                          membershipApplication.id,
-                          membershipApplication.processId
-                        );
+                        goToMembershipApplication(task.taskId, task.processId);
                       }}
                     >
-                      Checkout
+                      Details
                     </Button>
                   </td>
                 </tr>

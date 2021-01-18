@@ -210,11 +210,13 @@ public class TaskController {
         System.out.println("Usao u get assignees task id");
         System.out.println(processId);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        JwtBasedAuthentication jwtBasedAuthentication = (JwtBasedAuthentication) auth;
-        User user = (User) jwtBasedAuthentication.getPrincipal();
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //JwtBasedAuthentication jwtBasedAuthentication = (JwtBasedAuthentication) auth;
+        //User user = (User) jwtBasedAuthentication.getPrincipal();
+        // treba mi da ne mora biti ulogovan pisac
+        String username = (String) runtimeService.getVariable(processId,"username");
 
-        Task task = taskService.createTaskQuery().taskAssignee(user.getUsername()).active().processInstanceId(processId).singleResult();
+        Task task = taskService.createTaskQuery().taskAssignee(username).active().processInstanceId(processId).singleResult();
         System.out.println(task.getName());
         System.out.println("Task Id: " + task.getId());
         return new ResponseEntity(task.getId(), HttpStatus.OK);

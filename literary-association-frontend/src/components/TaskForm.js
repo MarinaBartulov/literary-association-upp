@@ -397,6 +397,9 @@ const TaskForm = () => {
                           [formField.id]: e.target.checked,
                         }));
                       }}
+                      required={formField.validationConstraints.some(
+                        (c) => c.name === "required"
+                      )}
                       readOnly={formField.properties.readonly !== undefined}
                       label={label}
                     />

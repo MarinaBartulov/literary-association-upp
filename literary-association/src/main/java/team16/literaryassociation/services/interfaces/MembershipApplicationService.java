@@ -10,6 +10,6 @@ public interface MembershipApplicationService {
 
     MembershipApplication save(MembershipApplication membershipApplication);
     MembershipApplication getOne(Long id);
-    List<MembershipApplicationDTO> getAllActiveMembershipApplicationsDTO();
-    MembershipApplicationInfoDTO getMembershipApplicationInfoDTO(Long id);
+    List<MembershipApplicationDTO> getAllMembershipApplicationsDTO();
+    MembershipApplicationInfoDTO getMembershipApplicationInfoDTO(String id);
  }

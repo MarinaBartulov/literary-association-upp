@@ -12,9 +12,9 @@ public class MembershipApplicationDTO {
 
     protected Long id;
 
-    private Integer moreMaterialRequested;
-
     private String processId;
+
+    private Double price;
 
     //zbog fronta
 
@@ -22,19 +22,11 @@ public class MembershipApplicationDTO {
 
     private String writerLastName;
 
-    //private LocalDateTime deadline;
-
-    //private Double price;
-
-    //private boolean paid;
-
-    //private LocalDateTime paymentDate;
-
     public MembershipApplicationDTO(MembershipApplication membershipApplication)
     {
         this.id = membershipApplication.getId();
         this.processId = membershipApplication.getProcessId();
-        this.moreMaterialRequested = membershipApplication.getMoreMaterialRequested();
+        this.price = membershipApplication.getPrice();
         this.writerFirstName = membershipApplication.getWriter().getFirstName();
         this.writerLastName = membershipApplication.getWriter().getLastName();
     }

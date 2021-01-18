@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface MembershipApplicationRepository extends JpaRepository<MembershipApplication, Long> {
 
-    @Query(value = "select ma from MembershipApplication ma where ma.active = true")
-    List<MembershipApplication> findAllActive();
+    //@Query(value = "select ma from MembershipApplication ma where ma.active = true")
+    //List<MembershipApplication> findAllActive();
+
+    @Query(value = "select ma from MembershipApplication ma where ma.processId = ?1")
+    List<MembershipApplication> getOneByProcessId(String processId);
 }
