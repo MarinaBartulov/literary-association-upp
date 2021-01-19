@@ -13,7 +13,7 @@ values ('/yPS+cpGJ93Lzl5Lxw9m2mbi10QXeVEQuMG0DjNAFAU=|44QQKfRdORs1xRzU6Rd1eQ==',
 
 -- sifra: reader123, username: reader123
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled, beta_reader, penalty_points)
-value ('Reader', 'reader@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'reader123', 'Bojana', 'Kliska', 'Beska', 'Srbija', true, true, true, 3);
+value ('Reader', 'reader1@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'reader123', 'Bojana', 'Kliska', 'Beska', 'Srbija', true, true, true, 3);
 
 -- sifra boardmember
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
@@ -54,3 +54,14 @@ insert into reader_genre (reader_id,genre_id) value (1, 2);
 
 insert into beta_reader_genre (beta_reader_id,genre_id) value (1, 1);
 insert into beta_reader_genre (beta_reader_id,genre_id) value (1, 2);
+
+-- sifra: reader123, username: reader1234
+insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled, beta_reader, penalty_points)
+value ('Reader', 'reader2@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'reader1234', 'Senka', 'Soic', 'NS', 'Srbija', true, true, true, 0);
+
+-- sifra: reader123, username: reader12345
+insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled, beta_reader, penalty_points)
+value ('Reader', 'reader3@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'reader12345', 'Marina', 'Bartulov', 'BG', 'Srbija', true, true, true, 0);
+
+insert into beta_reader_genre (beta_reader_id,genre_id) value (7, 3);
+insert into beta_reader_genre (beta_reader_id,genre_id) value (8, 3);
