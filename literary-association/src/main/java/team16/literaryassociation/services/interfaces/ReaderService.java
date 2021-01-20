@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ReaderService {
 
+    Reader findById(Long id);
     Reader saveReader(Reader reader);
     List<Reader> getAllBetaReaders();
     List<Reader> getAllBetaReadersForGenre(String name);

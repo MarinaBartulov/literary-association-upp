@@ -31,4 +31,20 @@ public class Reader extends User {
             joinColumns = @JoinColumn(name = "beta_reader_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private Set<Genre> betaGenres = new HashSet<>();
+
+    @OneToMany(mappedBy = "betaReader", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Comment> comments = new HashSet<>();
+
+    public Reader(Long id, String firstName, String lastName, String city, String country, String email,
+                  String username, boolean betaReader, int penaltyPoints) {
+        this.setId(id);
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setCity(city);
+        this.setCountry(country);
+        this.setEmail(email);
+        this.setUsername(username);
+        this.betaReader = betaReader;
+        this.penaltyPoints = penaltyPoints;
+    }
 }

@@ -15,6 +15,11 @@ public class ReaderServiceImpl implements ReaderService {
     private ReaderRepository readerRepository;
 
     @Override
+    public Reader findById(Long id) {
+        return readerRepository.findById(id).orElseGet(null);
+    }
+
+    @Override
     public Reader saveReader(Reader reader) {
         return this.readerRepository.save(reader);
     }

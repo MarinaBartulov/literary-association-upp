@@ -302,7 +302,7 @@
     <bpmn:subProcess id="Activity_0de2y6e">
       <bpmn:incoming>Flow_1y1krxs</bpmn:incoming>
       <bpmn:outgoing>Flow_16082ng</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics camunda:collection="${betaReaders}" camunda:elementVariable="betaReader" />
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="${chosenBetaReaders}" camunda:elementVariable="betaReader" />
       <bpmn:startEvent id="Event_01iw7qn">
         <bpmn:outgoing>Flow_1t6plae</bpmn:outgoing>
       </bpmn:startEvent>
@@ -328,7 +328,7 @@
         <bpmn:outgoing>Flow_1lzhby4</bpmn:outgoing>
       </bpmn:serviceTask>
       <bpmn:sequenceFlow id="Flow_1ktlqem" sourceRef="Task_Leave_Comment_Form" targetRef="Task_Save_Comment" />
-      <bpmn:serviceTask id="Task_Save_Comment" name="Save Comment" camunda:class="team16.literaryassociation.services.SaveCommentService">
+      <bpmn:serviceTask id="Task_Save_Comment" name="Save Comment" camunda:class="team16.literaryassociation.services.SaveBetaReaderCommentService">
         <bpmn:incoming>Flow_1ktlqem</bpmn:incoming>
         <bpmn:outgoing>Flow_0n787cg</bpmn:outgoing>
       </bpmn:serviceTask>
