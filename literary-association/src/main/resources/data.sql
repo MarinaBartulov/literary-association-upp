@@ -65,3 +65,6 @@ value ('Reader', 'reader3@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5R
 
 insert into beta_reader_genre (beta_reader_id,genre_id) value (7, 3);
 insert into beta_reader_genre (beta_reader_id,genre_id) value (8, 3);
+
+insert into user_roles (user_id, role_id) values (7,1); -- editor
+insert into user_roles (user_id, role_id) values (8,1); -- writer

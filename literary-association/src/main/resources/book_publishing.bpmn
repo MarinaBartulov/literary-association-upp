@@ -308,6 +308,21 @@
       </bpmn:startEvent>
       <bpmn:sequenceFlow id="Flow_1t6plae" sourceRef="Event_01iw7qn" targetRef="Task_Leave_Comment_Form" />
       <bpmn:userTask id="Task_Leave_Comment_Form" name="Leave Comment Form" camunda:assignee="${betaReader.username}">
+        <bpmn:extensionElements>
+          <camunda:formData>
+            <camunda:formField id="pdfDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
+              <camunda:properties>
+                <camunda:property id="file" value="file" />
+                <camunda:property id="readonly" value="readonly" />
+              </camunda:properties>
+            </camunda:formField>
+            <camunda:formField id="comment" label="Leave a comment" type="string">
+              <camunda:properties>
+                <camunda:property id="text_area" value="text_area" />
+              </camunda:properties>
+            </camunda:formField>
+          </camunda:formData>
+        </bpmn:extensionElements>
         <bpmn:incoming>Flow_1t6plae</bpmn:incoming>
         <bpmn:outgoing>Flow_1ktlqem</bpmn:outgoing>
       </bpmn:userTask>
@@ -323,7 +338,7 @@
           <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT5M</bpmn:timeDuration>
         </bpmn:timerEventDefinition>
       </bpmn:intermediateCatchEvent>
-      <bpmn:serviceTask id="Task_Send_Email_6" name="Send Email to Beta-Reader" camunda:class="team16.literaryassociation.services.SendEmailService">
+      <bpmn:serviceTask id="Task_Send_Email_6" name="Send Email to Beta-Reader" camunda:class="team16.literaryassociation.services.SendEmailForPenaltyPointService">
         <bpmn:incoming>Flow_094j3qp</bpmn:incoming>
         <bpmn:outgoing>Flow_1lzhby4</bpmn:outgoing>
       </bpmn:serviceTask>
@@ -343,7 +358,7 @@
     </bpmn:subProcess>
     <bpmn:sequenceFlow id="Flow_1y1krxs" sourceRef="Task_Save_Chosen_BetaReaders" targetRef="Activity_0de2y6e" />
     <bpmn:sequenceFlow id="Flow_16082ng" sourceRef="Activity_0de2y6e" targetRef="Task_Update_Manuscript" />
-    <bpmn:userTask id="Task_Update_Manuscript" name="Update Manuscript" camunda:assignee="${writer}">
+    <bpmn:userTask id="Task_Update_Manuscript" name="Update Manuscript After Beta-Readers Comments" camunda:assignee="${writer}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="pdf" label="Pdf" type="string">
@@ -363,7 +378,7 @@
       <bpmn:outgoing>Flow_14rf8lu</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_14rf8lu" sourceRef="Task_Save_Updated_Manuscript" targetRef="Task_More_Changes_Needed" />
-    <bpmn:userTask id="Task_More_Changes_Needed" name="More Changes Needed" camunda:assignee="${chosenEditor}">
+    <bpmn:userTask id="Task_More_Changes_Needed" name="More Changes Needed?" camunda:assignee="${chosenEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="need_changes" label="Need Changes" type="boolean" />
@@ -389,7 +404,7 @@
     <bpmn:sequenceFlow id="Flow_1ssq8yw" name="Send to Lector" sourceRef="Gateway_05nrdfb" targetRef="Gateway_0ni6xz4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${changesNeeded == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="Task_Lecturer_Upload_Form" name="Lecturer Upload Form" camunda:assignee="${lecturer}">
+    <bpmn:userTask id="Task_Lecturer_Upload_Form" name="Lecturer Upload Edited Manuscript" camunda:assignee="${lecturer}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="pdf" label="Pdf" type="string">
@@ -408,12 +423,12 @@
       <bpmn:outgoing>Flow_08qmxue</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0f4zh9b" sourceRef="Task_Lecturer_Upload_Form" targetRef="Task_Save_Uploaded_Work" />
-    <bpmn:serviceTask id="Task_Save_Uploaded_Work" name="Save Uploaded Work" camunda:class="team16.literaryassociation.services.SaveUploadedWorkService">
+    <bpmn:serviceTask id="Task_Save_Uploaded_Work" name="Save Uploaded Work By Lecturer" camunda:class="team16.literaryassociation.services.SaveUploadedWorkService">
       <bpmn:incoming>Flow_0f4zh9b</bpmn:incoming>
       <bpmn:outgoing>Flow_1atyugb</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1atyugb" sourceRef="Task_Save_Uploaded_Work" targetRef="Task_Writer_Upload_Form" />
-    <bpmn:userTask id="Task_Writer_Upload_Form" name="Writer Upload Form">
+    <bpmn:userTask id="Task_Writer_Upload_Form" name="Writer Upload Edited Manuscript After Proofreading">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="pdf" label="Pdf" type="string">
@@ -428,7 +443,7 @@
       <bpmn:outgoing>Flow_0jx5cm5</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0jx5cm5" sourceRef="Task_Writer_Upload_Form" targetRef="Task_Save_Uploaded_Work_2" />
-    <bpmn:serviceTask id="Task_Save_Uploaded_Work_2" name="Save Uploaded Work" camunda:class="team16.literaryassociation.services.SaveUploadedWorkService">
+    <bpmn:serviceTask id="Task_Save_Uploaded_Work_2" name="Save Uploaded Work By Writer" camunda:class="team16.literaryassociation.services.SaveUploadedWorkService">
       <bpmn:incoming>Flow_0jx5cm5</bpmn:incoming>
       <bpmn:outgoing>Flow_13pgr9j</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -526,6 +541,21 @@
       <bpmn:outgoing>Flow_1a7e4cn</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0ptkbgd" sourceRef="Task_Send_To_BetaReaders" targetRef="Gateway_09kas9f" />
+    <bpmn:boundaryEvent id="Event_1poxugq" attachedToRef="Task_Upload_Edited_Manuscript">
+      <bpmn:outgoing>Flow_196weu1</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_18t4d91">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT5M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_196weu1" sourceRef="Event_1poxugq" targetRef="Task_Send_Email_7" />
+    <bpmn:endEvent id="Event_1kyk8vp">
+      <bpmn:incoming>Flow_1yaplme</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1yaplme" sourceRef="Task_Send_Email_7" targetRef="Event_1kyk8vp" />
+    <bpmn:serviceTask id="Task_Send_Email_7" name="Send Email To Writer" camunda:class="team16.literaryassociation.services.SendEmailFinalService">
+      <bpmn:incoming>Flow_196weu1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yaplme</bpmn:outgoing>
+    </bpmn:serviceTask>
     <bpmn:textAnnotation id="TextAnnotation_19rz8tp">
       <bpmn:text>Postavi se procesna varijabla chosenEditor</bpmn:text>
     </bpmn:textAnnotation>
@@ -539,7 +569,7 @@
     </bpmn:textAnnotation>
     <bpmn:association id="Association_1bwivox" sourceRef="Task_Save_Manuscript_Decision" targetRef="TextAnnotation_0hcywgl" />
     <bpmn:textAnnotation id="TextAnnotation_1xmok8d">
-      <bpmn:text>Postaviti procesnu varijablu betaReaders</bpmn:text>
+      <bpmn:text>Postaviti procesnu varijablu chosenBetaReaders</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0v4o9f8" sourceRef="Task_Save_Chosen_BetaReaders" targetRef="TextAnnotation_1xmok8d" />
     <bpmn:textAnnotation id="TextAnnotation_1s76j9v">
@@ -551,7 +581,7 @@
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0p4ur0n" sourceRef="Task_Save_Changes_Needed" targetRef="TextAnnotation_1bu7pgm" />
     <bpmn:textAnnotation id="TextAnnotation_0tfjqao">
-      <bpmn:text>Postaviti procesnu varijablu lecturer</bpmn:text>
+      <bpmn:text>Postaviti procesnu varijablu lecturer, on se bira random</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_10kaurc" sourceRef="Task_Choose_Lecturer" targetRef="TextAnnotation_0tfjqao" />
     <bpmn:textAnnotation id="TextAnnotation_1kb0hof">
@@ -863,6 +893,15 @@
         <di:waypoint x="215" y="297" />
         <di:waypoint x="270" y="297" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_196weu1_di" bpmnElement="Flow_196weu1">
+        <di:waypoint x="7920" y="508" />
+        <di:waypoint x="7920" y="570" />
+        <di:waypoint x="7990" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yaplme_di" bpmnElement="Flow_1yaplme">
+        <di:waypoint x="8090" y="570" />
+        <di:waypoint x="8142" y="570" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="279" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -958,6 +997,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1bbh2d7_di" bpmnElement="Task_Save_Chosen_BetaReaders">
         <dc:Bounds x="4070" y="580" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1kyk8vp_di" bpmnElement="Event_1kyk8vp">
+        <dc:Bounds x="8142" y="552" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0p1khw6_di" bpmnElement="Task_Send_Email_7">
+        <dc:Bounds x="7990" y="530" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0de2y6e_di" bpmnElement="Activity_0de2y6e" isExpanded="true">
         <dc:Bounds x="4280" y="520" width="660" height="360" />
@@ -1086,7 +1131,7 @@
         <dc:Bounds x="3260" y="80" width="100" height="111" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1xmok8d_di" bpmnElement="TextAnnotation_1xmok8d">
-        <dc:Bounds x="3880" y="595" width="100" height="67" />
+        <dc:Bounds x="3880" y="595" width="100" height="84" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1s76j9v_di" bpmnElement="TextAnnotation_1s76j9v">
         <dc:Bounds x="140" y="136" width="100" height="95" />
@@ -1095,7 +1140,7 @@
         <dc:Bounds x="5670" y="470" width="100" height="82" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0tfjqao_di" bpmnElement="TextAnnotation_0tfjqao">
-        <dc:Bounds x="6020" y="150" width="100" height="67" />
+        <dc:Bounds x="6020" y="150" width="100" height="84" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1kb0hof_di" bpmnElement="TextAnnotation_1kb0hof">
         <dc:Bounds x="7150" y="143" width="100" height="82" />
@@ -1135,7 +1180,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_10kaurc_di" bpmnElement="Association_10kaurc">
         <di:waypoint x="6063" y="257" />
-        <di:waypoint x="6066" y="217" />
+        <di:waypoint x="6064" y="234" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_05abs1z_di" bpmnElement="Association_05abs1z">
         <di:waypoint x="7200" y="257" />
@@ -1149,6 +1194,9 @@
         <di:waypoint x="3866" y="257" />
         <di:waypoint x="3917" y="177" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0ti88ea_di" bpmnElement="Event_1poxugq">
+        <dc:Bounds x="7902" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

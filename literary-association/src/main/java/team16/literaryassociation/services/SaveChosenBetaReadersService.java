@@ -24,15 +24,6 @@ import java.util.stream.Collectors;
 public class SaveChosenBetaReadersService implements JavaDelegate {
 
     @Autowired
-    private IdentityService identityService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CommentService commentService;
-
-    @Autowired
     private ReaderService readerService;
 
     @Autowired
