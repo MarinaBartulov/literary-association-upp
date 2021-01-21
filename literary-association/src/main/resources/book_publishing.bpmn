@@ -445,7 +445,7 @@
       <bpmn:outgoing>Flow_1atyugb</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1atyugb" sourceRef="Task_Save_Uploaded_Work" targetRef="Task_Writer_Upload_Form" />
-    <bpmn:userTask id="Task_Writer_Upload_Form" name="Writer Upload Edited Manuscript After Proofreading">
+    <bpmn:userTask id="Task_Writer_Upload_Form" name="Writer Upload Edited Manuscript After Proofreading" camunda:assignee="${writer}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="pdfDownload" label="Download proofread manuscript" type="string" defaultValue="${pdfDownload}">
@@ -501,7 +501,7 @@
     <bpmn:sequenceFlow id="Flow_0ebx4c6" name="Not approved" sourceRef="Gateway_0sj7yfr" targetRef="Task_Writer_Upload_Form">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${lecturerApproval == false }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="Task_Editor_Decision" name="Editor Decision" camunda:assignee="{chosenEditor}">
+    <bpmn:userTask id="Task_Editor_Decision" name="Editor Decision" camunda:assignee="${chosenEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="pdfDownload" label="Download manuscript after proofreading" type="string" defaultValue="${pdfDownload}">

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 public class SaveBookAndSendToIndexingService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
+        System.out.println("Usao u SaveBookAndSendToIndexingService");
+
 
     }
 }

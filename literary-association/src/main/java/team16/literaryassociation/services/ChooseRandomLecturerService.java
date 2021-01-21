@@ -21,6 +21,8 @@ public class ChooseRandomLecturerService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
+        System.out.println("Usao u ChooseRandomLecturerService");
+
         Long manuscriptId = (Long) delegateExecution.getVariable("manuscriptId");
         Manuscript manuscript = manuscriptService.findById(manuscriptId);
         if(manuscript == null) {

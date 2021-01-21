@@ -23,6 +23,7 @@ public class Manuscript {
     private boolean original;
     private boolean accepted;
     private boolean finalEditorsApproval;
+    private String suggestions;
     private String reasonForRejection;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_request_id")
