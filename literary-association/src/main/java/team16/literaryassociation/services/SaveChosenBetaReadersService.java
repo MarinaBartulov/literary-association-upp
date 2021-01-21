@@ -1,6 +1,7 @@
 package team16.literaryassociation.services;
 
 import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +45,14 @@ public class SaveChosenBetaReadersService implements JavaDelegate {
         if(manuscript == null)
         {
             System.out.println("Nije nasao Manuscript");
-            return;
+            throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
         }
 
         List<String> betaReaders = (List<String>) map.get("betaReaders");
         for (String betaReader : betaReaders) {
             Reader r = this.readerService.findById(Long.parseLong(betaReader));
             if(r == null) {
-                return;
+                throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
             }
             manuscript.getBetaReaders().add(r);
         }
@@ -59,7 +60,7 @@ public class SaveChosenBetaReadersService implements JavaDelegate {
         Manuscript saved = manuscriptService.save(manuscript);
         if(saved == null) {
             System.out.println("Nije sacuvao Manuscript");
-            return;
+            throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
         }
 
         List<BetaReaderDTO> betaReaderDTOs = saved.getBetaReaders().stream().map( br -> betaReaderMapper.toDto(br)).collect(Collectors.toList());

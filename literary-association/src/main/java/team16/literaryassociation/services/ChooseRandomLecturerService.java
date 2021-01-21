@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,17 @@ public class ChooseRandomLecturerService implements JavaDelegate {
         Manuscript manuscript = manuscriptService.findById(manuscriptId);
         if(manuscript == null) {
             System.out.println("Nije nasao Manuscript");
-            return;
+            throw new BpmnError("LECTURER_CHOOSING_FAILED", "Invalid manuscript.");
         }
 
         Lecturer lecturer = lecturerService.findRandomEditor();
         manuscript.setLecturer(lecturer);
-        Manuscript saved = manuscriptService.save(manuscript);
+        Manuscript saved = null;
+        try {
+            saved = manuscriptService.save(manuscript);
+        } catch (Exception e) {
+            throw new BpmnError("LECTURER_CHOOSING_FAILED", "Saving manuscript failed.");
+        }
 
         delegateExecution.setVariable("lecturer", saved.getLecturer().getUsername());
     }

@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class SaveEditorsFinalDecisionService implements JavaDelegate {
         Manuscript manuscript = manuscriptService.findById(manuscriptId);
         if(manuscript == null) {
             System.out.println("Nije nasao Manuscript");
-            return;
+            throw new BpmnError("FINAL_EDITOR_DECISION_FAILED", "Invalid manuscript.");
         }
         manuscript.setFinalEditorsApproval(approved);
         if(!approved) {

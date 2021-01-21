@@ -1,6 +1,7 @@
 package team16.literaryassociation.services;
 
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,15 @@ public class SaveUpdatedManuscriptService implements JavaDelegate {
         if(manuscript == null)
         {
             System.out.println("Nije nasao Manuscript");
-            return;
+            throw new BpmnError("MANUSCRIPT_SAVING_FAILED", "Invalid manuscript.");
         }
 
         String pdfManuscript = (String) delegateExecution.getVariable("pdfManuscript"); //putanja do fajla
         manuscript.setPdf(uploadFolder + delegateExecution.getProcessInstanceId() + "/" + pdfManuscript);
-        manuscriptService.save(manuscript);
+        try {
+            manuscriptService.save(manuscript);
+        } catch(Exception e) {
+            throw new BpmnError("MANUSCRIPT_SAVING_FAILED", "Saving manuscript failed.");
+        }
     }
 }

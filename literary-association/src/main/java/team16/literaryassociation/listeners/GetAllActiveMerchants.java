@@ -7,8 +7,6 @@ import org.camunda.bpm.engine.form.TaskFormData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.MerchantDTO;
-import team16.literaryassociation.model.Genre;
-import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.services.interfaces.MerchantService;
 
 import java.util.HashMap;

@@ -1,6 +1,7 @@
 package team16.literaryassociation.services;
 
 import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class SaveBetaReaderCommentService implements JavaDelegate {
         if(manuscript == null)
         {
             System.out.println("Nije nasao Manuscript");
-            return;
+            throw new BpmnError("COMMENT_SAVING_FAILED", "Invalid manuscript.");
         }
 
         String username = this.identityService.getCurrentAuthentication().getUserId();
@@ -54,7 +55,7 @@ public class SaveBetaReaderCommentService implements JavaDelegate {
         if(betaReader == null)
         {
             System.out.println("Nije nasao Reader-a");
-            return;
+            throw new BpmnError("COMMENT_SAVING_FAILED", "Beta-Reader not found.");
         }
 
         Comment comment = new Comment();
