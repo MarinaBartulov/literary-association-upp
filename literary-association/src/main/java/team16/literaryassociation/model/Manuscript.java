@@ -22,6 +22,7 @@ public class Manuscript {
     private String pdf; //putanja do pdf fajla gde je sacuvan, ona ce da se menja sa objavljivanjem novih verzija
     private boolean original;
     private boolean accepted;
+    private boolean finalEditorsApproval;
     private String reasonForRejection;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_request_id")
@@ -35,4 +36,7 @@ public class Manuscript {
 
     @OneToMany(mappedBy = "manuscript", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private Lecturer lecturer;
 }

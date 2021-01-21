@@ -3,6 +3,7 @@ insert into role (name) values ('ROLE_WRITER');
 insert into role (name) value ('ROLE_BOARD_MEMBER');
 insert into role (name) value ('ROLE_ADMIN');
 insert into role (name) value ('ROLE_EDITOR');
+insert into role (name) value ('ROLE_LECTURER');
 
 insert into permission (name) values ('create_order');
 
@@ -66,5 +67,18 @@ value ('Reader', 'reader3@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5R
 insert into beta_reader_genre (beta_reader_id,genre_id) value (7, 3);
 insert into beta_reader_genre (beta_reader_id,genre_id) value (8, 3);
 
-insert into user_roles (user_id, role_id) values (7,1); -- editor
-insert into user_roles (user_id, role_id) values (8,1); -- writer
+insert into user_roles (user_id, role_id) values (7,1);
+insert into user_roles (user_id, role_id) values (8,1);
+
+insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
+value ('Lecturer', 'lecturer1@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'lecturer1', 'Pera', 'Peric', 'NS', 'Srbija', true, true);
+
+insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
+value ('Lecturer', 'lecturer2@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'lecturer2', 'Milan', 'Peric', 'NS', 'Srbija', true, true);
+
+insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
+value ('Lecturer', 'lecturer3@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'lecturer3', 'Jovan', 'Peric', 'NS', 'Srbija', true, true);
+
+insert into user_roles (user_id, role_id) values (9,6);
+insert into user_roles (user_id, role_id) values (10,6);
+insert into user_roles (user_id, role_id) values (11,6);
