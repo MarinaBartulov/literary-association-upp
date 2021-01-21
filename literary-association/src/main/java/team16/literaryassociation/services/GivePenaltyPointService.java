@@ -5,7 +5,9 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team16.literaryassociation.dto.BetaReaderDTO;
 import team16.literaryassociation.model.Reader;
+import team16.literaryassociation.services.impl.EmailService;
 import team16.literaryassociation.services.interfaces.ReaderService;
 import team16.literaryassociation.services.interfaces.UserService;
 
@@ -13,7 +15,7 @@ import team16.literaryassociation.services.interfaces.UserService;
 public class GivePenaltyPointService implements JavaDelegate {
 
     @Autowired
-    private IdentityService identityService;
+    private EmailService emailService;
 
     @Autowired
     private UserService userService;
@@ -26,17 +28,24 @@ public class GivePenaltyPointService implements JavaDelegate {
 
         System.out.println("Usao u GivePenaltyPointService");
 
-        String username = this.identityService.getCurrentAuthentication().getUserId();
-        Reader betaReader = (Reader) userService.findByUsername(username);
-        if(betaReader == null)
-        {
-            System.out.println("Nije nasao Reader-a");
-            return;
+        BetaReaderDTO betaReader =  (BetaReaderDTO) delegateExecution.getVariable("betaReader");
+        Reader reader = (Reader) userService.findByUsername(betaReader.getUsername());
+
+        reader.setPenaltyPoints(reader.getPenaltyPoints() + 1);
+        Reader saved = readerService.saveReader(reader);
+
+        if(saved.getPenaltyPoints() > 4) {
+            saved.setBetaReader(false);
+            readerService.saveReader(saved);
+
+            String subject = "Beta-Reader status loss";
+            String text = "Hello " + saved.getFirstName() + " " + saved.getLastName() + ",\n\nYou" +
+                    "'ve lost your beta-reader status, because you haven got five penalty points." +
+                    "Beta-reader status cannot be restored." +
+                    "\n\nBest regards,\nLiterary association";
+
+            emailService.sendEmail(saved.getEmail(), subject, text);
         }
 
-        betaReader.setPenaltyPoints(betaReader.getPenaltyPoints() + 1);
-        Reader saved = readerService.saveReader(betaReader);
-
-        delegateExecution.setVariable("penaltyPoints", saved.getPenaltyPoints());
     }
 }
