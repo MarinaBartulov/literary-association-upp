@@ -40,4 +40,8 @@ public class Manuscript {
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Lecturer lecturer;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
 }

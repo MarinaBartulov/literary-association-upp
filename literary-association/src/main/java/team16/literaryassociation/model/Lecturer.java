@@ -19,4 +19,7 @@ public class Lecturer extends User {
 
     @OneToMany(mappedBy = "lecturer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Manuscript> manuscripts = new HashSet<>();
+
+    @OneToMany(mappedBy = "lecturer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Book> book = new HashSet<>();
 }
