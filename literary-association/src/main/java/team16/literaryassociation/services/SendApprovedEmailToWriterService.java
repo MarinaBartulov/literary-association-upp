@@ -24,11 +24,20 @@ public class SendApprovedEmailToWriterService implements JavaDelegate {
         User user = this.userService.findByUsername(username);
 
         String text = "Hello " + user.getFirstName() + " " + user.getLastName() + ",\n\nWe are pleased to inform you that your membership application has been accepted" +
-                " by our board members."
+                " by our board members.\n In order to confirm your membership you need to pay for membership fee, or else your application will be rejected."
                 + "\n\nBest regards,\nLiterary association";
 
         String subject = "Literary association membership application.";
 
         emailService.sendEmail(user.getEmail(), subject, text);
+
+        // u slucaju da ne plati na vreme clanarinu
+        text = "Hello " + user.getFirstName() + " " + user.getLastName() + ",\n\nYour deadline for paying membership fee has expired." +
+                "\n Your membership application has been rejected. \n Don't contact us ever again!!!1" +
+                "\n\nBest regards,\nLiterary association";
+
+        execution.setVariable("email", user.getEmail());
+        execution.setVariable("emailSubject", subject);
+        execution.setVariable("emailText", text);
     }
 }

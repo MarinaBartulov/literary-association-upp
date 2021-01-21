@@ -22,13 +22,13 @@ public class BoardMemberController {
 
     @GetMapping(value = "/membershipApplications")
     public ResponseEntity<?> getAllMembershipApplications(){
-        List<MembershipApplicationDTO> membershipApplicationsDTO = membershipApplicationService.getAllActiveMembershipApplicationsDTO();
+        List<MembershipApplicationDTO> membershipApplicationsDTO = membershipApplicationService.getAllMembershipApplicationsDTO();
         return new ResponseEntity<>(membershipApplicationsDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/membershipApplication/{id}")
-    public ResponseEntity<?> getMembershipApplication(@PathVariable Long id){
-        MembershipApplicationInfoDTO membershipApplicationInfoDTO = membershipApplicationService.getMembershipApplicationInfoDTO(id);
+    @GetMapping(value = "/membershipApplication/{processId}")
+    public ResponseEntity<?> getMembershipApplication(@PathVariable String processId){
+        MembershipApplicationInfoDTO membershipApplicationInfoDTO = membershipApplicationService.getMembershipApplicationInfoDTO(processId);
         return new ResponseEntity<>(membershipApplicationInfoDTO, HttpStatus.OK);
     }
 }

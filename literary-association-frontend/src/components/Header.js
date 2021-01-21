@@ -143,7 +143,7 @@ const Header = () => {
           <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
             Shopping cart
           </Button>
-          {loggedIn && (
+          {loggedIn && role !== "ROLE_BOARD_MEMBER" && (
             <Button className="ml-2" variant="link" onClick={goToAllTasks}>
               My tasks
             </Button>
@@ -159,7 +159,7 @@ const Header = () => {
               variant="link"
               onClick={goToBoardMemberPanel}
             >
-              Board Member
+              My Tasks
             </Button>
           )}
           {loggedIn && (

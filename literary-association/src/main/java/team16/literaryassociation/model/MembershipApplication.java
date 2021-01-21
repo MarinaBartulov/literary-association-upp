@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,23 +21,11 @@ public class MembershipApplication {
     @Column
     private boolean approved;
 
-    @Column(nullable=false)
-    private boolean active;
-
-    @Column(nullable=false)
-    private Integer moreMaterialRequested;
-
-    @Column
-    private LocalDateTime deadline;
-
     @Column
     private Double price;
 
     @Column(nullable=false)
     private boolean paid;
-
-    @Column
-    private LocalDateTime paymentDate;
 
     @Column
     private String processId;
@@ -57,13 +44,10 @@ public class MembershipApplication {
     private Set<LiteraryWork> literaryWorks = new HashSet<>();
 
     public MembershipApplication(Writer writer, String processId){
-        this.active = true;
-        this.moreMaterialRequested = 0;
+        this.approved = false;
         this.processId = processId;
-        //deadline
-        //price
+        this.price = 10.0;
         this.paid = false;
-        //paymentDate
         this.writer = writer;
     }
 }

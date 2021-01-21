@@ -22,6 +22,7 @@ import GiveOpinion from "./components/GiveOpinion";
 import NewBook from "./components/NewBook";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
+import WriterMoreMaterialNeeded from "./components/WriterMoreMaterialNeeded";
 
 function App() {
   return (
@@ -97,11 +98,14 @@ function App() {
             <Route exact path="/boardMember">
               <BoardMemberPanel />
             </Route>
-            <Route exact path="/membershipApplication/:id/:processId">
+            <Route exact path="/membershipApplication/:taskId/:processId">
               <MembershipApplication />
             </Route>
             <Route exact path="/giveOpinion/:processId/:taskId">
               <GiveOpinion />
+            </Route>
+            <Route exact path="/moreMaterialNeeded/:processId">
+              <WriterMoreMaterialNeeded />
             </Route>
           </Switch>
         </div>

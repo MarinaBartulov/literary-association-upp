@@ -67,6 +67,8 @@ public class SaveOpinionAndCommentService implements JavaDelegate {
 
         Comment comment = new Comment();
         comment.setContent((String) map.get("comment"));
+        comment.setMembershipApplication(membershipApplication);
+        comment.setBoardMember(boardMember);
 
         boardOpinionService.save(boardOpinion);
         commentService.save(comment);
