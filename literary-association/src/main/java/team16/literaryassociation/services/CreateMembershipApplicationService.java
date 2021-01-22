@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,19 @@ public class CreateMembershipApplicationService implements JavaDelegate {
         Long userId = (Long) execution.getVariable("user_id");
         Writer writer = (Writer)userService.getOne(userId);
 
+        if(writer== null)
+        {
+            throw new BpmnError("CREATING_MEMBERSHIP_APPLICATION_FAILED", "Creating membership application failed.");
+        }
+
         String processId = execution.getProcessInstanceId();
-        MembershipApplication membershipApplication = membershipApplicationService.save(new MembershipApplication(writer, processId));
+        MembershipApplication membershipApplication = null;
+        try{
+            membershipApplication = membershipApplicationService.save(new MembershipApplication(writer, processId));
+        }catch (Exception e){
+            throw new BpmnError("CREATING_MEMBERSHIP_APPLICATION_FAILED", "Creating membership application failed.");
+        }
+
         execution.setVariable("membership_application_id", membershipApplication.getId());
     }
 }
