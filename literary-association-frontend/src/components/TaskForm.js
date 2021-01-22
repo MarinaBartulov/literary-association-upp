@@ -202,6 +202,7 @@ const TaskForm = () => {
     for (let f in data) {
       sendData.push({ fieldId: f, fieldValue: data[f] });
     }
+    console.log("sendData");
     console.log(sendData);
 
     try {
@@ -422,16 +423,16 @@ const TaskForm = () => {
                       valueField="id"
                       onChange={(values) => {
                         if (properties.multiselect !== undefined) {
-                          console.log(values.map((v) => v.name));
+                          console.log(values.map((v) => v.id)); 
                           setData((prevState) => ({
                             ...prevState,
-                            [formField.id]: values.map((v) => v.name),
+                            [formField.id]: values.map((v) => v.id),  //ovde je pisalo v.name
                           }));
                         } else {
-                          console.log(values[0].name);
+                          console.log(values[0].id);  //ovde je pisalo values[0].name
                           setData((prevState) => ({
                             ...prevState,
-                            [formField.id]: values[0].name,
+                            [formField.id]: values[0].id,
                           }));
                         }
                       }}
