@@ -93,7 +93,7 @@ public class SaveBookAndSendToIndexingService implements JavaDelegate {
         book.setLecturer(lecturer);
 
         String publisher = (String) map.get("publisher");
-        Merchant merchant = merchantService.findOneByMerchantId(publisher);
+        Merchant merchant = merchantService.findByEmail(publisher);
         if(merchant == null) {
             System.out.println("Nije nasao merchant");
             throw new BpmnError("BOOK_SAVING_FAILED", "Invalid merchant.");

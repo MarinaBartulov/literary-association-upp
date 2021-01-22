@@ -353,15 +353,6 @@
       </bpmn:boundaryEvent>
       <bpmn:sequenceFlow id="Flow_1wcg5al" sourceRef="Event_05rbgbs" targetRef="Task_Give_Penalty_Point" />
       <bpmn:sequenceFlow id="Flow_00f1w34" sourceRef="Task_Send_Email_6" targetRef="Event_14y64su" />
-      <bpmn:boundaryEvent id="Event_1a4i8kp" name="Comment saving failed" attachedToRef="Task_Save_Comment">
-        <bpmn:outgoing>Flow_1mgapwp</bpmn:outgoing>
-        <bpmn:errorEventDefinition id="ErrorEventDefinition_1673wvb" camunda:errorCodeVariable="COMMENT_SAVING_FAILED" />
-      </bpmn:boundaryEvent>
-      <bpmn:sequenceFlow id="Flow_1mgapwp" sourceRef="Event_1a4i8kp" targetRef="Event_1hxk78u" />
-      <bpmn:endEvent id="Event_1hxk78u">
-        <bpmn:incoming>Flow_1mgapwp</bpmn:incoming>
-        <bpmn:errorEventDefinition id="ErrorEventDefinition_0l93o44" />
-      </bpmn:endEvent>
     </bpmn:subProcess>
     <bpmn:sequenceFlow id="Flow_1y1krxs" sourceRef="Task_Save_Chosen_BetaReaders" targetRef="Activity_0de2y6e" />
     <bpmn:sequenceFlow id="Flow_16082ng" sourceRef="Activity_0de2y6e" targetRef="Task_Update_Manuscript" />
@@ -492,7 +483,7 @@
               <camunda:property id="readonly" value="readonly" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="lecturerApproval" label="Need more changes?" type="boolean" />
+          <camunda:formField id="lecturerApproval" label="Accept?" type="boolean" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_13pgr9j</bpmn:incoming>
@@ -565,6 +556,14 @@
               <camunda:property id="readonly" value="readonly" />
             </camunda:properties>
           </camunda:formField>
+          <camunda:formField id="pdfManuscript" label="Upload manuscript" type="string">
+            <camunda:properties>
+              <camunda:property id="file" value="file" />
+            </camunda:properties>
+            <camunda:validation>
+              <camunda:constraint name="required" config="required" />
+            </camunda:validation>
+          </camunda:formField>
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_16u2qgh</bpmn:incoming>
@@ -626,6 +625,7 @@
           <camunda:formField id="synopsis" label="Synopsis" type="string" defaultValue="${synopsis}">
             <camunda:properties>
               <camunda:property id="readonly" value="readonly" />
+              <camunda:property id="text_area" value="text_area" />
             </camunda:properties>
           </camunda:formField>
           <camunda:formField id="ISBN" label="ISBN" type="string" />
@@ -638,78 +638,6 @@
       <bpmn:incoming>Flow_1md5jdt</bpmn:incoming>
       <bpmn:outgoing>Flow_0xey77c</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:boundaryEvent id="Event_1sieljr" name="Book saving failed" attachedToRef="Task_Send_To_Indexing">
-      <bpmn:outgoing>Flow_105qr28</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_1nl9vda" camunda:errorCodeVariable="BOOK_SAVING_FAILED" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_105qr28" sourceRef="Event_1sieljr" targetRef="Event_0ow2d97" />
-    <bpmn:endEvent id="Event_0ow2d97">
-      <bpmn:incoming>Flow_105qr28</bpmn:incoming>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_0sznunn" />
-    </bpmn:endEvent>
-    <bpmn:boundaryEvent id="Event_1tzci50" name="Saving editor&#39;s decision failed" attachedToRef="Task_Save_Editor_Decision">
-      <bpmn:outgoing>Flow_0z8vs92</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_1rxm935" camunda:errorCodeVariable="FINAL_EDITOR_DECISION_FAILED" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_0z8vs92" sourceRef="Event_1tzci50" targetRef="Event_0kidvsf" />
-    <bpmn:endEvent id="Event_0kidvsf">
-      <bpmn:incoming>Flow_0z8vs92</bpmn:incoming>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_01as5ho" />
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0c4staw" sourceRef="Event_0yv1lj9" targetRef="Event_1i0occ8" />
-    <bpmn:boundaryEvent id="Event_0yv1lj9" name="Saving manuscript failed" attachedToRef="Task_Save_Edited_Manuscript">
-      <bpmn:outgoing>Flow_0c4staw</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_1j2cn6r" camunda:errorCodeVariable="MANUSCRIPT_SAVING_FAILED" />
-    </bpmn:boundaryEvent>
-    <bpmn:endEvent id="Event_1i0occ8">
-      <bpmn:incoming>Flow_0c4staw</bpmn:incoming>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_0mml021" />
-    </bpmn:endEvent>
-    <bpmn:boundaryEvent id="Event_0rbrf0n" name="Saving manuscript failed" attachedToRef="Task_Save_Uploaded_Work_2">
-      <bpmn:outgoing>Flow_12lor40</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_0cxacub" camunda:errorCodeVariable="MANUSCRIPT_SAVING_FAILED" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_12lor40" sourceRef="Event_0rbrf0n" targetRef="Event_03app1v" />
-    <bpmn:endEvent id="Event_03app1v">
-      <bpmn:incoming>Flow_12lor40</bpmn:incoming>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_13l0cqx" />
-    </bpmn:endEvent>
-    <bpmn:boundaryEvent id="Event_19elosm" name="Saving manuscript failed" attachedToRef="Task_Save_Uploaded_Work">
-      <bpmn:outgoing>Flow_0ytk9vk</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_0rm4n3p" camunda:errorCodeVariable="MANUSCRIPT_SAVING_FAILED" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_0ytk9vk" sourceRef="Event_19elosm" targetRef="Event_1xz5kru" />
-    <bpmn:endEvent id="Event_1xz5kru">
-      <bpmn:incoming>Flow_0ytk9vk</bpmn:incoming>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_0z214df" />
-    </bpmn:endEvent>
-    <bpmn:boundaryEvent id="Event_0wlnp32" name="Lecturer choosing failed" attachedToRef="Task_Choose_Lecturer">
-      <bpmn:outgoing>Flow_0q7u557</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_0p1maoi" camunda:errorCodeVariable="LECTURER_CHOOSING_FAILED" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_0q7u557" sourceRef="Event_0wlnp32" targetRef="Event_02gechj" />
-    <bpmn:endEvent id="Event_02gechj">
-      <bpmn:incoming>Flow_0q7u557</bpmn:incoming>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_1ivxj0l" />
-    </bpmn:endEvent>
-    <bpmn:boundaryEvent id="Event_159rqwn" name="Saving manuscript failed" attachedToRef="Task_Save_Updated_Manuscript">
-      <bpmn:outgoing>Flow_03w87xp</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_072565f" camunda:errorCodeVariable="MANUSCRIPT_SAVING_FAILED" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_03w87xp" sourceRef="Event_159rqwn" targetRef="Event_11ugbqa" />
-    <bpmn:endEvent id="Event_11ugbqa">
-      <bpmn:incoming>Flow_03w87xp</bpmn:incoming>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_1j6ed2b" />
-    </bpmn:endEvent>
-    <bpmn:boundaryEvent id="Event_1qvsid2" name="Saving beta-readers failed" attachedToRef="Task_Save_Chosen_BetaReaders">
-      <bpmn:outgoing>Flow_1p36c3s</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_17arwy7" camunda:errorCodeVariable="BETA_READER_SAVING_FAILED" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_1p36c3s" sourceRef="Event_1qvsid2" targetRef="Event_0sykdky" />
-    <bpmn:endEvent id="Event_0sykdky">
-      <bpmn:incoming>Flow_1p36c3s</bpmn:incoming>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_1clvs2e" />
-    </bpmn:endEvent>
     <bpmn:textAnnotation id="TextAnnotation_19rz8tp">
       <bpmn:text>Postavi se procesna varijabla chosenEditor</bpmn:text>
     </bpmn:textAnnotation>
@@ -1057,39 +985,6 @@
         <di:waypoint x="8230" y="297" />
         <di:waypoint x="8340" y="297" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_105qr28_di" bpmnElement="Flow_105qr28">
-        <di:waypoint x="8390" y="239" />
-        <di:waypoint x="8390" y="188" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0z8vs92_di" bpmnElement="Flow_0z8vs92">
-        <di:waypoint x="7760" y="239" />
-        <di:waypoint x="7760" y="188" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0c4staw_di" bpmnElement="Flow_0c4staw">
-        <di:waypoint x="7670" y="508" />
-        <di:waypoint x="7670" y="552" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_12lor40_di" bpmnElement="Flow_12lor40">
-        <di:waypoint x="6910" y="239" />
-        <di:waypoint x="6910" y="188" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0ytk9vk_di" bpmnElement="Flow_0ytk9vk">
-        <di:waypoint x="6440" y="239" />
-        <di:waypoint x="6440" y="188" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0q7u557_di" bpmnElement="Flow_0q7u557">
-        <di:waypoint x="6060" y="355" />
-        <di:waypoint x="6060" y="402" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_03w87xp_di" bpmnElement="Flow_03w87xp">
-        <di:waypoint x="5460" y="571" />
-        <di:waypoint x="5460" y="518" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1p36c3s_di" bpmnElement="Flow_1p36c3s">
-        <di:waypoint x="4120" y="678" />
-        <di:waypoint x="4120" y="740" />
-        <di:waypoint x="4038" y="740" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="279" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -1198,30 +1093,6 @@
       <bpmndi:BPMNShape id="Activity_1sy5t2x_di" bpmnElement="Task_Send_To_Indexing">
         <dc:Bounds x="8340" y="257" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_05he2qt_di" bpmnElement="Event_0ow2d97">
-        <dc:Bounds x="8372" y="152" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1dmzmok_di" bpmnElement="Event_0kidvsf">
-        <dc:Bounds x="7742" y="152" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0pralc3_di" bpmnElement="Event_1i0occ8">
-        <dc:Bounds x="7652" y="552" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_143s1hr_di" bpmnElement="Event_03app1v">
-        <dc:Bounds x="6892" y="152" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1gyd2m7_di" bpmnElement="Event_1xz5kru">
-        <dc:Bounds x="6422" y="152" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1iva6fd_di" bpmnElement="Event_02gechj">
-        <dc:Bounds x="6042" y="402" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1laosdc_di" bpmnElement="Event_11ugbqa">
-        <dc:Bounds x="5442" y="482" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_18z32g1_di" bpmnElement="Event_0sykdky">
-        <dc:Bounds x="4002" y="722" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0de2y6e_di" bpmnElement="Activity_0de2y6e" isExpanded="true">
         <dc:Bounds x="4280" y="490" width="660" height="430" />
       </bpmndi:BPMNShape>
@@ -1250,10 +1121,6 @@
         <di:waypoint x="4356" y="650" />
         <di:waypoint x="4440" y="650" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1mgapwp_di" bpmnElement="Flow_1mgapwp">
-        <di:waypoint x="4690" y="592" />
-        <di:waypoint x="4690" y="538" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_01iw7qn_di" bpmnElement="Event_01iw7qn">
         <dc:Bounds x="4320" y="632" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -1272,17 +1139,8 @@
       <bpmndi:BPMNShape id="Event_14y64su_di" bpmnElement="Event_14y64su">
         <dc:Bounds x="4822" y="632" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_00m8ydf_di" bpmnElement="Event_1hxk78u">
-        <dc:Bounds x="4672" y="502" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1s5xu1w_di" bpmnElement="Event_05rbgbs">
         <dc:Bounds x="4472" y="672" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0d1b6qw_di" bpmnElement="Event_1a4i8kp">
-        <dc:Bounds x="4672" y="592" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="4698" y="556" width="83" height="27" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0rs10bk_di" bpmnElement="Task_Update_Manuscript">
         <dc:Bounds x="5150" y="589" width="100" height="80" />
@@ -1414,54 +1272,6 @@
         <di:waypoint x="7138" y="257" />
         <di:waypoint x="7133" y="184" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Event_1cz9y12_di" bpmnElement="Event_1sieljr">
-        <dc:Bounds x="8372" y="239" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="8395" y="213" width="90" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0w6cyp6_di" bpmnElement="Event_1tzci50">
-        <dc:Bounds x="7742" y="239" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="7764" y="206" width="72" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_03e8u7e_di" bpmnElement="Event_0yv1lj9">
-        <dc:Bounds x="7652" y="472" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="7678" y="506" width="84" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1dld9vl_di" bpmnElement="Event_0rbrf0n">
-        <dc:Bounds x="6892" y="239" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="6818" y="206" width="84" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ayp3dz_di" bpmnElement="Event_19elosm">
-        <dc:Bounds x="6422" y="239" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="6348" y="206" width="84" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ivn2er_di" bpmnElement="Event_0wlnp32">
-        <dc:Bounds x="6042" y="319" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="6066" y="366" width="88" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0a00rz9_di" bpmnElement="Event_159rqwn">
-        <dc:Bounds x="5442" y="571" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="5468" y="536" width="84" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0wnhsvy_di" bpmnElement="Event_1qvsid2">
-        <dc:Bounds x="4102" y="642" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="4126" y="691" width="67" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
