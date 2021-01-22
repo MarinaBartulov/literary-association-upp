@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,16 @@ public class SaveWritersRejectionService implements JavaDelegate {
 
         String username = (String) execution.getVariable("username");
         User user = this.userService.findByUsername(username);
+        if(user == null)
+        {
+            throw new BpmnError("WRITER_REJECTION_FAILED", "Writer not found.");
+        }
+
         user.setEnabled(false);
-        userService.saveUser(user);
+        User savedUser = userService.saveUser(user);
+        if(savedUser == null)
+        {
+            throw new BpmnError("WRITER_REJECTION_FAILED", "Error saving user");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,16 @@ public class FinishWriterRegistrationService implements JavaDelegate {
 
         Long id = (Long)execution.getVariable("membership_application_id");
         MembershipApplication membershipApplication = membershipApplicationService.getOne(id);
+        if(membershipApplication == null)
+        {
+            throw new BpmnError("WRITER_REGISTRATION_FINISH_FAILED", "Membership application not found.");
+        }
         membershipApplication.setApproved(true);
         membershipApplication.setPaid(true);
-        membershipApplicationService.save(membershipApplication);
+        MembershipApplication membershipApplicationSaved = membershipApplicationService.save(membershipApplication);
+        if(membershipApplicationSaved == null)
+        {
+            throw new BpmnError("WRITER_REGISTRATION_FINISH_FAILED", "Error saving membership application.");
+        }
     }
 }

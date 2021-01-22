@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +34,26 @@ public class SaveLiteraryWorkService implements JavaDelegate {
         if(membershipApplication == null)
         {
             System.out.println("Nije nasao MembershipApplication");
-            return;
+            throw new BpmnError("SAVE_LITERARY_WORK_FAILED", "Membership application not found.");
         }
 
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
         System.out.println("Velicina formData: "+ formData.size() );
 
         int i = 0;
-        for(FormSubmissionDTO dto : formData)
-        {
+        for(FormSubmissionDTO dto : formData) {
             System.out.println("Pravi Literary Work, brojac:" + i);
-            String title = (String)dto.getFieldValue();
-            String path = (String)execution.getVariable("pdfFileLocation"+i);
-            String url = (String)execution.getVariable("url"+i);
+            String title = (String) dto.getFieldValue();
+            String path = (String) execution.getVariable("pdfFileLocation" + i);
+            String url = (String) execution.getVariable("url" + i);
 
             LiteraryWork literaryWork = new LiteraryWork(title, path, url);
             literaryWork.setMembershipApplication(membershipApplication);
-            literaryWorkService.save(literaryWork);
+            LiteraryWork literaryWorkSaved = literaryWorkService.save(literaryWork);
+            if (literaryWorkSaved == null)
+            {
+                throw new BpmnError("SAVE_LITERARY_WORK_FAILED", "Literary work not created.");
+            }
             i++;
         }
     }
