@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,19 @@ public class SaveManuscriptService implements JavaDelegate {
         Long bookRequestId = (Long) execution.getVariable("bookRequestId");
         String pdfManuscript = (String) execution.getVariable("pdfManuscript"); //putanja do fajla
         BookRequest br = this.bookRequestService.findById(bookRequestId);
+        if(br == null){
+            throw new BpmnError("SAVING_MANUSCRIPT_FAILED");
+        }
         Manuscript m = new Manuscript();
         m.setPdf(uploadFolder + execution.getProcessInstanceId() + "/" +pdfManuscript);
         m.setBookRequest(br);
         m.setOriginal(false);
         m.setAccepted(false);
-        this.manuscriptService.save(m);
+        try {
+            this.manuscriptService.save(m);
+        }catch(Exception e){
+            throw new BpmnError("SAVING_MANUSCRIPT_FAILED");
+        }
         execution.setVariable("manuscriptId", m.getId());
 
         //ovde se jos odradi ono deponovanje u sistem za plagijarizam

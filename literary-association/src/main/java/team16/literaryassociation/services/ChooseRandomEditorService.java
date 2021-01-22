@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,16 @@ public class ChooseRandomEditorService implements JavaDelegate {
 
         Long bookRequestId = (Long) execution.getVariable("bookRequestId");
         BookRequest br = this.bookRequestService.findById(bookRequestId);
+        if(br == null){
+            throw new BpmnError("CHOOSING_RANDOM_EDITOR_FAILED");
+        }
         Editor editor = this.editorService.findRandomEditor();
         br.setEditor(editor);
-        this.bookRequestService.save(br);
+        try {
+            this.bookRequestService.save(br);
+        }catch(Exception e){
+            throw new BpmnError("CHOOSING_RANDOM_EDITOR_FAILED");
+        }
         execution.setVariable("chosenEditor", editor.getUsername());
 
         //slanje email-a editoru
