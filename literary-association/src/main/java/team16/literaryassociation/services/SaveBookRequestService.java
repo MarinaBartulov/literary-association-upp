@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,17 @@ public class SaveBookRequestService implements JavaDelegate {
         Genre genre = this.genreService.findByName(genreName);
         br.setGenre(genre);
         String username = (String) execution.getVariable("writer");
-        Writer writer = this.writerService.findByUsername(username);
+        Writer writer  = this.writerService.findByUsername(username);
+        if(writer == null){
+            throw new BpmnError("SAVING_BOOK_REQUEST_FAILED");
+        }
         br.setWriter(writer);
-        this.bookRequestService.save(br);
-        execution.setVariable("bookRequestId", br.getId());
-
+        try {
+            this.bookRequestService.save(br);
+            execution.setVariable("bookRequestId", br.getId());
+        }catch(Exception e){
+            throw new BpmnError("SAVING_BOOK_REQUEST_FAILED");
+        }
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {

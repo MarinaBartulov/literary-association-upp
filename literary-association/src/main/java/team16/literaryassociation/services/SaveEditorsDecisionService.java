@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,18 @@ public class SaveEditorsDecisionService implements JavaDelegate {
         String reasonForRejection = (String) execution.getVariable("reasonForRejection");
         Long bookRequestId = (Long) execution.getVariable("bookRequestId");
         BookRequest br = this.bookRequestService.findById(bookRequestId);
+        if(br == null){
+            throw new BpmnError("SAVING_EDITOR_DECISION_FAILED");
+        }
         br.setAccepted(accept);
         if(!accept){
             br.setReasonForRejection(reasonForRejection);
         }
-        this.bookRequestService.save(br);
+        try {
+            this.bookRequestService.save(br);
+        }catch(Exception e){
+            throw new BpmnError("SAVING_EDITOR_DECISION_FAILED");
+        }
 
         execution.setVariable("email", br.getWriter().getEmail());
         String subject = "";

@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class SaveManuscriptIsAcceptedService implements JavaDelegate {
 
         Long manuscriptId = (Long) execution.getVariable("manuscriptId");
         Manuscript manuscript = this.manuscriptService.findById(manuscriptId);
+        if(manuscript == null){
+            throw new BpmnError("SAVING_MANUSCRIPT_ACCEPTED_FAILED");
+        }
         boolean accept = (boolean) execution.getVariable("accept");
         manuscript.setAccepted(accept);
 
@@ -30,7 +34,11 @@ public class SaveManuscriptIsAcceptedService implements JavaDelegate {
             manuscript.setReasonForRejection(reasonForRejection);
         }
 
-        this.manuscriptService.save(manuscript);
+        try {
+            this.manuscriptService.save(manuscript);
+        }catch(Exception e){
+            throw new BpmnError("SAVING_MANUSCRIPT_ACCEPTED_FAILED");
+        }
 
         if(!accept){
             System.out.println("Salje se mejl da je odbijen manuscript");
