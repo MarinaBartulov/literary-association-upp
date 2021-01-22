@@ -45,14 +45,14 @@ public class SaveChosenBetaReadersService implements JavaDelegate {
         if(manuscript == null)
         {
             System.out.println("Nije nasao Manuscript");
-            throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
+            throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding manuscript failed.");
         }
 
         List<String> betaReaders = (List<String>) map.get("betaReaders");
         for (String betaReader : betaReaders) {
             Reader r = this.readerService.findById(Long.parseLong(betaReader));
             if(r == null) {
-                throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
+                throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
             }
             manuscript.getBetaReaders().add(r);
         }
