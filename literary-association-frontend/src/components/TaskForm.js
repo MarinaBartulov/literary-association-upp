@@ -61,7 +61,7 @@ const TaskForm = () => {
         if (f.typeName === "string") {
           if (f.properties.file === undefined) {
             //ako to nije file, nego sve ostalo string
-            if (f.defaultValue == null) {
+            if (f.defaultValue === null) {
               dataTemp[`${f.id}`] = "";
             } else {
               dataTemp[`${f.id}`] = f.defaultValue;
@@ -69,7 +69,10 @@ const TaskForm = () => {
           } else {
             //ako jeste file
             //default value ce sadrzati naziv jednog fajla ili ako je multiple moze i vise nazivFajla1|nazivFajla2|
-            if (f.defaultValue == null || f.properties.readOnly === undefined) {
+            if (
+              f.defaultValue === null ||
+              f.properties.readonly === undefined
+            ) {
               //ovo znaci da je ovaj form field za upload, i to naznacim u uploadFiles
               dataTemp[`${f.id}`] = ""; //ovde ce se smestiti nazivi fajl/fajlova koji ce se submit u formi
               uploadFilesTemp[`${f.id}`] = []; //ovde ce se smestiti uploadovani fajlovi za to neko odredjeno polje
