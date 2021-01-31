@@ -50,7 +50,7 @@ const Header = () => {
   const logout = () => {
     localStorage.setItem("token", null);
     localStorage.setItem("role", null);
-    history.push("/home");
+    //history.push("/home");
     setLoggedIn(false);
     history.push("/home");
   };
