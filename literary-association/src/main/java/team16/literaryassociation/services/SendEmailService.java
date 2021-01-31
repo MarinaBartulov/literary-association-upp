@@ -29,14 +29,14 @@ public class SendEmailService implements JavaDelegate {
 
         System.out.println("Uslo u EmailService");
 
-        List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
+        //List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
 
-        String username = "";
-        for(FormSubmissionDTO f: formData){
-            if(f.getFieldId().equals("username")){
-                username = (String)f.getFieldValue();
-            }
-        }
+        String username = (String) execution.getVariable("username");
+//        for(FormSubmissionDTO f: formData){
+//            if(f.getFieldId().equals("username")){
+//                username = (String)f.getFieldValue();
+//            }
+//        }
         User user = this.userService.findByUsername(username);
 
         String token = UUID.randomUUID().toString();

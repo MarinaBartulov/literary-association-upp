@@ -87,8 +87,11 @@ public class TaskController {
                 boolean globalError = (boolean) globalErrorObj;
                 System.out.println("Global error je " + globalError);
                 if(globalError){
+                    String globalErrorMessage = (String) runtimeService.getVariable(processInstanceId, "globalErrorMessage");
+                    System.out.println("Global error message je " + globalErrorMessage);
                     runtimeService.setVariable(processInstanceId, "globalError", false);
-                    return ResponseEntity.badRequest().body("Invalid data.");
+                    runtimeService.setVariable(processInstanceId, "globalErrorMessage", null);
+                    return ResponseEntity.badRequest().body(globalErrorMessage);
                 }
             }
         }
@@ -99,11 +102,13 @@ public class TaskController {
                 .processInstanceId(processInstanceId).singleResult();
 
         if (nextTask != null) {
+            System.out.println("Ima sledeci task");
             System.out.println("Doslo do kraja1");
             TaskFormData tfd = formService.getTaskFormData(nextTask.getId());
             TaskDTO taskDTO = new TaskDTO(nextTask.getId(),nextTask.getProcessInstanceId(),nextTask.getName(),nextTask.getAssignee(),tfd.getFormFields());
             return new ResponseEntity(taskDTO, HttpStatus.OK);
         } else {
+            System.out.println("Nema sledeci task");
             System.out.println("Doslo do kraja2");
             return new ResponseEntity(new TaskDTO(), HttpStatus.OK);
 

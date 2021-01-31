@@ -17,12 +17,10 @@ const Header = () => {
   const history = useHistory();
 
   const startReaderRegistration = async () => {
-    console.log("Registration starting...");
+    console.log("Reader registration started...");
     try {
       const response = await readerService.startReg();
-      history.push(
-        "/registrationReader/" + response.processId + "/" + response.taskId
-      );
+      history.push("/task/" + response.taskId);
     } catch (error) {
       if (error.response) {
         console.log("Error: " + JSON.stringify(error.response));
@@ -54,9 +52,6 @@ const Header = () => {
     localStorage.setItem("role", null);
     history.push("/home");
     setLoggedIn(false);
-    // toast.success("Logged Out Successfully", {
-    //   hideProgressBar: true,
-    // });
     history.push("/home");
   };
   const goToHomePage = () => {
@@ -80,7 +75,6 @@ const Header = () => {
     console.log("Publishing started...");
     try {
       const response = await bookRequestService.startBookPublishing();
-      //history.push("/newBook/" + response.processId + "/" + response.taskId);
       history.push("/task/" + response.taskId);
     } catch (error) {
       if (error.response) {
