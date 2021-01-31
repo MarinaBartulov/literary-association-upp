@@ -54,21 +54,16 @@ public class SaveReaderService implements JavaDelegate {
         newReader.setCountry((String) map.get("country"));
         newReader.setBetaReader((boolean) map.get("betaReader"));
 
-        List<Map<String, String>> genres = (List<Map<String, String>>) map.get("genres");
-        for (Map<String, String> genre : genres) {
-            Genre g = this.genreService.findById(Long.parseLong(genre.get("id")));
+        List<String> genres = (List<String>) map.get("genres");
+        for (String genre : genres) {
+            Genre g = this.genreService.findByName(genre);
             newReader.getGenres().add(g);
         }
 
-        if(newReader.isBetaReader()){
-            List<Map<String, String>> betaGenres = (List<Map<String, String>>) map.get("betaGenres");
-            for (Map<String, String> genre : betaGenres) {
-                Genre g = this.genreService.findById(Long.parseLong(genre.get("id")));
-                newReader.getBetaGenres().add(g);
-            }
-        }
+        newReader = readerService.saveReader(newReader);
 
-        if(readerService.saveReader(newReader) != null){
+        if(newReader != null){
+            execution.setVariable("readerId", newReader.getId());
             org.camunda.bpm.engine.identity.User cmdUser = identityService.newUser(newReader.getUsername());
             cmdUser.setEmail(newReader.getEmail());
             cmdUser.setFirstName(newReader.getFirstName());

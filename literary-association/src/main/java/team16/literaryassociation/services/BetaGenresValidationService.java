@@ -1,37 +1,52 @@
 package team16.literaryassociation.services;
 
+
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team16.literaryassociation.dto.FormSubmissionDTO;
+import team16.literaryassociation.services.interfaces.GenreService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class ValidateEditorsDecisionService implements JavaDelegate {
+public class BetaGenresValidationService implements JavaDelegate {
+
+    @Autowired
+    private GenreService genreService;
+
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
-        System.out.println("Uslo u validate editor's decision service");
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
         Map<String, Object> map = this.listFieldsToMap(formData);
-        boolean decisionIsValid = true;
+        boolean isValid = true;
+        String errorMsg = "";
 
-        boolean accept = (boolean )map.get("accept");
-        if(!accept) {
-            String reasonForRejection = (String) map.get("reasonForRejection");
-            if (reasonForRejection.trim().equals("")) {
-                decisionIsValid = false;
-                execution.setVariable("globalError", true);
-                execution.setVariable("globalErrorMessage", "Reason for rejection is required.");
+        List<String> betaGenres = (List<String>) map.get("betaGenres");
+        if(betaGenres.size() < 1){
+            isValid = false;
+            errorMsg += "At least one genre is required.";
+
+        }
+        for(String genre : betaGenres){
+            if(this.genreService.findByName(genre) == null){
+                isValid = false;
+                errorMsg += "Genre with name " + genre + " doesn't exist";
+                break;
             }
         }
 
-        execution.setVariable("decisionIsValid", decisionIsValid);
+        if(!isValid){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", errorMsg);
+        }
 
+        execution.setVariable("betaGenresValid", isValid);
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {
