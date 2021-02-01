@@ -56,9 +56,9 @@ public class SaveWriterService implements JavaDelegate {
         newWriter.setCity((String) map.get("city"));
         newWriter.setCountry((String) map.get("country"));
 
-        List<Map<String, String>> genres = (List<Map<String, String>>) map.get("genres");
-        for (Map<String, String> genre : genres) {
-            Genre g = this.genreService.findById(Long.parseLong(genre.get("id")));
+        List<String> genres = (List<String>) map.get("genres");
+        for (String genre : genres) {
+            Genre g = this.genreService.findByName(genre);
             newWriter.getGenres().add(g);
         }
 

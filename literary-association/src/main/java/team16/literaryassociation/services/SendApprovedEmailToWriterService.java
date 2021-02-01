@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;

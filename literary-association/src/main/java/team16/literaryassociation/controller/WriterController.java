@@ -1,6 +1,7 @@
 package team16.literaryassociation.controller;
 
 import org.camunda.bpm.engine.FormService;
+import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
@@ -10,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team16.literaryassociation.dto.StartProcessDTO;
+import team16.literaryassociation.model.MembershipApplication;
+import team16.literaryassociation.model.Writer;
+import team16.literaryassociation.services.interfaces.UserService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +30,12 @@ public class WriterController {
 
     @Autowired
     private FormService formService;
+
+    @Autowired
+    private IdentityService identityService;
+
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping(value = "/start-process-register")
@@ -69,6 +79,37 @@ public class WriterController {
         System.out.println("U get Upload LW Task Id: " + task.getId());
         StartProcessDTO sp = new StartProcessDTO(processId, task.getId());
         return new ResponseEntity(sp, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/membership-fee-payment")
+    public ResponseEntity<?> startMembershipFeePayment() {
+        System.out.println("Usao u membership fee payment");
+        String username = identityService.getCurrentAuthentication().getUserId();
+        Writer writer = (Writer) userService.findByUsername(username);
+        if(writer == null)
+        {
+            System.out.println("Nije nasao korisnika");
+            return new ResponseEntity("User not found",HttpStatus.BAD_REQUEST);
+        }
+        MembershipApplication membershipApplication = writer.getMembershipApplication();
+        if(membershipApplication == null)
+        {
+            System.out.println("Nije nasao membership application");
+            return new ResponseEntity("Membership application not found",HttpStatus.BAD_REQUEST);
+        }
+        if(membershipApplication.isPaid())
+        {
+            System.out.println("Membership application je vec placena");
+            return new ResponseEntity("Membership application already paid",HttpStatus.BAD_REQUEST);
+        }
+        String processId = membershipApplication.getProcessId();
+        if (processId == null)
+        {
+            System.out.println("Nije nasao processid");
+            return new ResponseEntity("Process not found",HttpStatus.BAD_REQUEST);
+        }
+        runtimeService.startProcessInstanceByKey("Pay_Membership_Fee_Process");
+        return new ResponseEntity("Membership application fee paid",HttpStatus.OK);
     }
 
 }

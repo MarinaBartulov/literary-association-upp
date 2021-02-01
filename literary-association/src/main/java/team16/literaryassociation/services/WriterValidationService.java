@@ -30,6 +30,7 @@ public class WriterValidationService implements JavaDelegate {
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
         Map<String, Object> map = this.listFieldsToMap(formData);
         boolean isValid = true;
+        String errorMsg = "";
 
         for(FormSubmissionDTO item: formData){
             System.out.println(item.getFieldId() + " : " + item.getFieldValue());
@@ -37,23 +38,31 @@ public class WriterValidationService implements JavaDelegate {
 
         if(userService.findByUsername((String)map.get("username")) != null){
             isValid = false;
+            errorMsg += "This username already exists. ";
         }
         if(!isValidEmailAddress((String) map.get("email"))) {
             isValid = false;
+            errorMsg += "Email is not valid. ";
         }
         if(!map.get("password").equals(map.get("confirmPassword"))){
             isValid = false;
+            errorMsg += "Passwords don't match. ";
         }
 
-        List<Map<String,String>> genres = (List<Map<String,String>>) map.get("genres");
+        List<String> genres = (List<String>) map.get("genres");
         if(genres.size() < 1){
             isValid = false;
+            errorMsg += "At least one genre is required. ";
         }
-        for(Map<String,String> genre : genres){
-            if(this.genreService.findById(Long.parseLong(genre.get("id"))) == null){
+        for(String genre : genres){
+            if(this.genreService.findByName(genre) == null){
                 isValid = false;
                 break;
             }
+        }
+        if(!isValid){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", errorMsg);
         }
 
         execution.setVariable("isValid", isValid);

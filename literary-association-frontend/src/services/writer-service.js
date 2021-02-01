@@ -24,6 +24,11 @@ class WriterService extends HttpService {
     );
     return response.data;
   };
+
+  membershipFeePayment = async () => {
+    const response = await this.client.get(ROUTES.MEMBERSHIP_FEE_PAYMENT);
+    return response.data;
+  };
 }
 
 export const writerService = new WriterService();
