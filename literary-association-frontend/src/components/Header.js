@@ -35,9 +35,7 @@ const Header = () => {
     console.log("Registration starting...");
     try {
       const response = await writerService.startReg();
-      history.push(
-        "/registrationWriter/" + response.processId + "/" + response.taskId
-      );
+      history.push(history.push("/task/" + response.taskId));
     } catch (error) {
       if (error.response) {
         console.log("Error: " + JSON.stringify(error.response));
@@ -50,7 +48,6 @@ const Header = () => {
   const logout = () => {
     localStorage.setItem("token", null);
     localStorage.setItem("role", null);
-    //history.push("/home");
     setLoggedIn(false);
     history.push("/home");
   };
@@ -137,7 +134,7 @@ const Header = () => {
           <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
             Shopping cart
           </Button>
-          {loggedIn && role !== "ROLE_BOARD_MEMBER" && (
+          {loggedIn && (
             <Button className="ml-2" variant="link" onClick={goToAllTasks}>
               My tasks
             </Button>
@@ -145,15 +142,6 @@ const Header = () => {
           {!loggedIn && (
             <Button className="ml-2" variant="link" onClick={goToLogin}>
               Login
-            </Button>
-          )}
-          {loggedIn && role === "ROLE_BOARD_MEMBER" && (
-            <Button
-              className="ml-2"
-              variant="link"
-              onClick={goToBoardMemberPanel}
-            >
-              My Tasks
             </Button>
           )}
           {loggedIn && (

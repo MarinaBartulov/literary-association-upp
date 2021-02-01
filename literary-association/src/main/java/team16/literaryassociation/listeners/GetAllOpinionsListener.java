@@ -25,7 +25,8 @@ public class GetAllOpinionsListener implements TaskListener {
                     HashMap<String, String> items = (HashMap<String, String>) f.getType().getInformation("values");
                     items.clear();
                     for(Opinion opinion : opinions){
-                        items.put(String.valueOf(opinion.ordinal()),opinion.name());
+                        //items.put(String.valueOf(opinion.ordinal()),opinion.name());
+                        items.put(opinion.name(),opinion.name());
                     }
                 }
             }

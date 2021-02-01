@@ -20,4 +20,5 @@ export const ROUTES = {
   GET_MEMBERSHIP_APPLICATIONS: "/boardMember/membershipApplications",
   GET_MEMBERSHIP_APPLICATION: "/boardMember/membershipApplication",
   BOOK_REQUEST_START_PUBLISHING: "/bookRequest/start-process-book-publishing",
+  MEMBERSHIP_FEE_PAYMENT: "/writer/membership-fee-payment",
 };

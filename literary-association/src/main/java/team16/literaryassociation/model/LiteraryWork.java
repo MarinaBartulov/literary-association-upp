@@ -22,16 +22,12 @@ public class LiteraryWork {
     @Column
     private String path;
 
-    @Column
-    private String downloadUrl;
-
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MembershipApplication membershipApplication;
 
-    public LiteraryWork(String title, String path, String downloadUrl)
+    public LiteraryWork(String title, String path)
     {
         this.title = title;
         this.path = path;
-        this.downloadUrl = downloadUrl;
     }
 }

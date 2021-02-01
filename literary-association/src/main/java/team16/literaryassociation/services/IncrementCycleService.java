@@ -27,7 +27,6 @@ public class IncrementCycleService implements JavaDelegate {
         User user = this.userService.findByUsername(username);
         String text = "Hello " + user.getFirstName() + " " + user.getLastName() + ",\n\nSome of the board members have asked you to give" +
                 "them more material, so that they can make their decision. You have two days to upload new work or else your membership application will be rejected.\n" +
-                "Use the following link: https://localhost:3000/moreMaterialNeeded/" + execution.getProcessInstanceId() +
                 "\n\nBest regards,\nLiterary association";
 
         String subject = "Literary association - Membership application";
