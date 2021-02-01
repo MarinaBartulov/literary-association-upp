@@ -16,12 +16,17 @@ const TaskForm = () => {
   const [taskName, setTaskName] = useState("");
   const [formFields, setFormFields] = useState([]);
   const [validated, setValidated] = useState(false);
-  const [enumValues, setEnumValues] = useState([]);
+  //const [enumValues, setEnumValues] = useState([]);
   const [data, setData] = useState({});
   const history = useHistory();
   const [downloadFiles, setDownloadFiles] = useState({}); //sadrzace linkove za download fajlova
   const [uploadFiles, setUploadFiles] = useState({}); //sadrzace uploadovane fajlove
   const [showForm, setShowForm] = useState(false);
+
+  //dodala
+  const [enumFields, setEnumFields] = useState({}); //ovde ce se nalaziti sve vrednosti za enume na formi
+  const [minSelectedItems, setMinSelectedItems] = useState({}); //ovde ce se nalaziti za polja koja su multiselect koliko minimalno mora da se selektuje
+  const [minSelectedFiles, setMinSelectedFiles] = useState({}); //ovde ce se nalaziti za polja koja su files i multiple koliko minimalno mora da se selektuje
 
   const getTask = async () => {
     try {
@@ -30,30 +35,33 @@ const TaskForm = () => {
       setTaskName(taskData.name);
       setProcessId(taskData.processId);
 
-      //inicijalnizacija polja
+      //inicijalnizacija enum polja
       const temp = [];
+      const enumFieldsTemp = {};
       for (let f of taskData.formFields) {
         if (f.typeName === "enum") {
           Object.keys(f.type.values).map((id) => {
-            console.log(f.type.value);
-            console.log(id);
             temp.push({ id: id, name: f.type.values[id] });
           });
-          break;
+          //break;
+          enumFieldsTemp[`${f.id}`] = temp;
         }
       }
-      console.log(temp);
-      setEnumValues(temp);
+      //console.log(temp);
+      //setEnumValues(temp);
+      setEnumFields(enumFieldsTemp);
 
       const dataTemp = {};
       const uploadFilesTemp = {};
       const downloadFilesTemp = {};
+      const minSelectedItemsTemp = {};
+      const minSelectedFilesTemp = {};
 
       for (let f of taskData.formFields) {
         if (f.typeName === "string") {
           if (f.properties.file === undefined) {
             //ako to nije file, nego sve ostalo string
-            if (f.defaultValue == null) {
+            if (f.defaultValue === null) {
               dataTemp[`${f.id}`] = "";
             } else {
               dataTemp[`${f.id}`] = f.defaultValue;
@@ -61,10 +69,21 @@ const TaskForm = () => {
           } else {
             //ako jeste file
             //default value ce sadrzati naziv jednog fajla ili ako je multiple moze i vise nazivFajla1|nazivFajla2|
-            if (f.defaultValue == null) {
+            if (
+              f.defaultValue === null ||
+              f.properties.readonly === undefined
+            ) {
               //ovo znaci da je ovaj form field za upload, i to naznacim u uploadFiles
               dataTemp[`${f.id}`] = ""; //ovde ce se smestiti nazivi fajl/fajlova koji ce se submit u formi
               uploadFilesTemp[`${f.id}`] = []; //ovde ce se smestiti uploadovani fajlovi za to neko odredjeno polje
+              if (f.properties.multiple !== undefined) {
+                //proverim da li ima minLengthFiles
+                if (f.properties.minLengthFiles !== undefined) {
+                  minSelectedFilesTemp[`${f.id}`] = parseInt(
+                    f.properties.minLengthFiles
+                  );
+                }
+              }
             } else {
               //ako je taj formField za download
               dataTemp[`${f.id}`] = f.defaultValue;
@@ -88,16 +107,27 @@ const TaskForm = () => {
         }
         if (f.typeName === "enum") {
           dataTemp[`${f.id}`] = [];
+          if (f.properties.multiselect !== undefined) {
+            if (f.properties.minLengthItems !== undefined) {
+              minSelectedItemsTemp[`${f.id}`] = parseInt(
+                f.properties.minLengthItems
+              );
+            }
+          }
         }
       }
 
       setData(dataTemp);
       setUploadFiles(uploadFilesTemp);
       setDownloadFiles(downloadFilesTemp);
+      setMinSelectedItems(minSelectedItemsTemp);
+      setMinSelectedFiles(minSelectedFilesTemp);
       console.log(dataTemp);
       console.log(data);
       console.log(uploadFilesTemp);
       console.log(downloadFilesTemp);
+      console.log(minSelectedItems);
+      console.log(minSelectedFiles);
     } catch (error) {
       if (error.response) {
         console.log("Error: " + JSON.stringify(error.response));
@@ -174,6 +204,21 @@ const TaskForm = () => {
 
     //prvo uploadujem sve fajlove
     //let filesPath = ""; // ovo putanje gde se cuvaju na backu, i to ce biti u polju kad se submituje
+
+    //prvo proverim da li ima dovoljno selektovanih fajlova
+    for (let f in uploadFiles) {
+      console.log("Uslo u proveru broja fajlova za uploadovanje");
+      console.log(minSelectedFiles);
+      if (minSelectedFiles[f] !== undefined) {
+        if (uploadFiles[f].length < minSelectedFiles[f]) {
+          toast.error("There are not enough selected files.", {
+            hideProgressBar: true,
+          });
+          return;
+        }
+      }
+    }
+    //ako ima za sva polja dovoljno uploadovanih onda uploadujem
     for (let f in uploadFiles) {
       console.log("Uslo u uploadovanje");
       for (let i = 0; i < uploadFiles[f].length; i++) {
@@ -199,7 +244,16 @@ const TaskForm = () => {
     }
 
     //zatim submitujem formu
+    console.log(minSelectedItems);
     for (let f in data) {
+      if (minSelectedItems[f] !== undefined) {
+        if (data[f].length < minSelectedItems[f]) {
+          toast.error("There are not enough selected values.", {
+            hideProgressBar: true,
+          });
+          return;
+        }
+      }
       sendData.push({ fieldId: f, fieldValue: data[f] });
     }
     console.log("sendData");
@@ -417,19 +471,19 @@ const TaskForm = () => {
                         (c) => c.name === "required"
                       )}
                       readOnly={formField.properties.readonly !== undefined}
-                      options={enumValues}
+                      options={enumFields[id]}
                       style={{ backgroundColor: "white", marginBottom: "1em" }}
                       labelField="name"
                       valueField="id"
                       onChange={(values) => {
                         if (properties.multiselect !== undefined) {
-                          console.log(values.map((v) => v.id)); 
+                          console.log(values.map((v) => v.id));
                           setData((prevState) => ({
                             ...prevState,
-                            [formField.id]: values.map((v) => v.id),  //ovde je pisalo v.name
+                            [formField.id]: values.map((v) => v.id), //ovde je pisalo v.name
                           }));
                         } else {
-                          console.log(values[0].id);  //ovde je pisalo values[0].name
+                          console.log(values[0].id); //ovde je pisalo values[0].name
                           setData((prevState) => ({
                             ...prevState,
                             [formField.id]: values[0].id,
