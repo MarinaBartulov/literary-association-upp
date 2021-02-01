@@ -21,4 +21,5 @@ export const ROUTES = {
   GET_MEMBERSHIP_APPLICATION: "/boardMember/membershipApplication",
   BOOK_REQUEST_START_PUBLISHING: "/bookRequest/start-process-book-publishing",
   MEMBERSHIP_FEE_PAYMENT: "/writer/membership-fee-payment",
+  START_PLAGIARSM_DETECTION: "/book/start-process-plagiarism-detection",
 };

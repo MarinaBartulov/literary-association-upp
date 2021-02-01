@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { readerService } from "../services/reader-service";
 import { writerService } from "../services/writer-service";
 import { bookRequestService } from "../services/book-request-service";
+import { bookService } from "../services/book-service";
 import { toast } from "react-toastify";
 
 const Header = () => {
@@ -83,6 +84,21 @@ const Header = () => {
     }
   };
 
+  const reportPlagiarism = async () => {
+    console.log("Plagiarism detection started...");
+    try {
+      const response = await bookService.startPlagiarsmDetection();
+      history.push("/task/" + response.taskId);
+    } catch (error) {
+      if (error.response) {
+        console.log("Error: " + JSON.stringify(error.response));
+      }
+      toast.error(error.response ? error.response.data : error.message, {
+        hideProgressBar: true,
+      });
+    }
+  };
+
   const goToAllTasks = () => {
     history.push("/allTasks");
   };
@@ -122,13 +138,22 @@ const Header = () => {
             </Button>
           )}
           {loggedIn && role === "ROLE_WRITER" && (
-            <Button
+            <div>
+              <Button
+                className="ml-2"
+                variant="link"
+                onClick={startBookPublishing}
+              >
+                Publish a book
+              </Button>
+              <Button
               className="ml-2"
               variant="link"
-              onClick={startBookPublishing}
+              onClick={reportPlagiarism}
             >
-              Publish a book
+              Report plagiarism
             </Button>
+          </div>
           )}
 
           <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
