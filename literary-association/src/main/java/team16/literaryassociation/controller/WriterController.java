@@ -70,17 +70,6 @@ public class WriterController {
         return ResponseEntity.ok().body("Account activation successful");
     }
 
-    @GetMapping(value = "/getTaskId/{processId}")
-    public ResponseEntity<?> getUploadLWTaskId(@PathVariable String processId) {
-
-        System.out.println("Usao u getUploadLWTaskId");
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processId).list();
-        Task task = tasks.get(0);
-        System.out.println("U get Upload LW Task Id: " + task.getId());
-        StartProcessDTO sp = new StartProcessDTO(processId, task.getId());
-        return new ResponseEntity(sp, HttpStatus.OK);
-    }
-
     @GetMapping(value = "/membership-fee-payment")
     public ResponseEntity<?> startMembershipFeePayment() {
         System.out.println("Usao u membership fee payment");
@@ -96,6 +85,11 @@ public class WriterController {
         {
             System.out.println("Nije nasao membership application");
             return new ResponseEntity("Membership application not found",HttpStatus.BAD_REQUEST);
+        }
+        if(membershipApplication.getApprovedForPaying() == null)
+        {
+            System.out.println("Membership application jos uvek nije odobrena");
+            return new ResponseEntity("Membership application not approved yet",HttpStatus.BAD_REQUEST);
         }
         if(membershipApplication.isPaid())
         {

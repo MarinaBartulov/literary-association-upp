@@ -42,14 +42,8 @@ public class SendEmailService implements JavaDelegate {
         String token = UUID.randomUUID().toString();
         this.verificationTokenService.createVerificationToken(user, token);
 
-        String confirmationUrl = "";
+        String confirmationUrl = "https://localhost:3000/registrationConfirmation/" + execution.getProcessInstanceId() + "/"  + token;
 
-        if (user instanceof Writer){
-            confirmationUrl = "https://localhost:3000/registrationConfirmation/writer/" + execution.getProcessInstanceId() + "/"  + token;
-        }
-        else {
-             confirmationUrl = "https://localhost:3000/registrationConfirmation/" + execution.getProcessInstanceId() + "/" + token;
-        }
         String text = "Hello " + user.getFirstName() + " " + user.getLastName() + ",\n\nPlease confirm your registration by clicking on the link below: " +
                 " \n" + confirmationUrl + "\n\nBest regards,\nLiterary association";
 

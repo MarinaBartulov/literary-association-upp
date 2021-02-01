@@ -144,15 +144,6 @@ const Header = () => {
               Login
             </Button>
           )}
-          {loggedIn && role === "ROLE_BOARD_MEMBER" && (
-            <Button
-              className="ml-2"
-              variant="link"
-              onClick={goToBoardMemberPanel}
-            >
-              Membership Applications
-            </Button>
-          )}
           {loggedIn && (
             <Button className="ml-2" variant="link" onClick={logout}>
               Logout

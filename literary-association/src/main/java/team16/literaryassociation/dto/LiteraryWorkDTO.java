@@ -16,13 +16,10 @@ public class LiteraryWorkDTO {
 
     private String path;
 
-    private String downloadUrl;
-
     public LiteraryWorkDTO(LiteraryWork literaryWork)
     {
         this.id = literaryWork.getId();
         this.title = literaryWork.getTitle();
         this.path = literaryWork.getPath();
-        this.downloadUrl = literaryWork.getDownloadUrl();
     }
 }

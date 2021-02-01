@@ -31,6 +31,7 @@ public class SendRejectedEmailToWriterService implements JavaDelegate {
         Long id = (Long)execution.getVariable("membership_application_id");
         MembershipApplication membershipApplication = membershipApplicationService.getOne(id);
         membershipApplication.setApproved(false);
+        membershipApplication.setApprovedForPaying(false);
         user.setEnabled(false);
         membershipApplicationService.save(membershipApplication);
 

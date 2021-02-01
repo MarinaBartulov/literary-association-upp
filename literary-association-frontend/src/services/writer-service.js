@@ -18,13 +18,6 @@ class WriterService extends HttpService {
     return response.data;
   };
 
-  getUploadLWTaskId = async (processId) => {
-    const response = await this.client.get(
-      ROUTES.WRITER_GET_TASK_ID + "/" + processId
-    );
-    return response.data;
-  };
-
   membershipFeePayment = async () => {
     const response = await this.client.get(ROUTES.MEMBERSHIP_FEE_PAYMENT);
     return response.data;
