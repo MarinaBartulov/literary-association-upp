@@ -165,7 +165,7 @@
     <bpmn:userTask id="Task_Manuscript_Is_Original" name="Is Manuscript Original?" camunda:assignee="${chosenEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfManuscript" label="Manuscript" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Manuscript" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
@@ -213,7 +213,7 @@
     <bpmn:userTask id="Task_Accept_Deny_Manuscript" name="Accept or Reject Manuscript" camunda:assignee="${chosenEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
@@ -311,7 +311,7 @@
       <bpmn:userTask id="Task_Leave_Comment_Form" name="Leave Comment Form" camunda:assignee="${betaReader.username}">
         <bpmn:extensionElements>
           <camunda:formData>
-            <camunda:formField id="pdfDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
+            <camunda:formField id="pdfForDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
               <camunda:properties>
                 <camunda:property id="file" value="file" />
                 <camunda:property id="readonly" value="readonly" />
@@ -371,7 +371,7 @@
     <bpmn:userTask id="Task_Update_Manuscript" name="Update Manuscript After Beta-Readers Comments" camunda:assignee="${writer}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
@@ -400,7 +400,7 @@
     <bpmn:userTask id="Task_More_Changes_Needed" name="More Changes Needed?" camunda:assignee="${chosenEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
@@ -427,7 +427,7 @@
     <bpmn:userTask id="Task_Lecturer_Upload_Form" name="Lecturer Upload Edited Manuscript" camunda:assignee="${lecturer}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Download manuscript" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
@@ -460,7 +460,7 @@
     <bpmn:userTask id="Task_Writer_Upload_Form" name="Writer Upload Edited Manuscript After Proofreading" camunda:assignee="${writer}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfDownload" label="Download proofread manuscript" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Download proofread manuscript" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
@@ -489,7 +489,7 @@
     <bpmn:userTask id="Task_Lecturer_Decision" name="Lecturer Decision After Writer&#39;s Update" camunda:assignee="${lecturer}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfDownload" label="Download updated manuscript" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Download updated manuscript" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
@@ -516,7 +516,7 @@
     <bpmn:userTask id="Task_Editor_Decision" name="Editor Decision" camunda:assignee="${chosenEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfDownload" label="Download manuscript after proofreading" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Download manuscript after proofreading" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
@@ -562,7 +562,7 @@
     <bpmn:userTask id="Task_Upload_Edited_Manuscript" name="Upload Edited Manuscript" camunda:assignee="${writer}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfDownload" label="Upload edited manuscript" type="string" defaultValue="${pdfDownload}">
+          <camunda:formField id="pdfForDownload" label="Upload edited manuscript" type="string" defaultValue="${pdfDownload}">
             <camunda:properties>
               <camunda:property id="file" value="file" />
               <camunda:property id="readonly" value="readonly" />
