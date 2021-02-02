@@ -32,8 +32,6 @@ public class TestService {
         // dobaviti MERCHANT_ID prodavca ovog LU-a ili ako imamo vise prodavaca u LU, onda prodavca onih proizvoda koji su izabrani
         Merchant merchant = merchantRepository.getOne(1L);
         System.out.println("Merchant: ");
-        System.out.println(merchant.getMerchantId());
-        System.out.println(merchant.getMerchantPassword());
         // cenu i valutu dobijam sa front-a iz korpe
         double price;
         try {
@@ -43,7 +41,7 @@ public class TestService {
         }
         ResponseEntity<OrderResponseDTO> response
                 = restTemplate.postForEntity(getEndpoint(),
-                new OrderDTO(null, merchant.getMerchantId(), merchant.getMerchantEmail(), merchant.getMerchantPassword(),
+                new OrderDTO(null, merchant.getMerchantEmail(),
                         dto.getCurrency(), price, merchant.getMerchantSuccessUrl(), merchant.getMerchantFailedUrl(),
                         merchant.getMerchantErrorUrl()), OrderResponseDTO.class);
         System.out.println(response.getBody().getOrderId());
@@ -61,10 +59,8 @@ public class TestService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         System.out.println("Merchant: ");
-        System.out.println(merchant.getMerchantId());
         System.out.println(merchant.getMerchantEmail());
         dto.setMerchantEmail(merchant.getMerchantEmail());
-        dto.setMerchantId(merchant.getMerchantId());
 
         HttpEntity<SubscriptionRequestDTO> request = new HttpEntity<>(dto);
         ResponseEntity<String> response = null;

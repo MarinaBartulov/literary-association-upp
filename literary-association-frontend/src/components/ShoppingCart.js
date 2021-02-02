@@ -1,29 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { merchantService } from "../services/merchant-service";
 import { orderService } from "../services/order-service";
 import Button from "react-bootstrap/Button";
-
 import { toast } from "react-toastify";
 import { Table } from "react-bootstrap";
 import Header from "./Header";
 
 const ShoppingCart = () => {
-  const [merchants, setMerchants] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
 
-  const getActiveMerchants = async () => {
-    try {
-      const response = await merchantService.getActiveMerchants();
-      console.log(response);
-      setMerchants(response);
-    } catch (error) {
-      if (error.response) {
-        console.log("Error: " + JSON.stringify(error.response));
-      }
-      toast.error(error.response ? error.response.data : error.message, {
-        hideProgressBar: true,
-      });
-    }
-  };
+  const getAllCartItems = async () => {};
 
   const createOrder = async (merchantId) => {
     let payload = {
@@ -45,7 +30,7 @@ const ShoppingCart = () => {
   };
 
   useEffect(() => {
-    getActiveMerchants();
+    getAllCartItems();
   }, []);
 
   return (
@@ -64,15 +49,15 @@ const ShoppingCart = () => {
             </tr>
           </thead>
           <tbody>
-            {merchants.map((merchant) => {
+            {cartItems.map((cartItem) => {
               return (
-                <tr key={merchant.id}>
-                  <td>{merchant.name}</td>
+                <tr key={cartItem.bookId}>
+                  <td>{cartItem.bookName}</td>
                   <td>
                     <Button
                       variant="dark"
                       onClick={() => {
-                        createOrder(merchant.id);
+                        createOrder(cartItem.merchantId);
                       }}
                     >
                       Create order

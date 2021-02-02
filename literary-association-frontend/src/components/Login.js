@@ -24,6 +24,7 @@ const Login = () => {
         console.log(response);
         localStorage.setItem("token", response.accessToken);
         localStorage.setItem("role", response.role);
+        localStorage.setItem("currentUserId", response.currentUserId);
         history.push("/home");
       } catch (error) {
         if (error.response) {

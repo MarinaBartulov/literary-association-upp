@@ -33,7 +33,7 @@ public class OrderController {
         ResponseEntity<OrderResponseDTO> response;
         try {
             response = restTemplate.postForEntity("https://localhost:8083/psp-service/api/payments",
-                    new OrderDTO(null, merchant.getMerchantId(), merchant.getMerchantEmail(), merchant.getMerchantPassword(),
+                    new OrderDTO(null, merchant.getMerchantEmail(),
                             dto.getCurrency(), dto.getAmount(), merchant.getMerchantSuccessUrl(), merchant.getMerchantFailedUrl(),
                             merchant.getMerchantErrorUrl()), OrderResponseDTO.class);
             System.out.println(response.getBody().getOrderId());

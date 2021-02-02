@@ -7,7 +7,6 @@ import Home from "./components/Home";
 import RegistrationConfirmation from "./components/RegistrationConfirmation";
 import WriterRegistrationConfirmation from "./components/WriterRegisterConfirmation";
 import UploadLiteraryWork from "./components/UploadLiteraryWork";
-import RegistrationReader from "./components/RegistrationReader";
 import SuccessfulTransaction from "./components/SuccessfulTransaction";
 import PayTest from "./components/PayTest";
 import Login from "./components/Login";
@@ -23,6 +22,7 @@ import NewBook from "./components/NewBook";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import WriterMoreMaterialNeeded from "./components/WriterMoreMaterialNeeded";
+import SearchBooks from "./components/SearchBooks";
 
 function App() {
   return (
@@ -46,9 +46,6 @@ function App() {
             </Route>
             <Route exact path="/home">
               <Home />
-            </Route>
-            <Route exact path="/registrationReader/:processId/:taskId">
-              <RegistrationReader />
             </Route>
             <Route exact path="/registrationWriter/:processId/:taskId">
               <RegistrationWriter />
@@ -106,6 +103,9 @@ function App() {
             </Route>
             <Route exact path="/moreMaterialNeeded/:processId">
               <WriterMoreMaterialNeeded />
+            </Route>
+            <Route exact path="/searchBooks">
+              <SearchBooks />
             </Route>
           </Switch>
         </div>
