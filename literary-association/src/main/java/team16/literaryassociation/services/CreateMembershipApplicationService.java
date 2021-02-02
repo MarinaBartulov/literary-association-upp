@@ -23,7 +23,7 @@ public class CreateMembershipApplicationService implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
 
         Long userId = (Long) execution.getVariable("user_id");
-        Writer writer = (Writer)userService.getOne(userId);
+        Writer writer = (Writer)userService.findOne(userId);
 
         if(writer== null)
         {

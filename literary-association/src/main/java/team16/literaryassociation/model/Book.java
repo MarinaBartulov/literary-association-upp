@@ -61,4 +61,16 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "key_word_id", referencedColumnName = "id"))
     private Set<KeyWord> keyWords = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "book_editors",
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "editor_id", referencedColumnName = "id"))
+    private Set<Editor> otherEditors = new HashSet<>();
+
+    @OneToMany(mappedBy = "myBook", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PlagiarismComplaint> plagiarismComplaintsForMyBook = new HashSet<>();
+
+    @OneToMany(mappedBy = "bookPlagiat", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PlagiarismComplaint> receivedPlagiarismComplaints = new HashSet<>();
 }

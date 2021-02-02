@@ -7,5 +7,8 @@ import java.util.List;
 public interface BookService {
 
     Book save(Book book);
+    Book findOne(Long id);
     List<Book> findAllWritersBooks(Long writerId);
+    Book findBookByWriterAndTitle(Long writerId, String title);
+    Book findBookByTitleAndWritersName(String title, String writerFirstName, String writerLastName);
 }

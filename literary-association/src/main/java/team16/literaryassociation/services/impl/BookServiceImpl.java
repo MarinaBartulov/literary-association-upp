@@ -20,7 +20,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book findOne(Long id) {
+        return bookRepository.findById(id).orElseGet(null);
+    }
+
+    @Override
     public List<Book> findAllWritersBooks(Long writerId) {
         return bookRepository.findAllWritersBooks(writerId);
+    }
+
+    @Override
+    public Book findBookByWriterAndTitle(Long writerId, String title) {
+        return bookRepository.findBookByWriterAndTitle(writerId, title);
+    }
+
+    @Override
+    public Book findBookByTitleAndWritersName(String title, String writerFirstName, String writerLastName) {
+        return bookRepository.findBookByTitleAndWritersNameIgnoreCase(title, writerFirstName, writerLastName);
     }
 }
