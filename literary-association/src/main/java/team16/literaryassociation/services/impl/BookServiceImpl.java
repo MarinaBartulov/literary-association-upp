@@ -6,6 +6,8 @@ import team16.literaryassociation.model.Book;
 import team16.literaryassociation.repository.BookRepository;
 import team16.literaryassociation.services.interfaces.BookService;
 
+import java.util.List;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -15,5 +17,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book save(Book book) {
         return bookRepository.save(book);
+    }
+
+    @Override
+    public List<Book> findAllWritersBooks(Long writerId) {
+        return bookRepository.findAllWritersBooks(writerId);
     }
 }

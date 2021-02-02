@@ -82,3 +82,6 @@ value ('Lecturer', 'lecturer3@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8
 insert into user_roles (user_id, role_id) values (9,6);
 insert into user_roles (user_id, role_id) values (10,6);
 insert into user_roles (user_id, role_id) values (11,6);
+
+insert into book (isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
+values ('2222', 300, true, '', 600.0, 'Novi Sad, Jevrejska 10', 'dddddddddddddd', 'Kul knjiga', '2020', 5, 1, 11, 1, 6);
