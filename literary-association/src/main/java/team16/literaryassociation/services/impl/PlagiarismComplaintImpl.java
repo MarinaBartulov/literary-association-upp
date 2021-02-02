@@ -16,4 +16,9 @@ public class PlagiarismComplaintImpl implements PlagiarismComplaintService {
     public PlagiarismComplaint save(PlagiarismComplaint plagiarismComplaint) {
         return plagiarismComplaintRepository.save(plagiarismComplaint);
     }
+
+    @Override
+    public PlagiarismComplaint findById(Long id) {
+        return plagiarismComplaintRepository.findById(id).orElseGet(null);
+    }
 }

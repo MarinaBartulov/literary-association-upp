@@ -59,7 +59,7 @@
             <camunda:formField id="editors" label="Choose editors" type="enum">
               <camunda:properties>
                 <camunda:property id="multiselect" value="multiselect" />
-                <camunda:property id="minLengthItems" value="1" />
+                <camunda:property id="minLengthItems" value="2" />
               </camunda:properties>
             </camunda:formField>
           </camunda:formData>

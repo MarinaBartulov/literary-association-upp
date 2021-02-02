@@ -25,4 +25,14 @@ public class EditorServiceImpl implements EditorService {
         Editor editor = allEditors.get(rand.nextInt(allEditors.size()));
         return editor;
     }
+
+    @Override
+    public List<Editor> findAll() {
+        return editorRepository.findAll();
+    }
+
+    @Override
+    public Editor findById(Long id) {
+        return editorRepository.findById(id).orElseGet(null);
+    }
 }

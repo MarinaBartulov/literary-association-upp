@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import team16.literaryassociation.dto.BoardMemberDTO;
+import team16.literaryassociation.dto.EditorDTO;
 
 import javax.persistence.*;
 import java.util.*;
@@ -48,6 +49,16 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     public User(BoardMemberDTO dto){
+        this.id = dto.getId();
+        this.firstName = dto.getFirstName();
+        this.lastName = dto.getLastName();
+        this.country = dto.getCountry();
+        this.city = dto.getCity();
+        this.email = dto.getEmail();
+        this.username = dto.getUsername();
+    }
+
+    public User(EditorDTO dto){
         this.id = dto.getId();
         this.firstName = dto.getFirstName();
         this.lastName = dto.getLastName();
