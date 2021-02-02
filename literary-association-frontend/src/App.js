@@ -5,23 +5,17 @@ import FailedTransaction from "./components/FailedTransaction";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import RegistrationConfirmation from "./components/RegistrationConfirmation";
-import WriterRegistrationConfirmation from "./components/WriterRegisterConfirmation";
-import UploadLiteraryWork from "./components/UploadLiteraryWork";
 import SuccessfulTransaction from "./components/SuccessfulTransaction";
 import PayTest from "./components/PayTest";
 import Login from "./components/Login";
 import BoardMemberPanel from "./components/BoardMemberPanel";
 
 import { ToastContainer } from "react-toastify";
-import RegistrationWriter from "./components/RegistrationWriter";
 import RegistrationMerchant from "./components/RegistrationMerchant";
 import ShoppingCart from "./components/ShoppingCart";
 import MembershipApplication from "./components/MembershipApplication";
-import GiveOpinion from "./components/GiveOpinion";
-import NewBook from "./components/NewBook";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
-import WriterMoreMaterialNeeded from "./components/WriterMoreMaterialNeeded";
 import SearchBooks from "./components/SearchBooks";
 
 function App() {
@@ -47,20 +41,8 @@ function App() {
             <Route exact path="/home">
               <Home />
             </Route>
-            <Route exact path="/registrationWriter/:processId/:taskId">
-              <RegistrationWriter />
-            </Route>
             <Route exact path="/registrationConfirmation/:processId/:token">
               <RegistrationConfirmation />
-            </Route>
-            <Route
-              exact
-              path="/registrationConfirmation/writer/:processId/:token"
-            >
-              <WriterRegistrationConfirmation />
-            </Route>
-            <Route exact path="/uploadLiteraryWork/:processId/:taskId">
-              <UploadLiteraryWork />
             </Route>
             <Route exact path="/success">
               <SuccessfulTransaction />
@@ -83,26 +65,17 @@ function App() {
             <Route exact path="/shoppingCart">
               <ShoppingCart />
             </Route>
-            <Route exact path="/newBook/:processId/:taskId">
-              <NewBook />
-            </Route>
             <Route exact path="/allTasks">
               <TaskList />
             </Route>
             <Route exact path="/task/:taskId">
               <TaskForm />
             </Route>
-            <Route exact path="/boardMember">
+            <Route exact path="/boardMemberPanel">
               <BoardMemberPanel />
             </Route>
             <Route exact path="/membershipApplication/:taskId/:processId">
               <MembershipApplication />
-            </Route>
-            <Route exact path="/giveOpinion/:processId/:taskId">
-              <GiveOpinion />
-            </Route>
-            <Route exact path="/moreMaterialNeeded/:processId">
-              <WriterMoreMaterialNeeded />
             </Route>
             <Route exact path="/searchBooks">
               <SearchBooks />

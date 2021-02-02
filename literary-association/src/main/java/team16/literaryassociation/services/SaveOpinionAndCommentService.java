@@ -58,10 +58,14 @@ public class SaveOpinionAndCommentService implements JavaDelegate {
         }
 
         BoardOpinion boardOpinion = new BoardOpinion();
-        List<Map<String, String>> opinions = (List<Map<String, String>>) map.get("opinion");
-        Map<String,String> opinion = opinions.get(0);
-        System.out.println("Vrednost enuma: " + opinion.get("name"));
-        boardOpinion.setOpinion(Opinion.valueOf(opinion.get("name")));
+        //List<Map<String, String>> opinions = (List<Map<String, String>>) map.get("opinion");
+        //Map<String,String> opinion = opinions.get(0);
+        //System.out.println("Vrednost enuma: " + opinion.get("name"));
+        //boardOpinion.setOpinion(Opinion.valueOf(opinion.get("name")));
+        String opinion = (String) map.get("opinion");
+        System.out.println("Vrednost enuma: " + opinion);
+        boardOpinion.setOpinion(Opinion.valueOf(opinion));
+
         boardOpinion.setMembershipApplication(membershipApplication);
         boardOpinion.setBoardMember(boardMember);
 

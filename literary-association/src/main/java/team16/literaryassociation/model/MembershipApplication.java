@@ -19,7 +19,10 @@ public class MembershipApplication {
     protected Long id;
 
     @Column
-    private boolean approved;
+    private Boolean approved;
+
+    @Column
+    private Boolean approvedForPaying;
 
     @Column
     private Double price;
@@ -45,6 +48,7 @@ public class MembershipApplication {
 
     public MembershipApplication(Writer writer, String processId){
         this.approved = false;
+        this.approvedForPaying = null;
         this.processId = processId;
         this.price = 10.0;
         this.paid = false;
