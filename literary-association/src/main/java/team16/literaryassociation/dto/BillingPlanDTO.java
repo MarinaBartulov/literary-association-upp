@@ -13,6 +13,8 @@ public class BillingPlanDTO {
 
     private Double price;
 
+    private Double discount;
+
     private String type;
 
     private String frequency;

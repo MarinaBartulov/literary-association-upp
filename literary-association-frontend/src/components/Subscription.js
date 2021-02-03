@@ -81,6 +81,7 @@ const Subscription = () => {
     <div>
       <Header />
       <h1>Create subscription</h1>
+      <h3> Subscribe to publisher and get discount on every order you make </h3>
       <div
         style={{ width: "40%", backgroundColor: "#bdbbbb" }}
         className="ml-auto mr-auto"
@@ -128,10 +129,10 @@ const Subscription = () => {
           <Table>
             <thead>
               <tr>
-                <th> Type </th>
+                <th> Discount </th>
                 <th> Frequency </th>
-                <th> Price </th>
                 <th> Cycles </th>
+                <th> Price </th>
                 <th> Subscribe </th>
               </tr>
             </thead>
@@ -139,10 +140,10 @@ const Subscription = () => {
               {billingPlans.map((billingPlan) => {
                 return (
                   <tr key={billingPlan.id}>
-                    <td>{billingPlan.type}</td>
+                    <td>{billingPlan.discount} %</td>
                     <td>{billingPlan.frequency}</td>
-                    <td>{billingPlan.price} $</td>
                     <td>{billingPlan.cyclesNumber}</td>
+                    <td>{billingPlan.price} $</td>
                     <td>
                       <Button
                         variant="dark"
