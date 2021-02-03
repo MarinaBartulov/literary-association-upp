@@ -17,6 +17,7 @@ import MembershipApplication from "./components/MembershipApplication";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import SearchBooks from "./components/SearchBooks";
+import Orders from "./components/Orders";
 
 function App() {
   return (
@@ -79,6 +80,9 @@ function App() {
             </Route>
             <Route exact path="/searchBooks">
               <SearchBooks />
+            </Route>
+            <Route exact path="/orders">
+              <Orders />
             </Route>
           </Switch>
         </div>
