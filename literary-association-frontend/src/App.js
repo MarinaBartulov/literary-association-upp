@@ -18,6 +18,7 @@ import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import SearchBooks from "./components/SearchBooks";
 import Orders from "./components/Orders";
+import Subscription from "./components/Subscription";
 
 function App() {
   return (
@@ -83,6 +84,9 @@ function App() {
             </Route>
             <Route exact path="/orders">
               <Orders />
+            </Route>
+            <Route exact path="/subscription">
+              <Subscription />
             </Route>
           </Switch>
         </div>

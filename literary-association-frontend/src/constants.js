@@ -1,6 +1,7 @@
 export const ROUTES = {
   PAY: "/test/pay",
-  SUBSCRIBE: "/test/subscribe",
+  SUBSCRIBE: "/subscriptions/subscribe",
+  BILLING_PLANS: "/subscriptions/billing-plans",
   READER_START_REG: "/reader/start-process-register",
   READER_ACTIVATION: "/reader/activateAccount",
   GENRES: "/genre",
