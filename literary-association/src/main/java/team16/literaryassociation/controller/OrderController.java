@@ -13,6 +13,7 @@ import team16.literaryassociation.dto.OrderRequestDTO;
 import team16.literaryassociation.dto.OrderResponseDTO;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.services.interfaces.MerchantService;
+import team16.literaryassociation.services.interfaces.OrderService;
 
 @RestController
 @RequestMapping("/api/order")
@@ -21,7 +22,7 @@ public class OrderController {
     @Autowired
     private MerchantService merchantService;
     @Autowired
-    private RestTemplate restTemplate;
+    private OrderService orderService;
 
     @PostMapping
     public ResponseEntity createOrder(@RequestBody OrderRequestDTO dto){
@@ -30,18 +31,7 @@ public class OrderController {
         if(merchant == null){
             return ResponseEntity.badRequest().body("Merchant with that id doesn't exist.");
         }
-        ResponseEntity<OrderResponseDTO> response;
-        try {
-            response = restTemplate.postForEntity("https://localhost:8083/psp-service/api/payments",
-                    new OrderDTO(null, merchant.getMerchantEmail(),
-                            dto.getCurrency(), dto.getAmount(), merchant.getMerchantSuccessUrl(), merchant.getMerchantFailedUrl(),
-                            merchant.getMerchantErrorUrl()), OrderResponseDTO.class);
-            System.out.println(response.getBody().getOrderId());
-        }catch(Exception e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Error occurred while sending order on payment concentrator.");
-        }
-
-        return ResponseEntity.ok(response.getBody());
+        OrderResponseDTO orderResponseDTO = this.orderService.createOrder(dto, merchant);
+        return ResponseEntity.ok(orderResponseDTO);
     }
 }

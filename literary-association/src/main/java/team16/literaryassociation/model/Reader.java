@@ -35,6 +35,9 @@ public class Reader extends User {
     @OneToMany(mappedBy = "betaReader", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
 
+    @OneToMany(mappedBy = "reader", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Order> orders = new HashSet<>();
+
     public Reader(Long id, String firstName, String lastName, String city, String country, String email,
                   String username, boolean betaReader, int penaltyPoints) {
         this.setId(id);

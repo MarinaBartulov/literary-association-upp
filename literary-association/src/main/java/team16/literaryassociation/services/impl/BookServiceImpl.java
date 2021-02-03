@@ -37,4 +37,9 @@ public class BookServiceImpl implements BookService {
         }
         return new BookDetailsDTO(book);
     }
+
+    @Override
+    public Book findById(Long id) {
+        return this.bookRepository.findById(id).orElse(null);
+    }
 }

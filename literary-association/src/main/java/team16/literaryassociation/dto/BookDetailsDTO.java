@@ -21,6 +21,7 @@ public class BookDetailsDTO {
     private double price;
     private String ISBN;
     private String synopsis;
+    private boolean openAccess;
     private String pdf;
     private String publishersAddress;
     private String year;
@@ -36,6 +37,7 @@ public class BookDetailsDTO {
         this.price = book.getPrice();
         this.ISBN = book.getISBN();
         this.synopsis = book.getSynopsis();
+        this.openAccess = book.isOpenAccess();
         this.pdf = book.getPdf();
         this.publishersAddress = book.getPublishersAddress();
         this.year = book.getYear();

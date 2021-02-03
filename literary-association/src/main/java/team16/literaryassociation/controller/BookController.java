@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import team16.literaryassociation.dto.BookDTO;
 import team16.literaryassociation.dto.BookDetailsDTO;
 import team16.literaryassociation.services.interfaces.BookService;
-
-import javax.ws.rs.PathParam;
 import java.util.List;
 
 @RestController

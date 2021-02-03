@@ -33,4 +33,9 @@ public class ReaderServiceImpl implements ReaderService {
     public List<Reader> getAllBetaReadersForGenre(String name) {
         return readerRepository.findAllBetReadersForGenre(name);
     }
+
+    @Override
+    public Reader findByUsername(String username) {
+        return this.readerRepository.findByUsername(username);
+    }
 }

@@ -3,12 +3,20 @@ import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import Header from "./Header";
 import { bookService } from "../services/book-service";
+import { shoppingCartService } from "../services/shopping-cart-service";
 import { toast } from "react-toastify";
+import { AMOUNT } from "../constants";
+import Select from "react-select";
 
 const SearchBooks = () => {
   const [books, setBooks] = useState([]);
   const [bookToShow, setBookToShow] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
+  const downloadUrl = "https://localhost:8080/api/task/downloadFile";
+  const [selectedAmount, setSelectedAmount] = useState({
+    value: 1,
+    label: "1",
+  });
 
   const getBooks = async () => {
     try {
@@ -26,17 +34,20 @@ const SearchBooks = () => {
     }
   };
 
-  const addToCart = async (book) => {
+  const addToCart = async (book, bookAmount) => {
     let currentUserId = localStorage.getItem("currentUserId");
     if (currentUserId === null || currentUserId === undefined) {
       toast.error("You have to login first.", {
         hideProgressBar: true,
       });
+      return;
     }
+    shoppingCartService.addBookToCart(book, bookAmount);
   };
 
   const handleCancel = () => {
     setShowDetails(false);
+    setSelectedAmount({ value: 1, label: "1" });
   };
 
   const seeBookDetails = async (bookId) => {
@@ -44,6 +55,7 @@ const SearchBooks = () => {
       const response = await bookService.getBookDetails(bookId);
       console.log(response);
       setBookToShow(response);
+      setSelectedAmount({ value: 1, label: "1" });
       setShowDetails(true);
     } catch (error) {
       if (error.response) {
@@ -104,7 +116,7 @@ const SearchBooks = () => {
                       style={{ borderRadius: "2em" }}
                       variant="success"
                       onClick={() => {
-                        addToCart(book);
+                        addToCart(book, 1);
                       }}
                     >
                       Add to cart
@@ -118,18 +130,81 @@ const SearchBooks = () => {
       </div>
       {showDetails && (
         <Modal
+          size="lg"
           show={showDetails}
           onHide={handleCancel}
           backdrop="static"
           keyboard={false}
-          centered
         >
-          <Modal.Header>
-            <Modal.Title>{bookToShow.title}</Modal.Title>
+          <Modal.Header
+            style={{ backgroundColor: "rgb(52, 58, 64)", color: "white" }}
+          >
+            <Modal.Title style={{ marginLeft: "auto", marginRight: "auto" }}>
+              {bookToShow.title}
+            </Modal.Title>
           </Modal.Header>
-          <Modal.Body></Modal.Body>
+          <Modal.Body>
+            <h6 style={{ display: "inline" }}>Genre:</h6>
+            <span> {bookToShow.genre}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>ISBN:</h6>
+            <span> {bookToShow.isbn}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Number of pages:</h6>
+            <span> {bookToShow.numOfPages}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Writer:</h6>
+            <span> {bookToShow.writer}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Publisher:</h6>
+            <span> {bookToShow.publisher}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Publisher's address:</h6>
+            <span> {bookToShow.publishersAddress}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Year:</h6>
+            <span> {bookToShow.year}</span>
+            <br></br>
+            {bookToShow.openAccess && (
+              <>
+                <h6 style={{ display: "inline" }}>Open access:</h6>
+                <span>
+                  <a href={downloadUrl + bookToShow.pdf}> Download</a>
+                </span>
+                <br></br>
+              </>
+            )}
+            <h6>Synopsis:</h6>
+            <span> {bookToShow.synopsis}</span>
+            <br></br>
+            <br></br>
+            <h5 style={{ display: "inline" }}>
+              Price: {bookToShow.price}&#36;
+            </h5>
+            <br></br>
+          </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCancel}>
+            Amount:
+            <Select
+              value={selectedAmount}
+              onChange={(selectedValue) => {
+                console.log(selectedValue);
+                setSelectedAmount(selectedValue);
+              }}
+              options={AMOUNT}
+            />
+            <Button
+              style={{ borderRadius: "2em" }}
+              variant="success"
+              onClick={() => addToCart(bookToShow, selectedAmount.value)}
+            >
+              Add to cart
+            </Button>
+            <Button
+              style={{ borderRadius: "2em" }}
+              variant="secondary"
+              onClick={handleCancel}
+            >
               Cancel
             </Button>
           </Modal.Footer>

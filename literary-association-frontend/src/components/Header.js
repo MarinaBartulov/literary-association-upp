@@ -61,6 +61,10 @@ const Header = () => {
   const goToRegisterMerchant = () => {
     history.push("/registrationMerchant");
   };
+
+  const goToSearchBooks = () => {
+    history.push("/searchBooks");
+  };
   const goToShoppingCart = () => {
     history.push("/shoppingCart");
   };
@@ -131,7 +135,9 @@ const Header = () => {
               Publish a book
             </Button>
           )}
-
+          <Button className="ml-2" variant="link" onClick={goToSearchBooks}>
+            Search books
+          </Button>
           <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
             Shopping cart
           </Button>
