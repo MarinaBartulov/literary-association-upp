@@ -9,7 +9,6 @@ import java.util.List;
 public interface MerchantService {
 
     Merchant findOne(Long id);
-    Merchant findOneByMerchantId(String merchantId);
     Merchant findByEmail(String email);
     MerchantDTO registerNewMerchant(MerchantDTO merchantDTO);
     void finishRegistration(MerchantActivationDTO mbi);

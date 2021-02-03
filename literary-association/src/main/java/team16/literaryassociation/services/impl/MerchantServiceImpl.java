@@ -37,11 +37,6 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public Merchant findOneByMerchantId(String merchantId) {
-        return merchantRepository.findMerchantByMerchantId(merchantId);
-    }
-
-    @Override
     public Merchant findByEmail(String email) {
         return this.merchantRepository.findByMerchantEmail(email);
     }
