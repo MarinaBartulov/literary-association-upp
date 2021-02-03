@@ -64,7 +64,7 @@ public class TestService {
         System.out.println(merchant.getMerchantId());
         System.out.println(merchant.getMerchantEmail());
         dto.setMerchantEmail(merchant.getMerchantEmail());
-        dto.setMerchantId(merchant.getMerchantId());
+        //dto.setMerchantId(merchant.getMerchantId());
 
         HttpEntity<SubscriptionRequestDTO> request = new HttpEntity<>(dto);
         ResponseEntity<String> response = null;

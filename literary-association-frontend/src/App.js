@@ -18,6 +18,7 @@ import MembershipApplication from "./components/MembershipApplication";
 import NewBook from "./components/NewBook";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
+import Subscription from "./components/Subscription";
 
 function App() {
   return (
@@ -83,6 +84,9 @@ function App() {
             </Route>
             <Route exact path="/membershipApplication/:taskId/:processId">
               <MembershipApplication />
+            </Route>
+            <Route exact path="/subscription">
+              <Subscription />
             </Route>
           </Switch>
         </div>

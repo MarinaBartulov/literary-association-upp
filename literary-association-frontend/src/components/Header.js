@@ -64,8 +64,8 @@ const Header = () => {
     history.push("/shoppingCart");
   };
 
-  const goToBoardMemberPanel = () => {
-    history.push("/boardMember");
+  const goToSubscriptions = () => {
+    history.push("/subscription");
   };
 
   const startBookPublishing = async () => {
@@ -137,6 +137,11 @@ const Header = () => {
           {loggedIn && (
             <Button className="ml-2" variant="link" onClick={goToAllTasks}>
               My tasks
+            </Button>
+          )}
+          {loggedIn && role === "ROLE_READER" && (
+            <Button className="ml-2" variant="link" onClick={goToSubscriptions}>
+              Subscription
             </Button>
           )}
           {!loggedIn && (
