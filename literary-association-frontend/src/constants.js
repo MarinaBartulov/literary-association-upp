@@ -51,3 +51,11 @@ export const AMOUNT = [
   { value: 24, label: "24" },
   { value: 25, label: "25" },
 ];
+
+export const ORDER_STATUS = [
+  { value: "PENDING", label: "PENDIND" },
+  { value: "SUCCESS", label: "SUCCESS" },
+  { value: "ERROR", label: "ERROR" },
+  { value: "FAILED", label: "FAILED" },
+  { value: "ALL", label: "ALL" },
+];

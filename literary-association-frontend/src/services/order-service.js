@@ -6,6 +6,11 @@ class OrderService extends HttpService {
     const response = await this.client.post(ROUTES.ORDER, payload);
     return response.data;
   };
+
+  getOrders = async () => {
+    const response = await this.client.get(ROUTES.ORDER);
+    return response.data;
+  };
 }
 
 export const orderService = new OrderService();

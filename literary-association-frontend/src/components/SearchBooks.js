@@ -21,7 +21,6 @@ const SearchBooks = () => {
   const getBooks = async () => {
     try {
       const response = await bookService.getAllBooks();
-      console.log("Books");
       console.log(response);
       setBooks(response);
     } catch (error) {
@@ -41,6 +40,14 @@ const SearchBooks = () => {
         hideProgressBar: true,
       });
       return;
+    } else {
+      let role = localStorage.getItem("role");
+      if (role !== "ROLE_READER") {
+        toast.error("Only readers can buy books.", {
+          hideProgressBar: true,
+        });
+        return;
+      }
     }
     shoppingCartService.addBookToCart(book, bookAmount);
   };
