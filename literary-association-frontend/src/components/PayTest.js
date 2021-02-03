@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import { testService } from "../services/test-service";
 import { writerService } from "../services/writer-service";
 import { toast } from "react-toastify";
 
@@ -10,21 +9,6 @@ const PayTest = () => {
       localStorage.getItem("token") !== null
   );
   const [role, setRole] = useState(localStorage.getItem("role"));
-
-  function pay() {
-    let payload = {
-      price: "10",
-      currency: "USD",
-    };
-    testService.pay(payload);
-  }
-  function subscribe() {
-    let payload = {
-      price: "10",
-      currency: "USD",
-    };
-    testService.subscribe(payload);
-  }
 
   const membershipFeePayment = async () => {
     console.log("Membership fee payment started...");
@@ -44,25 +28,6 @@ const PayTest = () => {
   };
   return (
     <div>
-      <Button
-        variant="dark"
-        onClick={() => {
-          pay();
-        }}
-      >
-        {" "}
-        Pay{" "}
-      </Button>{" "}
-      <Button
-        variant="warning"
-        onClick={() => {
-          subscribe();
-        }}
-      >
-        {" "}
-        Subscribe{" "}
-      </Button>
-      <br />
       {loggedIn && role === "ROLE_WRITER" && (
         <Button variant="info" onClick={membershipFeePayment}>
           Membership Fee Payment

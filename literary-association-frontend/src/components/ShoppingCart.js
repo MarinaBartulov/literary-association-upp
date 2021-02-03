@@ -103,7 +103,11 @@ const ShoppingCart = () => {
                 Publisher:{" "}
                 {cartItemsPublishers[publisher].cartItems[0].publisher}
               </h4>
-              <Table bordered>
+              <Table
+                style={{ width: "98%" }}
+                className="ml-auto mr-auto"
+                bordered
+              >
                 <thead>
                   <tr>
                     <th>#</th>
