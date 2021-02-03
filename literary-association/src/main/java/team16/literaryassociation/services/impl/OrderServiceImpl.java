@@ -16,6 +16,7 @@ import team16.literaryassociation.services.interfaces.BookService;
 import team16.literaryassociation.services.interfaces.OrderService;
 import team16.literaryassociation.services.interfaces.ReaderService;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Override
+    @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO dto, Merchant merchant) {
 
         Authentication currentReader = SecurityContextHolder.getContext().getAuthentication();
@@ -78,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
 
         ResponseEntity<OrderResponseDTO> response;
         try {
-            response = restTemplate.postForEntity("https://localhost:8083/psp-service/api/payments",
+            response = restTemplate.postForEntity("https://localhost:8083/psp-service/api/order",
                     new OrderDTO(order.getId(), merchant.getMerchantEmail(),
                             "USD", dto.getTotal(), merchant.getMerchantSuccessUrl(), merchant.getMerchantFailedUrl(),
                             merchant.getMerchantErrorUrl()), OrderResponseDTO.class);
