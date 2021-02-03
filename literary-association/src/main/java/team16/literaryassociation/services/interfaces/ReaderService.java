@@ -10,4 +10,5 @@ public interface ReaderService {
     Reader saveReader(Reader reader);
     List<Reader> getAllBetaReaders();
     List<Reader> getAllBetaReadersForGenre(String name);
+    Reader findByUsername(String username);
 }

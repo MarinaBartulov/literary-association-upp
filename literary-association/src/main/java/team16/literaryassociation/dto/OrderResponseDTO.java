@@ -13,5 +13,4 @@ public class OrderResponseDTO {
 
     private Long orderId;
     private String redirectionURL;
-    private String merchantId;
 }
