@@ -55,9 +55,11 @@ export const AMOUNT = [
 ];
 
 export const ORDER_STATUS = [
-  { value: "PENDING", label: "PENDIND" },
-  { value: "SUCCESS", label: "SUCCESS" },
-  { value: "ERROR", label: "ERROR" },
-  { value: "FAILED", label: "FAILED" },
+  { value: "INITIATED", label: "INITIATED" },
+  { value: "CREATED", label: "CREATED" },
+  { value: "COMPLETED", label: "COMPLETED" },
+  { value: "CANCELED", label: "CANCELED" },
+  { value: "INVALID", label: "INVALID" },
+  { value: "EXPIRED", label: "EXPIRED" },
   { value: "ALL", label: "ALL" },
 ];
