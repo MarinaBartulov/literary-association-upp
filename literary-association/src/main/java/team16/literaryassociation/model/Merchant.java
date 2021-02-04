@@ -8,6 +8,8 @@ import team16.literaryassociation.converter.SensitiveDataConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -36,4 +38,7 @@ public class Merchant {
 
     @Column(name = "error_url")
     private String merchantErrorUrl;
+
+    @OneToMany(mappedBy = "merchant")
+    private Set<Order> orders = new HashSet<>();
 }

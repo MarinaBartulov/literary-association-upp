@@ -22,7 +22,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<OrderBook> books = new HashSet<>();
     @ManyToOne
     private Reader reader;
@@ -30,4 +30,6 @@ public class Order {
     private LocalDateTime dateCreated;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    @ManyToOne
+    private Merchant merchant;
 }

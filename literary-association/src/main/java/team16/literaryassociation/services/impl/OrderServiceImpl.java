@@ -53,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
         order.setTotal(dto.getTotal());
         order.setDateCreated(LocalDateTime.now());
         order.setReader(reader);
+        order.setMerchant(merchant);
         order.setOrderStatus(OrderStatus.INITIATED);
 
         try {
@@ -107,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
            orderDTO.setOrderStatus(o.getOrderStatus().toString());
            orderDTO.setDateCreated(o.getDateCreated());
            orderDTO.setBooks(o.getBooks().stream().map(or -> new OrderBookHistoryDTO(or)).collect(Collectors.toList()));
-           orderDTO.setMerchant(o.getBooks().stream().collect(Collectors.toList()).get(0).getBook().getPublisher().getMerchantName());
+           orderDTO.setMerchant(o.getMerchant().getMerchantName());
            ordersDTO.add(orderDTO);
         }
         return ordersDTO;
@@ -129,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
         return purchasedBooks;
     }
 
-    @Scheduled(initialDelay = 40000, fixedRate = 600000) //na svakih 10 minuta
+    @Scheduled(initialDelay = 45000, fixedRate = 300000) //na svakih 5 minuta
     public void updateOrdersStatus(){
 
         System.out.println("Updating orders status started...");
@@ -141,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
              ResponseEntity<OrderStatusDTO> response = null;
              try{
                  //mora i email jer pc mogu koristiti razlicite aplikacije a one mogu imati ordere sa istim id
-                 String merchantEmail = o.getBooks().stream().collect(Collectors.toList()).get(0).getBook().getPublisher().getMerchantEmail();
+                 String merchantEmail = o.getMerchant().getMerchantEmail();
                  response = restTemplate.getForEntity("https://localhost:8083/psp-service/api/order/status?orderId=" + o.getId() + "&merchantEmail=" + merchantEmail, OrderStatusDTO.class);
 
              }catch(Exception e){
