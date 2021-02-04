@@ -2,6 +2,7 @@ package team16.literaryassociation.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
         order.setTotal(dto.getTotal());
         order.setDateCreated(LocalDateTime.now());
         order.setReader(reader);
-        order.setOrderStatus(OrderStatus.PENDING);
+        order.setOrderStatus(OrderStatus.INITIATED);
 
         try {
             this.orderRepository.save(order);
@@ -110,5 +111,54 @@ public class OrderServiceImpl implements OrderService {
            ordersDTO.add(orderDTO);
         }
         return ordersDTO;
+    }
+
+    @Override
+    public List<BookDTO> getPurchasedBooks() {
+
+        Authentication currentReader = SecurityContextHolder.getContext().getAuthentication();
+        String username = currentReader.getName();
+        List<Order> completedOrders = this.orderRepository.findCompletedOrdersForReader(username);
+        List<BookDTO> purchasedBooks = new ArrayList<>();
+        for(Order o : completedOrders){
+            for(OrderBook ob: o.getBooks()){
+                BookDTO b = new BookDTO(ob.getBook());
+                purchasedBooks.add(b);
+            }
+        }
+        return purchasedBooks;
+    }
+
+    @Scheduled(initialDelay = 40000, fixedRate = 600000) //na svakih 10 minuta
+    public void updateOrdersStatus(){
+
+        System.out.println("Updating orders status started...");
+        //pronadju se INITIATED i CREATED
+       List<Order> unfinishedOrders = this.orderRepository.findAllUnfinishedOrders();
+
+       for(Order o : unfinishedOrders){
+
+             ResponseEntity<OrderStatusDTO> response = null;
+             try{
+                 //mora i email jer pc mogu koristiti razlicite aplikacije a one mogu imati ordere sa istim id
+                 String merchantEmail = o.getBooks().stream().collect(Collectors.toList()).get(0).getBook().getPublisher().getMerchantEmail();
+                 response = restTemplate.getForEntity("https://localhost:8083/psp-service/api/order/status?orderId=" + o.getId() + "&merchantEmail=" + merchantEmail, OrderStatusDTO.class);
+
+             }catch(Exception e){
+                 e.printStackTrace();
+                 return;
+             }
+
+             if(response.getBody().getStatus() != null) {
+                 OrderStatus status = OrderStatus.valueOf(response.getBody().getStatus());
+                 if (!status.equals(o.getOrderStatus())) {
+                     System.out.println("Promenjen status sa " + o.getOrderStatus().toString() + " na " + status.toString());
+                     o.setOrderStatus(status);
+                     this.orderRepository.save(o);
+                 }
+             }
+       }
+        System.out.println("Updating orders status finished...");
+
     }
 }

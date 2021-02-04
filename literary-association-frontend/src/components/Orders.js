@@ -11,8 +11,8 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [ordersToShow, setOrdersToShow] = useState([]);
   const [ordersStatus, setOrdersStatus] = useState({
-    value: "SUCCESS",
-    label: "SUCCESS",
+    value: "ALL",
+    label: "ALL",
   });
   const [bookToShow, setBookToShow] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
@@ -23,9 +23,7 @@ const Orders = () => {
       const response = await orderService.getOrders();
       console.log(response);
       setOrders(response);
-      let ordersToShowTemp = response.filter(
-        (o) => o.orderStatus === "SUCCESS"
-      );
+      let ordersToShowTemp = response;
       setOrdersToShow(ordersToShowTemp);
     } catch (error) {
       if (error.response) {
@@ -158,9 +156,10 @@ const Orders = () => {
                 Status:{" "}
                 <Button
                   variant={
-                    order.orderStatus === "PENDING"
+                    order.orderStatus === "INITIATED" ||
+                    order.orderStatus === "CREATED"
                       ? "primary"
-                      : order.orderStatus === "SUCCESS"
+                      : order.orderStatus === "COMPLETED"
                       ? "success"
                       : "danger"
                   }

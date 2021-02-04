@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { orderService } from "../services/order-service";
 import { shoppingCartService } from "../services/shopping-cart-service";
-import Button from "react-bootstrap/Button";
+import { bookService } from "../services/book-service";
+import { Button, Table, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { Table } from "react-bootstrap";
 import Header from "./Header";
 import { AMOUNT } from "../constants";
 import Select from "react-select";
@@ -11,6 +11,10 @@ import Select from "react-select";
 const ShoppingCart = () => {
   const [cartItemsPublishers, setCartItemsPublishers] = useState({});
   const [publishers, setPublishers] = useState([]);
+
+  const [bookToShow, setBookToShow] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const downloadUrl = "https://localhost:8080/api/task/downloadFile";
 
   const getCartItems = () => {
     let booksFromCart = shoppingCartService.getBooksFromCart();
@@ -87,6 +91,27 @@ const ShoppingCart = () => {
     }
   };
 
+  const handleCancel = () => {
+    setShowDetails(false);
+  };
+
+  const seeBookDetails = async (event, bookId) => {
+    event.preventDefault();
+    try {
+      const response = await bookService.getBookDetails(bookId);
+      console.log(response);
+      setBookToShow(response);
+      setShowDetails(true);
+    } catch (error) {
+      if (error.response) {
+        console.log("Error: " + JSON.stringify(error.response));
+      }
+      toast.error(error.response ? error.response.data : error.message, {
+        hideProgressBar: true,
+      });
+    }
+  };
+
   useEffect(() => {
     getCartItems();
   }, []);
@@ -125,7 +150,14 @@ const ShoppingCart = () => {
                       return (
                         <tr>
                           <td>{i + 1}</td>
-                          <td>{cartItem.title}</td>
+                          <td>
+                            <a
+                              href=""
+                              onClick={(e) => seeBookDetails(e, cartItem.id)}
+                            >
+                              {cartItem.title}
+                            </a>
+                          </td>
                           <td>{cartItem.genre}</td>
                           <td>{cartItem.writer}</td>
                           <td>
@@ -178,6 +210,72 @@ const ShoppingCart = () => {
           );
         })}
       </div>
+      {showDetails && (
+        <Modal
+          size="lg"
+          show={showDetails}
+          onHide={handleCancel}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header
+            style={{ backgroundColor: "rgb(52, 58, 64)", color: "white" }}
+          >
+            <Modal.Title style={{ marginLeft: "auto", marginRight: "auto" }}>
+              {bookToShow.title}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h6 style={{ display: "inline" }}>Genre:</h6>
+            <span> {bookToShow.genre}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>ISBN:</h6>
+            <span> {bookToShow.isbn}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Number of pages:</h6>
+            <span> {bookToShow.numOfPages}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Writer:</h6>
+            <span> {bookToShow.writer}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Publisher:</h6>
+            <span> {bookToShow.publisher}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Publisher's address:</h6>
+            <span> {bookToShow.publishersAddress}</span>
+            <br></br>
+            <h6 style={{ display: "inline" }}>Year:</h6>
+            <span> {bookToShow.year}</span>
+            <br></br>
+            {bookToShow.openAccess && (
+              <>
+                <h6 style={{ display: "inline" }}>Open access:</h6>
+                <span>
+                  <a href={downloadUrl + bookToShow.pdf}> Download</a>
+                </span>
+                <br></br>
+              </>
+            )}
+            <h6>Synopsis:</h6>
+            <span> {bookToShow.synopsis}</span>
+            <br></br>
+            <br></br>
+            <h5 style={{ display: "inline" }}>
+              Price: {bookToShow.price}&#36;
+            </h5>
+            <br></br>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              style={{ borderRadius: "2em" }}
+              variant="secondary"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };
