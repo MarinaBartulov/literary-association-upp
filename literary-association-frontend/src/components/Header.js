@@ -49,6 +49,7 @@ const Header = () => {
   const logout = () => {
     localStorage.setItem("token", null);
     localStorage.setItem("role", null);
+    localStorage.setItem("currentUserId", null);
     setLoggedIn(false);
     history.push("/home");
   };
@@ -61,12 +62,20 @@ const Header = () => {
   const goToRegisterMerchant = () => {
     history.push("/registrationMerchant");
   };
+
+  const goToSearchBooks = () => {
+    history.push("/searchBooks");
+  };
   const goToShoppingCart = () => {
     history.push("/shoppingCart");
   };
 
-  const goToBoardMemberPanel = () => {
-    history.push("/boardMember");
+  const goToSubscriptions = () => {
+    history.push("/subscription");
+  };
+
+  const goToOrders = () => {
+    history.push("/orders");
   };
 
   const startBookPublishing = async () => {
@@ -155,13 +164,27 @@ const Header = () => {
             </Button>
           </div>
           )}
-
-          <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
-            Shopping cart
+          <Button className="ml-2" variant="link" onClick={goToSearchBooks}>
+            Search books
           </Button>
+          {loggedIn && role === "ROLE_READER" && (
+            <Button className="ml-2" variant="link" onClick={goToShoppingCart}>
+              Shopping cart
+            </Button>
+          )}
+          {loggedIn && role === "ROLE_READER" && (
+            <Button className="ml-2" variant="link" onClick={goToOrders}>
+              My orders
+            </Button>
+          )}
           {loggedIn && (
             <Button className="ml-2" variant="link" onClick={goToAllTasks}>
               My tasks
+            </Button>
+          )}
+          {loggedIn && role === "ROLE_READER" && (
+            <Button className="ml-2" variant="link" onClick={goToSubscriptions}>
+              Subscription
             </Button>
           )}
           {!loggedIn && (

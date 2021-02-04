@@ -12,13 +12,14 @@ public class SubscriptionRequestDTO {
 
     @NotNull
     @Positive
-    private Double price;
+    private Long billingPlanId;
 
     @NotNull
     private String currency;
 
-    private String merchantEmail;
+    @NotNull
+    private Long merchantId; // id na LA
 
-    private String merchantId;
+    private String merchantEmail; // da se moze pronaci na PSP
 
 }

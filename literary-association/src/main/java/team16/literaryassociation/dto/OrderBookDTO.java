@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTokenStateDTO {
+public class OrderBookDTO {
 
-    private String accessToken;
-    private int expiresIn;
-    private String role;
-    private Long currentUserId;
+    private Long bookId;
+    private int amount;
 }

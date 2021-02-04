@@ -5,7 +5,6 @@ import FailedTransaction from "./components/FailedTransaction";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import RegistrationConfirmation from "./components/RegistrationConfirmation";
-import RegistrationReader from "./components/RegistrationReader";
 import SuccessfulTransaction from "./components/SuccessfulTransaction";
 import PayTest from "./components/PayTest";
 import Login from "./components/Login";
@@ -15,9 +14,11 @@ import { ToastContainer } from "react-toastify";
 import RegistrationMerchant from "./components/RegistrationMerchant";
 import ShoppingCart from "./components/ShoppingCart";
 import MembershipApplication from "./components/MembershipApplication";
-import NewBook from "./components/NewBook";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
+import SearchBooks from "./components/SearchBooks";
+import Orders from "./components/Orders";
+import Subscription from "./components/Subscription";
 
 function App() {
   return (
@@ -41,9 +42,6 @@ function App() {
             </Route>
             <Route exact path="/home">
               <Home />
-            </Route>
-            <Route exact path="/registrationReader/:processId/:taskId">
-              <RegistrationReader />
             </Route>
             <Route exact path="/registrationConfirmation/:processId/:token">
               <RegistrationConfirmation />
@@ -69,9 +67,6 @@ function App() {
             <Route exact path="/shoppingCart">
               <ShoppingCart />
             </Route>
-            <Route exact path="/newBook/:processId/:taskId">
-              <NewBook />
-            </Route>
             <Route exact path="/allTasks">
               <TaskList />
             </Route>
@@ -83,6 +78,15 @@ function App() {
             </Route>
             <Route exact path="/membershipApplication/:taskId/:processId">
               <MembershipApplication />
+            </Route>
+            <Route exact path="/searchBooks">
+              <SearchBooks />
+            </Route>
+            <Route exact path="/orders">
+              <Orders />
+            </Route>
+            <Route exact path="/subscription">
+              <Subscription />
             </Route>
           </Switch>
         </div>

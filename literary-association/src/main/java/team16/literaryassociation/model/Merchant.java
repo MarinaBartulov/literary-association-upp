@@ -26,13 +26,6 @@ public class Merchant {
     @Column(nullable = false, unique = true)
     private String merchantEmail;
 
-    @Convert(converter = SensitiveDataConverter.class)
-    @Column(unique = true) // length = 30
-    private String merchantId;
-
-    @Convert(converter = SensitiveDataConverter.class)
-    private String merchantPassword;
-
     private boolean activated; //aktivira se kad zavrsi registraciju na PC
 
     @Column(name = "success_url")

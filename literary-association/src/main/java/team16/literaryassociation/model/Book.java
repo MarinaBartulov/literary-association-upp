@@ -19,24 +19,19 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-
     private String ISBN;
-
+    @Column(length = 1000)
     private String synopsis;
-
     private String pdf;
-
     private String publishersAddress;
-
     private String year;
-
     private int numOfPages;
-
     private double price;
-
     private boolean openAccess;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<OrderBook> orders = new HashSet<>();
 
     @ManyToOne
     private Merchant publisher;

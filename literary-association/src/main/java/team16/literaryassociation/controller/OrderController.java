@@ -2,17 +2,19 @@ package team16.literaryassociation.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import team16.literaryassociation.dto.OrderDTO;
+import team16.literaryassociation.dto.OrderHistoryDTO;
 import team16.literaryassociation.dto.OrderRequestDTO;
 import team16.literaryassociation.dto.OrderResponseDTO;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.services.interfaces.MerchantService;
+import team16.literaryassociation.services.interfaces.OrderService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
@@ -21,7 +23,7 @@ public class OrderController {
     @Autowired
     private MerchantService merchantService;
     @Autowired
-    private RestTemplate restTemplate;
+    private OrderService orderService;
 
     @PostMapping
     public ResponseEntity createOrder(@RequestBody OrderRequestDTO dto){
@@ -30,18 +32,14 @@ public class OrderController {
         if(merchant == null){
             return ResponseEntity.badRequest().body("Merchant with that id doesn't exist.");
         }
-        ResponseEntity<OrderResponseDTO> response;
-        try {
-            response = restTemplate.postForEntity("https://localhost:8083/psp-service/api/payments",
-                    new OrderDTO(null, merchant.getMerchantId(), merchant.getMerchantEmail(), merchant.getMerchantPassword(),
-                            dto.getCurrency(), dto.getAmount(), merchant.getMerchantSuccessUrl(), merchant.getMerchantFailedUrl(),
-                            merchant.getMerchantErrorUrl()), OrderResponseDTO.class);
-            System.out.println(response.getBody().getOrderId());
-        }catch(Exception e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Error occurred while sending order on payment concentrator.");
-        }
+        OrderResponseDTO orderResponseDTO = this.orderService.createOrder(dto, merchant);
+        return ResponseEntity.ok(orderResponseDTO);
+    }
 
-        return ResponseEntity.ok(response.getBody());
+    @GetMapping
+    public ResponseEntity getOrders(){
+
+        List<OrderHistoryDTO> ordersDTO = this.orderService.getOrders();
+        return new ResponseEntity(ordersDTO, HttpStatus.OK);
     }
 }

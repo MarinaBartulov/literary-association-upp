@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 public interface MerchantRepository extends JpaRepository<Merchant, Long> {
 
-    Merchant findMerchantByMerchantId(String merchantId);
     Merchant findByMerchantEmail(String email);
     @Query(value = "select m from Merchant m where m.activated = true")
     List<Merchant> findAllActiveMerchants();
