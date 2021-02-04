@@ -1,19 +1,16 @@
 package team16.literaryassociation.services;
 
-import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team16.literaryassociation.dto.BetaReaderDTO;
 import team16.literaryassociation.dto.EditorDTO;
 import team16.literaryassociation.dto.FormSubmissionDTO;
-import team16.literaryassociation.mapper.BetaReaderMapper;
 import team16.literaryassociation.mapper.EditorMapper;
 import team16.literaryassociation.model.Book;
 import team16.literaryassociation.model.Editor;
-import team16.literaryassociation.model.Manuscript;
 import team16.literaryassociation.model.PlagiarismComplaint;
+import team16.literaryassociation.model.User;
 import team16.literaryassociation.services.interfaces.BookService;
 import team16.literaryassociation.services.interfaces.EditorService;
 import team16.literaryassociation.services.interfaces.PlagiarismComplaintService;
@@ -25,13 +22,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class SaveChosenEditorsService implements JavaDelegate {
+public class SaveNewEditorService implements JavaDelegate {
 
     @Autowired
     private PlagiarismComplaintService plagiarismComplaintService;
 
     @Autowired
     private EditorService editorService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private BookService bookService;
@@ -41,10 +41,8 @@ public class SaveChosenEditorsService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        System.out.println("Usao u save chosen EDITORS");
-
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) delegateExecution.getVariable("formData");
-        Map<String, Object> map = this.listFieldsToMap(formData);
+        Map<String, Object> map = listFieldsToMap(formData);
 
         Long plagiarismComplaintId = (Long) delegateExecution.getVariable("plagiarismComplaintId");
         PlagiarismComplaint plagiarismComplaint = plagiarismComplaintService.findById(plagiarismComplaintId);
@@ -57,15 +55,24 @@ public class SaveChosenEditorsService implements JavaDelegate {
 
         Book myBook = plagiarismComplaint.getMyBook();
 
-        List<String> editors = (List<String>) map.get("editors");
-        for (String editor : editors) {
-            Editor e = editorService.findById(Long.parseLong(editor));
-            if(e == null) {
-                return;
-                //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
-            }
-            myBook.getOtherEditors().add(e);
+        String editorId = (String) map.get("remainingEditors");
+        Editor e = editorService.findById(Long.parseLong(editorId));
+        if(e == null) {
+            return;
+            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
         }
+        myBook.getOtherEditors().add(e);
+
+        // da li brisemo onog koji se menja?
+        String badEditor = (String) map.get("timeExpiredEditor");
+        User user = userService.findByUsername(badEditor);
+        if( user == null ) {
+            System.out.println("Nije sacuvao Editora");
+            return;
+            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
+        }
+        Editor timeExpEditor = (Editor) user;
+        myBook.getOtherEditors().remove(timeExpEditor);
 
         Book saved = bookService.save(myBook);
         if(saved == null) {
@@ -74,9 +81,9 @@ public class SaveChosenEditorsService implements JavaDelegate {
             //throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
         }
 
-        List<EditorDTO> editorDTOs = saved.getOtherEditors().stream().map(e -> editorMapper.toDto(e)).collect(Collectors.toList());
+        EditorDTO newEditorDTO = editorMapper.toDto(e);
 
-        delegateExecution.setVariable("chosenEditors", editorDTOs);
+        delegateExecution.setVariable("editor", newEditorDTO);
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {

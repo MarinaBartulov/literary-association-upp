@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import team16.literaryassociation.model.*;
 import team16.literaryassociation.services.interfaces.BookService;
 import team16.literaryassociation.services.interfaces.PlagiarismComplaintService;
@@ -77,5 +78,16 @@ public class SavePlagiarismComplaint implements JavaDelegate {
         String subject = "Plagiarism detection";
         delegateExecution.setVariable("emailText", emailText);
         delegateExecution.setVariable("emailSubject", subject);
+
+        String myBookFilePath = myBook.getPdf();
+        String myBookFileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/task/downloadFile").toUriString();
+        myBookFileDownloadUri += "?filePath=" + myBookFilePath;
+        delegateExecution.setVariable("myBookPdfDownload", myBookFileDownloadUri);
+
+        String plagiatBookFilePath = plagiat.getPdf();
+        String plagiatBookFileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/task/downloadFile").toUriString();
+        plagiatBookFileDownloadUri += "?filePath=" + plagiatBookFilePath;
+        delegateExecution.setVariable("plagiatBookPdfDownload", plagiatBookFileDownloadUri);
     }
+
 }

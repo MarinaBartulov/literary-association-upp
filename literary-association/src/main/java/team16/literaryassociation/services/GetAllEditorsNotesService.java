@@ -4,25 +4,18 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team16.literaryassociation.model.Book;
-import team16.literaryassociation.model.Editor;
+import team16.literaryassociation.model.EditorPlagiarismNote;
 import team16.literaryassociation.model.PlagiarismComplaint;
-import team16.literaryassociation.services.impl.EmailService;
 import team16.literaryassociation.services.interfaces.PlagiarismComplaintService;
 
 @Service
-public class SendEmailToAllChosenEditorsService implements JavaDelegate {
+public class GetAllEditorsNotesService implements JavaDelegate {
 
     @Autowired
     private PlagiarismComplaintService plagiarismComplaintService;
 
-    @Autowired
-    private EmailService emailService;
-
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        System.out.println("Usao u send email to all chosen editors");
-
         Long plagiarismComplaintId = (Long) delegateExecution.getVariable("plagiarismComplaintId");
 
         PlagiarismComplaint plagiarismComplaint = plagiarismComplaintService.findById(plagiarismComplaintId);
@@ -32,15 +25,13 @@ public class SendEmailToAllChosenEditorsService implements JavaDelegate {
             //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
         }
 
-        Book myBook = plagiarismComplaint.getMyBook();
-
-        String subject = "Plagiarism detection notes";
-        for (Editor e: myBook.getOtherEditors()) {
-            String content = "Dear " + e.getFirstName() + " " + e.getLastName() +
-                    ", \n\n You have been chosen to give your notes about reported plagiarism." +
-                    "Please, check your task list to give your opinion. \n\n" +
-                    "Best regards,\nLiterary association";
-            emailService.sendEmail(e.getEmail(), subject, content);
+        String notes = "";
+        int i = 0;
+        for (EditorPlagiarismNote epn: plagiarismComplaint.getEditorPlagiarismNotes()) {
+            i++;
+            notes += "Note " + i + ": \n" + epn.getNotes() + "\n\n";
         }
+
+        delegateExecution.setVariable("allEditorsNotes", notes);
     }
 }
