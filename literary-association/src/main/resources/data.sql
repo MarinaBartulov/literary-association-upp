@@ -32,7 +32,7 @@ value ('Admin', 'admin@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj
 
 -- sifra: reader123, username: editor123
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
-value ('Editor', 'pera.praksa123@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor123', 'Pera', 'Peric', 'NS', 'Srbija', true, true);
+value ('Editor', 'senkasoic@yahoo.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor123', 'Pera', 'Peric', 'NS', 'Srbija', true, true);
 
 -- sifra: reader123, username: writer123
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
@@ -88,18 +88,18 @@ insert into user_roles (user_id, role_id) values (9,6);
 insert into user_roles (user_id, role_id) values (10,6);
 insert into user_roles (user_id, role_id) values (11,6);
 
-insert into book (isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
-values ('2222', 300, true, 'plagiarism-files/KontrolnaTacka.pdf', 600.0, 'Novi Sad, Jevrejska 10', 'dddddddddddddd', 'Kul knjiga 1', '2020', 5, 1, 11, 1, 6);
+insert into book (plagiarism, isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
+values (false, '2222', 300, true, 'plagiarism-files/KontrolnaTacka.pdf', 600.0, 'Novi Sad, Jevrejska 10', 'dddddddddddddd', 'Kul knjiga 1', '2020', 5, 1, 11, 1, 6);
 
 -- sifra: reader123, username: writer1234 id: 12
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
 values ('Writer', 'bojka.slike@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'writer1234', 'Nikola', 'Nikolic', 'NS', 'Srbija', true, true);
 
-insert into book (isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
-values ('2223', 300, true, 'plagiarism-files/KontrolnaTacka2.pdf', 600.0, 'Novi Sad, Jevrejska 10', 'hhhh', 'Kul knjiga 2', '2020', 5, 2, 10, 1, 12);
+insert into book (plagiarism, isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
+values (false, '2223', 300, true, 'plagiarism-files/KontrolnaTacka2.pdf', 600.0, 'Novi Sad, Jevrejska 10', 'hhhh', 'Kul knjiga 2', '2020', 5, 2, 10, 1, 12);
 
-insert into book (isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
-values ('2224', 300, true, 'plagiarism-files/KontrolnaTacka2.pdf', 600.0, 'Novi Sad, Jevrejska 10', 'lll', 'Kul knjiga 3', '2020', 5, 1, 9, 1, 6);
+insert into book (plagiarism, isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
+values (false, '2224', 300, true, 'plagiarism-files/KontrolnaTacka2.pdf', 600.0, 'Novi Sad, Jevrejska 10', 'lll', 'Kul knjiga 3', '2020', 5, 1, 9, 1, 6);
 
 -- sifra: reader123, username: editor1
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
@@ -124,8 +124,8 @@ value ('Editor', 'jovandalmatinac@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0
 insert into user_roles (user_id, role_id) values (15,5);
 insert into user_roles (user_id, role_id) values (16,5);
 
-insert into book (isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
-value ('1234567891234', 100, true, '/uploaded-files/knjiga1.pdf',10.59, 'Bulevar oslobodjenja 34', 'Sada dopunjena novim istraživanjima, ova sjajna knjiga promenila je milione života svojim uvidom u razvojni mentalni sklop. Nakon decenija istraživanja svetski poznat univerzitetski psiholog dr Kerol S. Dvek otkrila je jednostavnu, ali revolucionarnu ideju: moć mentalnog sklopa. Pokazuje nam kako način na koji razmišljamo o svojim talentima i sposobnostima može dramatično uticati na uspeh u školi, sportu, umetnosti, kao i na gotovo svako područje ljudskog života.','Mentalni sklop','2015',5,7,9,1,6);
+insert into book (plagiarism, isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
+value (false, '1234567891234', 100, true, '/uploaded-files/knjiga1.pdf',10.59, 'Bulevar oslobodjenja 34', 'Sada dopunjena novim istraživanjima, ova sjajna knjiga promenila je milione života svojim uvidom u razvojni mentalni sklop. Nakon decenija istraživanja svetski poznat univerzitetski psiholog dr Kerol S. Dvek otkrila je jednostavnu, ali revolucionarnu ideju: moć mentalnog sklopa. Pokazuje nam kako način na koji razmišljamo o svojim talentima i sposobnostima može dramatično uticati na uspeh u školi, sportu, umetnosti, kao i na gotovo svako područje ljudskog života.','Mentalni sklop','2015',5,7,9,1,6);
 
-insert into book (isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
-value ('1234567333333', 150, false, '/uploaded-files/knjiga2.pdf',17.50, 'Bulevar Mihajla Pupina 23', 'Triler koji istražuje dubine ljudske psihe i njene tamne strane koje ne želimo da priznamo. Nemačka, 1994. U šumi koja guta svojim moćnim jelama varošice regije Baden-Virtemberg, na Badnje veče, inspektor Jirgen Fišer biće svedok scene koju neće zaboraviti do kraja života. Sneg je iznenada prestao da pada, i u dubokoj tišini koja ga je okruživala, pred njegovim očima pojavio se proplanak, savršen krug među jelama, a u njegovom centru crvena barica.','Zora u crnoj sumi','2015',5,1,9,2,6);
+insert into book (plagiarism, isbn, num_of_pages, open_access, pdf, price, publishers_address, synopsis, title, year, editor_id, genre_id, lecturer_id, publisher_id, writer_id)
+value (false, '1234567333333', 150, false, '/uploaded-files/knjiga2.pdf',17.50, 'Bulevar Mihajla Pupina 23', 'Triler koji istražuje dubine ljudske psihe i njene tamne strane koje ne želimo da priznamo. Nemačka, 1994. U šumi koja guta svojim moćnim jelama varošice regije Baden-Virtemberg, na Badnje veče, inspektor Jirgen Fišer biće svedok scene koju neće zaboraviti do kraja života. Sneg je iznenada prestao da pada, i u dubokoj tišini koja ga je okruživala, pred njegovim očima pojavio se proplanak, savršen krug među jelama, a u njegovom centru crvena barica.','Zora u crnoj sumi','2015',5,1,9,2,6);

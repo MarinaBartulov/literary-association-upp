@@ -33,5 +33,8 @@ public class GetAllEditorsNotesService implements JavaDelegate {
         }
 
         delegateExecution.setVariable("allEditorsNotes", notes);
+        //za novi krug brojanja misljenja
+        delegateExecution.setVariable("plagiat", 0);
+        delegateExecution.setVariable("notPlagiat",0);
     }
 }
