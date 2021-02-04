@@ -1,6 +1,5 @@
 package team16.literaryassociation.services;
 
-import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -11,10 +10,8 @@ import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.mapper.BetaReaderMapper;
 import team16.literaryassociation.model.Manuscript;
 import team16.literaryassociation.model.Reader;
-import team16.literaryassociation.services.interfaces.CommentService;
 import team16.literaryassociation.services.interfaces.ManuscriptService;
 import team16.literaryassociation.services.interfaces.ReaderService;
-import team16.literaryassociation.services.interfaces.UserService;
 
 import java.util.HashMap;
 import java.util.List;
