@@ -40,6 +40,7 @@ public class SaveBookAndSendToIndexingService implements JavaDelegate {
 
         Book book = new Book();
 
+        book.setPlagiarism(false);
         book.setTitle((String) map.get("title"));
         book.setSynopsis((String) map.get("synopsis"));
         book.setISBN((String) map.get("ISBN"));

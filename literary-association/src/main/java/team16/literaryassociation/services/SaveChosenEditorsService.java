@@ -22,6 +22,7 @@ import team16.literaryassociation.services.interfaces.UserService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +57,10 @@ public class SaveChosenEditorsService implements JavaDelegate {
         }
 
         Book myBook = plagiarismComplaint.getMyBook();
+
+        System.out.println("PRE BRISANJA EDITORA: " + myBook.getOtherEditors().size());
+        myBook.getOtherEditors().clear();
+        System.out.println("POSLE BRISANJA EDITORA: " + myBook.getOtherEditors().size());
 
         List<String> editors = (List<String>) map.get("editors");
         for (String editor : editors) {
