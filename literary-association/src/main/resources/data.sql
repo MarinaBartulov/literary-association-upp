@@ -32,7 +32,7 @@ value ('Admin', 'admin@gmail.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj
 
 -- sifra: reader123, username: editor123
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
-value ('Editor', 'senkasoic@yahoo.com', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor123', 'Pera', 'Peric', 'NS', 'Srbija', true, true);
+value ('Editor', 'editor123@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor123', 'Pera', 'Peric', 'NS', 'Srbija', true, true);
 
 -- sifra: reader123, username: writer123
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
@@ -103,11 +103,11 @@ values (false, '2224', 300, true, 'plagiarism-files/KontrolnaTacka2.pdf', 600.0,
 
 -- sifra: reader123, username: editor1
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
-value ('Editor', 'miledelija@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor1', 'Mile', 'Delija', 'NS', 'Srbija', true, true);
+value ('Editor', 'prvieditor@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor1', 'Prvi', 'Prvic', 'NS', 'Srbija', true, true);
 
 -- sifra: reader123, username: editor12
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
-value ('Editor', 'boradrljaca@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor12', 'Bora', 'Drljaca', 'NS', 'Srbija', true, true);
+value ('Editor', 'drugieditor@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor12', 'Drugi', 'Drugic', 'NS', 'Srbija', true, true);
 
 insert into user_roles (user_id, role_id) values (12,2);
 insert into user_roles (user_id, role_id) values (13,5);
@@ -115,11 +115,11 @@ insert into user_roles (user_id, role_id) values (14,5);
 
 -- sifra: reader123, username: editor1234
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
-value ('Editor', 'mirkopajcin@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor1234', 'Mirko', 'Pajcin', 'NS', 'Srbija', true, true);
+value ('Editor', 'trecieditor@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor1234', 'Treci', 'Trecic', 'NS', 'Srbija', true, true);
 
 -- sifra: reader123, username: editor12345
 insert into user (type, email, password, username, first_name, last_name, city, country, verified, enabled)
-value ('Editor', 'jovandalmatinac@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor12345', 'Jovan', 'Dalmatinac', 'NS', 'Srbija', true, true);
+value ('Editor', 'cetvrtieditor@maildrop.cc', '$2a$10$MgS2lefNxeyaDHxP/inYO.D0G5bkS8OX5RbAj7MJgghT16n6dQwIe', 'editor12345', 'Cetvrti', 'Cetvrtic', 'NS', 'Srbija', true, true);
 
 insert into user_roles (user_id, role_id) values (15,5);
 insert into user_roles (user_id, role_id) values (16,5);
