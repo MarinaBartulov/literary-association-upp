@@ -116,7 +116,7 @@
         <bpmn:boundaryEvent id="Event_0638erm" attachedToRef="Task_Take_Note">
           <bpmn:outgoing>Flow_0me2fhz</bpmn:outgoing>
           <bpmn:timerEventDefinition id="TimerEventDefinition_1sw1hnt">
-            <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
+            <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT8M</bpmn:timeDuration>
           </bpmn:timerEventDefinition>
         </bpmn:boundaryEvent>
         <bpmn:sequenceFlow id="Flow_0me2fhz" sourceRef="Event_0638erm" targetRef="Task_Choose_New_Editor" />
@@ -291,6 +291,14 @@
       <bpmndi:BPMNShape id="Activity_1j2qa0c_di" bpmnElement="Activity_1j2qa0c" isExpanded="true">
         <dc:Bounds x="310" y="80" width="3630" height="840" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_16gl9nf_di" bpmnElement="Flow_16gl9nf">
+        <di:waypoint x="2780" y="592" />
+        <di:waypoint x="2850" y="592" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e1hs40_di" bpmnElement="Flow_0e1hs40">
+        <di:waypoint x="2620" y="592" />
+        <di:waypoint x="2680" y="592" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0gazrgd_di" bpmnElement="Flow_0gazrgd">
         <di:waypoint x="1000" y="500" />
         <di:waypoint x="1060" y="500" />
@@ -371,14 +379,6 @@
           <dc:Bounds x="590" y="599" width="71" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0e1hs40_di" bpmnElement="Flow_0e1hs40">
-        <di:waypoint x="2620" y="592" />
-        <di:waypoint x="2680" y="592" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_16gl9nf_di" bpmnElement="Flow_16gl9nf">
-        <di:waypoint x="2780" y="592" />
-        <di:waypoint x="2850" y="592" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1328bzh_di" bpmnElement="Event_1328bzh">
         <dc:Bounds x="352" y="482" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -405,12 +405,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_00enmep_di" bpmnElement="Task_Send_Email_To_All_Chosen_Editors">
         <dc:Bounds x="1620" y="460" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1yqij5r_di" bpmnElement="Task_Get_All_Board_Members">
-        <dc:Bounds x="2520" y="552" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0lilqda_di" bpmnElement="Activity_01v0e1c">
-        <dc:Bounds x="2680" y="552" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1r0conx_di" bpmnElement="Activity_1r0conx" isExpanded="true">
         <dc:Bounds x="1840" y="400" width="620" height="383" />
@@ -473,26 +467,8 @@
         <di:waypoint x="2293" y="673" />
         <di:waypoint x="2381" y="823" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Gateway_1txzrbt_di" bpmnElement="Gateway_1txzrbt" isMarkerVisible="true">
-        <dc:Bounds x="3395" y="567" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0ana1da_di" bpmnElement="Task_Save_Plagiarism_Decision">
-        <dc:Bounds x="3570" y="552" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_15novah_di" bpmnElement="Event_15novah">
-        <dc:Bounds x="3802" y="574" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="3800" y="617" width="42" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1226wme_di" bpmnElement="Task_Send_To_Main_Editor">
-        <dc:Bounds x="3370" y="253" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0xv268a_di" bpmnElement="Activity_0imqdzy">
-        <dc:Bounds x="900" y="460" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1gnvx0d_di" bpmnElement="TextAnnotation_1gnvx0d">
-        <dc:Bounds x="2340" y="823" width="100" height="70" />
+      <bpmndi:BPMNShape id="Activity_1yqij5r_di" bpmnElement="Task_Get_All_Board_Members">
+        <dc:Bounds x="2520" y="552" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_04z5c8n_di" bpmnElement="Activity_04z5c8n" isExpanded="true">
         <dc:Bounds x="2850" y="502" width="490" height="180" />
@@ -520,6 +496,30 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_16scfsr_di" bpmnElement="Event_16scfsr">
         <dc:Bounds x="3282" y="576" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1txzrbt_di" bpmnElement="Gateway_1txzrbt" isMarkerVisible="true">
+        <dc:Bounds x="3395" y="567" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ana1da_di" bpmnElement="Task_Save_Plagiarism_Decision">
+        <dc:Bounds x="3570" y="552" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_15novah_di" bpmnElement="Event_15novah">
+        <dc:Bounds x="3802" y="574" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3800" y="617" width="42" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1226wme_di" bpmnElement="Task_Send_To_Main_Editor">
+        <dc:Bounds x="3370" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xv268a_di" bpmnElement="Activity_0imqdzy">
+        <dc:Bounds x="900" y="460" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0lilqda_di" bpmnElement="Activity_01v0e1c">
+        <dc:Bounds x="2680" y="552" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1gnvx0d_di" bpmnElement="TextAnnotation_1gnvx0d">
+        <dc:Bounds x="2340" y="823" width="100" height="70" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0lsvdik_di" bpmnElement="Event_0lsvdik">
         <dc:Bounds x="4122" y="482" width="36" height="36" />

@@ -30,6 +30,8 @@ public class Book {
     private double price;
     private boolean openAccess;
 
+    private Boolean plagiarism;
+
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<OrderBook> orders = new HashSet<>();
 
