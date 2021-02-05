@@ -24,17 +24,26 @@ public class BookRequestValidationService implements JavaDelegate {
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
         Map<String, Object> map = this.listFieldsToMap(formData);
         boolean bookIsValid = true;
+        String errorMsg = "";
 
-        if(((String)map.get("title")).equals("")){
+        if(((String)map.get("title")).trim().equals("")){
             bookIsValid = false;
+            errorMsg += "Title is required. ";
         }
-        if(((String)map.get("synopsis")).equals("")){
+        if(((String)map.get("synopsis")).trim().equals("")){
             bookIsValid = false;
+            errorMsg += "Synopsis is required. ";
         }
 
         String genre = (String) map.get("genre");
         if(this.genreService.findByName(genre) == null){
             bookIsValid = false;
+            errorMsg += "Genre doesn't exit. ";
+        }
+
+        if(!bookIsValid){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", errorMsg);
         }
 
         execution.setVariable("bookIsValid", bookIsValid);

@@ -24,6 +24,8 @@ public class ChooseRandomEditorService implements JavaDelegate {
         Long bookRequestId = (Long) execution.getVariable("bookRequestId");
         BookRequest br = this.bookRequestService.findById(bookRequestId);
         if(br == null){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Choosing random editor failed.");
             throw new BpmnError("CHOOSING_RANDOM_EDITOR_FAILED");
         }
         Editor editor = this.editorService.findRandomEditor();
@@ -31,6 +33,8 @@ public class ChooseRandomEditorService implements JavaDelegate {
         try {
             this.bookRequestService.save(br);
         }catch(Exception e){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Choosing random editor failed.");
             throw new BpmnError("CHOOSING_RANDOM_EDITOR_FAILED");
         }
         execution.setVariable("chosenEditor", editor.getUsername());

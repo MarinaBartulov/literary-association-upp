@@ -23,6 +23,8 @@ public class SaveManuscriptIsOriginalService implements JavaDelegate {
         Long manuscriptId = (Long) execution.getVariable("manuscriptId");
         Manuscript manuscript = this.manuscriptService.findById(manuscriptId);
         if(manuscript == null){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving editors decision failed. Give your opinion again.");
             throw new BpmnError("SAVING_MANUSCRIPT_ORIGINAL_FAILED");
         }
         boolean original = (boolean) execution.getVariable("original");
@@ -37,6 +39,8 @@ public class SaveManuscriptIsOriginalService implements JavaDelegate {
         try {
             this.manuscriptService.save(manuscript);
         }catch(Exception e){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving editors decision failed. Give your opinion again.");
             throw new BpmnError("SAVING_MANUSCRIPT_ORIGINAL_FAILED");
         }
 

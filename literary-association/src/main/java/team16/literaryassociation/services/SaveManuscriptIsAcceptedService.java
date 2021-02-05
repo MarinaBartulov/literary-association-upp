@@ -23,6 +23,8 @@ public class SaveManuscriptIsAcceptedService implements JavaDelegate {
         Long manuscriptId = (Long) execution.getVariable("manuscriptId");
         Manuscript manuscript = this.manuscriptService.findById(manuscriptId);
         if(manuscript == null){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving editors decision failed. Accept or reject again.");
             throw new BpmnError("SAVING_MANUSCRIPT_ACCEPTED_FAILED");
         }
         boolean accept = (boolean) execution.getVariable("accept");
@@ -31,12 +33,19 @@ public class SaveManuscriptIsAcceptedService implements JavaDelegate {
         String reasonForRejection = "";
         if(!accept){
             reasonForRejection = (String) execution.getVariable("reasonForRejection");
+            if(reasonForRejection.trim().equals("")){
+                execution.setVariable("globalError", true);
+                execution.setVariable("globalErrorMessage", "Reason for rejection is required.");
+                throw new BpmnError("SAVING_MANUSCRIPT_ACCEPTED_FAILED");
+            }
             manuscript.setReasonForRejection(reasonForRejection);
         }
 
         try {
             this.manuscriptService.save(manuscript);
         }catch(Exception e){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving editors decision failed. Accept or reject again.");
             throw new BpmnError("SAVING_MANUSCRIPT_ACCEPTED_FAILED");
         }
 

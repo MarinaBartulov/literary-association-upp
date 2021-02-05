@@ -30,6 +30,8 @@ public class SaveManuscriptService implements JavaDelegate {
         String pdfManuscript = (String) execution.getVariable("pdfManuscript"); //putanja do fajla
         BookRequest br = this.bookRequestService.findById(bookRequestId);
         if(br == null){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving manuscript failed. Upload again.");
             throw new BpmnError("SAVING_MANUSCRIPT_FAILED");
         }
         Manuscript m = new Manuscript();
@@ -40,6 +42,8 @@ public class SaveManuscriptService implements JavaDelegate {
         try {
             this.manuscriptService.save(m);
         }catch(Exception e){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving manuscript failed. Upload again.");
             throw new BpmnError("SAVING_MANUSCRIPT_FAILED");
         }
         execution.setVariable("manuscriptId", m.getId());
