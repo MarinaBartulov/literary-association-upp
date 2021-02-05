@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,7 @@ public class SavePlagiarismDecisionService implements JavaDelegate {
         PlagiarismComplaint plagiarismComplaint = plagiarismComplaintService.findById(plagiarismComplaintId);
         if(plagiarismComplaint == null){
             System.out.println("Nije nasao zalbu na plagijarizam");
-            return;
-            ///error
+            throw new BpmnError("SAVING_PLAGIARISM_DECISION_FAILED", "Saving plagiarism decision failed.");
         }
 
         Integer plagiat = (Integer)execution.getVariable("plagiat");
@@ -40,8 +40,11 @@ public class SavePlagiarismDecisionService implements JavaDelegate {
         {
             Book bookPlagiat = plagiarismComplaint.getBookPlagiat();
             bookPlagiat.setPlagiarism(true);
-            bookService.save(bookPlagiat);
+            try {
+                bookService.save(bookPlagiat);
+            } catch (Exception e) {
+                throw new BpmnError("SAVING_PLAGIARISM_DECISION_FAILED", "Saving plagiarism decision failed.");
+            }
         }
-
     }
 }

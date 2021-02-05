@@ -1,6 +1,7 @@
 package team16.literaryassociation.services;
 
 import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ import team16.literaryassociation.model.EditorPlagiarismNote;
 import team16.literaryassociation.model.PlagiarismComplaint;
 import team16.literaryassociation.model.User;
 import team16.literaryassociation.services.interfaces.EditorPlagiarismNoteService;
-import team16.literaryassociation.services.interfaces.EditorService;
 import team16.literaryassociation.services.interfaces.PlagiarismComplaintService;
 import team16.literaryassociation.services.interfaces.UserService;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class SaveEditorsNotesService implements JavaDelegate {
@@ -30,9 +33,6 @@ public class SaveEditorsNotesService implements JavaDelegate {
     private UserService userService;
 
     @Autowired
-    private EditorService editorService;
-
-    @Autowired
     private PlagiarismComplaintService plagiarismComplaintService;
 
     @Override
@@ -42,28 +42,21 @@ public class SaveEditorsNotesService implements JavaDelegate {
 
         String username = identityService.getCurrentAuthentication().getUserId();
         User user = userService.findByUsername(username);
-
         if (user == null) {
             System.out.println("Nije nasao editora");
-            return;
-            // throw new BpmnError("BOOK_SAVING_FAILED", "Invalid writer.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "You are not authenticated.");
+            throw new BpmnError("SAVING_EDITORS_NOTES_FAILED", "Saving editors notes failed.");
         }
-
         Editor editor = (Editor) user;
 
-        if (editor == null) {
-            System.out.println("Nije nasao editora");
-            return;
-            // throw new BpmnError("BOOK_SAVING_FAILED", "Invalid writer.");
-        }
-
         Long plagiarismComplaintId = (Long) delegateExecution.getVariable("plagiarismComplaintId");
-
         PlagiarismComplaint plagiarismComplaint = plagiarismComplaintService.findById(plagiarismComplaintId);
         if(plagiarismComplaint == null) {
             System.out.println("Nije nasao plagiarism complaint");
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Plagiarism complaint doesn't exist.");
+            throw new BpmnError("SAVING_EDITORS_NOTES_FAILED", "Saving editors notes failed.");
         }
 
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) delegateExecution.getVariable("formData");
@@ -73,12 +66,17 @@ public class SaveEditorsNotesService implements JavaDelegate {
         note.setPlagiarismComplaint(plagiarismComplaint);
         note.setEditor(editor);
         note.setNotes((String) map.get("notes"));
-        EditorPlagiarismNote editorNote = editorPlagiarismNoteService.save(note);
-        Set<EditorPlagiarismNote> notes = plagiarismComplaint.getEditorPlagiarismNotes();
-        notes.add(editorNote);
-        plagiarismComplaint.setEditorPlagiarismNotes(notes);
-        plagiarismComplaintService.save(plagiarismComplaint);
-
+        try {
+            EditorPlagiarismNote editorNote = editorPlagiarismNoteService.save(note);
+            Set<EditorPlagiarismNote> notes = plagiarismComplaint.getEditorPlagiarismNotes();
+            notes.add(editorNote);
+            plagiarismComplaint.setEditorPlagiarismNotes(notes);
+            plagiarismComplaintService.save(plagiarismComplaint);
+        } catch (Exception e) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving editors notes failed.");
+            throw new BpmnError("SAVING_EDITORS_NOTES_FAILED", "Saving editors notes failed.");
+        }
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {

@@ -30,42 +30,47 @@ public class SavePlagiarismComplaint implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
+        System.out.println("Uslo u SavePlagiarismComplaint");
         String username = identityService.getCurrentAuthentication().getUserId();
         User user = userService.findByUsername(username);
-
         if (user == null) {
             System.out.println("Nije nasao writera");
-            return;
-            // throw new BpmnError("BOOK_SAVING_FAILED", "Invalid writer.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "You are not authenticated.");
+            throw new BpmnError("SAVING_PLAGIARISM_COMPLAINT_FAILED", "Saving plagiarism complaint failed.");
         }
 
         Long myBookTitleId = (Long) delegateExecution.getVariable("myBookId");
-
         Book myBook = bookService.findOne(myBookTitleId);
-
         if (myBook == null) {
             System.out.println("Nije nasao my book");
-            return;
-            // throw new BpmnError("BOOK_SAVING_FAILED", "Invalid writer.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Chosen book doesn't exist.");
+            throw new BpmnError("SAVING_PLAGIARISM_COMPLAINT_FAILED", "Saving plagiarism complaint failed.");
         }
 
         String plagiatBookTitle = (String) delegateExecution.getVariable("plagiatBookTitle");
         String writerFirstName = (String) delegateExecution.getVariable("writerFirstName");
         String writerLastName = (String) delegateExecution.getVariable("writerLastName");
-
         Book plagiat = bookService.findBookByTitleAndWritersName(plagiatBookTitle, writerFirstName, writerLastName);
-
         if (plagiat == null) {
             System.out.println("Nije nasao book plagiat");
-            return;
-            // throw new BpmnError("BOOK_SAVING_FAILED", "Invalid writer.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Chosen plagiarism book doesn't exist.");
+            throw new BpmnError("SAVING_PLAGIARISM_COMPLAINT_FAILED", "Saving plagiarism complaint failed.");
         }
 
         PlagiarismComplaint plagiarismComplaint = new PlagiarismComplaint();
         plagiarismComplaint.setMyBook(myBook);
         plagiarismComplaint.setBookPlagiat(plagiat);
-        PlagiarismComplaint newPC = plagiarismComplaintService.save(plagiarismComplaint);
-
+        PlagiarismComplaint newPC = null;
+        try {
+            newPC = plagiarismComplaintService.save(plagiarismComplaint);
+        } catch (Exception e) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving plagiarism complaint failed.");
+            throw new BpmnError("SAVING_PLAGIARISM_COMPLAINT_FAILED", "Saving plagiarism complaint failed.");
+        }
         delegateExecution.setVariable("plagiarismComplaintId", newPC.getId());
 
         Editor mainEditor = myBook.getEditor();

@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,9 @@ public class SendEmailToMainEditorService implements JavaDelegate {
         System.out.println("Main editor: " + username);
 
         User user = userService.findByUsername(username);
-
         if (user == null) {
             System.out.println("Nije nasao main editora");
-            return;
-            // throw new BpmnError("BOOK_SAVING_FAILED", "Invalid writer.");
+            throw new BpmnError("SENDING_EMAIL_FAILED", "Sending email to main editor failed.");
         }
 
         String text = "Hello " + user.getFirstName() + " " + user.getLastName() + ",\n\nBoard members didn't agree whether book is plagiat or not,  " +
@@ -38,7 +37,10 @@ public class SendEmailToMainEditorService implements JavaDelegate {
 
         String subject = "Plagiarism detection.";
 
-        emailService.sendEmail(user.getEmail(), subject, text);
-
+        try {
+            emailService.sendEmail(user.getEmail(), subject, text);
+        } catch (Exception e) {
+            throw new BpmnError("SENDING_EMAIL_FAILED", "Sending email to main editor failed.");
+        }
     }
 }

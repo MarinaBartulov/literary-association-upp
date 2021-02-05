@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class SendEmailToAllChosenEditorsService implements JavaDelegate {
         PlagiarismComplaint plagiarismComplaint = plagiarismComplaintService.findById(plagiarismComplaintId);
         if(plagiarismComplaint == null) {
             System.out.println("Nije nasao plagiarism complaint");
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
+            throw new BpmnError("SENDING_EMAIL_FAILED", "Sending email to all chosen editors failed.");
         }
 
         Book myBook = plagiarismComplaint.getMyBook();
@@ -40,7 +40,11 @@ public class SendEmailToAllChosenEditorsService implements JavaDelegate {
                     ", \n\n You have been chosen to give your notes about reported plagiarism." +
                     "Please, check your task list to give your opinion. \n\n" +
                     "Best regards,\nLiterary association";
-            emailService.sendEmail(e.getEmail(), subject, content);
+            try {
+                emailService.sendEmail(e.getEmail(), subject, content);
+            } catch (Exception e1) {
+                throw new BpmnError("SENDING_EMAIL_FAILED", "Sending email to all chosen editors failed.");
+            }
         }
     }
 }

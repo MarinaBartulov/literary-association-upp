@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,9 @@ public class SaveNewEditorService implements JavaDelegate {
         if(plagiarismComplaint == null)
         {
             System.out.println("Nije nasao PlagiarismComplaint");
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding manuscript failed.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Plagiarism complaint doesn't exist.");
+            throw new BpmnError("SAVING_NEW_EDITOR_FAILED", "Saving new editor failed.");
         }
 
         Book myBook = plagiarismComplaint.getMyBook();
@@ -58,8 +60,9 @@ public class SaveNewEditorService implements JavaDelegate {
         String editorId = (String) map.get("remainingEditors");
         Editor e = editorService.findById(Long.parseLong(editorId));
         if(e == null) {
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Chosen editor could not be found.");
+            throw new BpmnError("SAVING_NEW_EDITOR_FAILED", "Saving new editor failed.");
         }
         myBook.getOtherEditors().add(e);
 
@@ -68,21 +71,22 @@ public class SaveNewEditorService implements JavaDelegate {
         User user = userService.findByUsername(badEditor);
         if( user == null ) {
             System.out.println("Nije sacuvao Editora");
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Chosen editor could not be found.");
+            throw new BpmnError("SAVING_NEW_EDITOR_FAILED", "Saving new editor failed.");
         }
         Editor timeExpEditor = (Editor) user;
         myBook.getOtherEditors().remove(timeExpEditor);
 
-        Book saved = bookService.save(myBook);
-        if(saved == null) {
-            System.out.println("Nije sacuvao Book");
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
+        try {
+            bookService.save(myBook);
+        } catch (Exception exception) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving book with new editor failed.");
+            throw new BpmnError("SAVING_NEW_EDITOR_FAILED", "Saving new editor failed.");
         }
 
         EditorDTO newEditorDTO = editorMapper.toDto(e);
-
         delegateExecution.setVariable("editor", newEditorDTO);
     }
 

@@ -31,26 +31,35 @@ public class ComplaintValidationService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
+        System.out.println("Uslo u ComplaintValidationService");
+
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) delegateExecution.getVariable("formData");
         Map<String, Object> map = this.listFieldsToMap(formData);
         boolean complaintIsValid = true;
-
-        String username = identityService.getCurrentAuthentication().getUserId();
-        User user = userService.findByUsername(username);
+        String errorMsg = "";
 
         String myBookTitleId = (String) map.get("myBookTitle");
         if(bookService.findOne(Long.parseLong(myBookTitleId)) == null){
             complaintIsValid = false;
+            errorMsg += "Chosen book doesn't exist. ";
         }
 
         if(((String)map.get("plagiatBookTitle")).equals("")){
             complaintIsValid = false;
+            errorMsg += "Plagiarism book title is required. ";
         }
         if(((String)map.get("writerFirstName")).equals("")){
             complaintIsValid = false;
+            errorMsg += "Plagiarism book writer's first name is required. ";
         }
         if(((String)map.get("writerLastName")).equals("")){
             complaintIsValid = false;
+            errorMsg += "Plagiarism book writer's last name is required. ";
+        }
+
+        if(!complaintIsValid){
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", errorMsg);
         }
 
         delegateExecution.setVariable("myBookId", Long.parseLong(myBookTitleId));
