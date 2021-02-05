@@ -78,6 +78,10 @@ const Header = () => {
     history.push("/orders");
   };
 
+  const goToPurchasedBooks = () => {
+    history.push("/purchasedBooks");
+  };
+
   const startBookPublishing = async () => {
     console.log("Publishing started...");
     try {
@@ -156,13 +160,13 @@ const Header = () => {
                 Publish a book
               </Button>
               <Button
-              className="ml-2"
-              variant="link"
-              onClick={reportPlagiarism}
-            >
-              Report plagiarism
-            </Button>
-          </div>
+                className="ml-2"
+                variant="link"
+                onClick={reportPlagiarism}
+              >
+                Report plagiarism
+              </Button>
+            </div>
           )}
           <Button className="ml-2" variant="link" onClick={goToSearchBooks}>
             Search books
@@ -175,6 +179,15 @@ const Header = () => {
           {loggedIn && role === "ROLE_READER" && (
             <Button className="ml-2" variant="link" onClick={goToOrders}>
               My orders
+            </Button>
+          )}
+          {loggedIn && role === "ROLE_READER" && (
+            <Button
+              className="ml-2"
+              variant="link"
+              onClick={goToPurchasedBooks}
+            >
+              Purchased books
             </Button>
           )}
           {loggedIn && (

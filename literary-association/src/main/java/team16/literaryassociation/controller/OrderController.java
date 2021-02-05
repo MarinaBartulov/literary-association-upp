@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import team16.literaryassociation.dto.OrderDTO;
-import team16.literaryassociation.dto.OrderHistoryDTO;
-import team16.literaryassociation.dto.OrderRequestDTO;
-import team16.literaryassociation.dto.OrderResponseDTO;
+import team16.literaryassociation.dto.*;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.services.interfaces.MerchantService;
 import team16.literaryassociation.services.interfaces.OrderService;
@@ -41,5 +38,12 @@ public class OrderController {
 
         List<OrderHistoryDTO> ordersDTO = this.orderService.getOrders();
         return new ResponseEntity(ordersDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/purchasedBooks")
+    public ResponseEntity getPurchasedBooks(){
+
+        List<BookDTO> purchasedBooksDTO = this.orderService.getPurchasedBooks();
+        return new ResponseEntity(purchasedBooksDTO, HttpStatus.OK);
     }
 }
