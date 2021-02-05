@@ -60,7 +60,7 @@ public class SaveChosenBetaReadersService implements JavaDelegate {
 
         Manuscript saved = null;
         try {
-            manuscriptService.save(manuscript);
+            saved = manuscriptService.save(manuscript);
         } catch (Exception e) {
             delegateExecution.setVariable("globalError", true);
             delegateExecution.setVariable("globalErrorMessage", "Saving manuscript failed.");
