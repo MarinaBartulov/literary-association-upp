@@ -45,8 +45,9 @@ public class ReaderValidationService implements JavaDelegate {
         }
         if(userService.findByEmail((String)map.get("email")) != null){
             isValid = false;
-            errorMsg += "Email already exists.";
+            errorMsg += "This email is already used. ";
         }
+
         if(!map.get("password").equals(map.get("confirmPassword"))){
             isValid = false;
             errorMsg += "Passwords don't match. ";

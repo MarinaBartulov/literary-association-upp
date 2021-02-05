@@ -33,6 +33,8 @@ public class SaveBetaGenresService implements JavaDelegate {
 
         Reader reader = this.readerService.findById(readerId);
         if(reader == null){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving genres for beta reader failed.");
             throw new BpmnError("SAVING_BETA_GENRES_FAILED");
         }
         List<String> betaGenres = (List<String>) map.get("betaGenres");
@@ -45,6 +47,8 @@ public class SaveBetaGenresService implements JavaDelegate {
         try{
             this.readerService.saveReader(reader);
         }catch(Exception e){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving genres for beta reader failed.");
             throw new BpmnError("SAVING_BETA_GENRES_FAILED");
         }
 

@@ -1,12 +1,15 @@
 package team16.literaryassociation.services;
 
 import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team16.literaryassociation.dto.FormSubmissionDTO;
 import team16.literaryassociation.model.Genre;
 import team16.literaryassociation.model.Reader;
@@ -60,22 +63,29 @@ public class SaveReaderService implements JavaDelegate {
             newReader.getGenres().add(g);
         }
 
-        newReader = readerService.saveReader(newReader);
+        try {
+            newReader = readerService.saveReader(newReader);
+        }catch(Exception e){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving a new reader failed.");
+            throw new BpmnError("SAVING_READER_FAILED", "Saving reader failed.");
+        }
 
         if(newReader != null){
             execution.setVariable("readerId", newReader.getId());
-            org.camunda.bpm.engine.identity.User cmdUser = identityService.newUser(newReader.getUsername());
-            cmdUser.setEmail(newReader.getEmail());
-            cmdUser.setFirstName(newReader.getFirstName());
-            cmdUser.setLastName(newReader.getLastName());
-            cmdUser.setPassword(newReader.getPassword());
             try {
+                org.camunda.bpm.engine.identity.User cmdUser = identityService.newUser(newReader.getUsername());
+                cmdUser.setEmail(newReader.getEmail());
+                cmdUser.setFirstName(newReader.getFirstName());
+                cmdUser.setLastName(newReader.getLastName());
+                cmdUser.setPassword(newReader.getPassword());
                 identityService.saveUser(cmdUser);
             }catch(Exception e){
-                throw new BpmnError("SAVE_CAMUNDA_USER_FAILED", "Saving camunda user failed.");
+                execution.setVariable("globalError", true);
+                execution.setVariable("globalErrorMessage", "Saving a new reader failed.");
+                throw new BpmnError("SAVING_READER_FAILED", "Saving reader failed.");
             }
         }
-
 
     }
 
