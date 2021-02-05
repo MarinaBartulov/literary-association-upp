@@ -116,7 +116,7 @@
         <bpmn:boundaryEvent id="Event_0638erm" attachedToRef="Task_Take_Note">
           <bpmn:outgoing>Flow_0me2fhz</bpmn:outgoing>
           <bpmn:timerEventDefinition id="TimerEventDefinition_1sw1hnt">
-            <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT8M</bpmn:timeDuration>
+            <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT4M</bpmn:timeDuration>
           </bpmn:timerEventDefinition>
         </bpmn:boundaryEvent>
         <bpmn:sequenceFlow id="Flow_0me2fhz" sourceRef="Event_0638erm" targetRef="Task_Choose_New_Editor" />
