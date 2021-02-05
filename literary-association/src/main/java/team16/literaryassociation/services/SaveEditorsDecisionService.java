@@ -24,6 +24,8 @@ public class SaveEditorsDecisionService implements JavaDelegate {
         Long bookRequestId = (Long) execution.getVariable("bookRequestId");
         BookRequest br = this.bookRequestService.findById(bookRequestId);
         if(br == null){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving editors decision failed.");
             throw new BpmnError("SAVING_EDITOR_DECISION_FAILED");
         }
         br.setAccepted(accept);
@@ -33,6 +35,8 @@ public class SaveEditorsDecisionService implements JavaDelegate {
         try {
             this.bookRequestService.save(br);
         }catch(Exception e){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving editors decision failed.");
             throw new BpmnError("SAVING_EDITOR_DECISION_FAILED");
         }
 
