@@ -48,21 +48,27 @@ public class SaveBookAndSendToIndexingService implements JavaDelegate {
         try {
             book.setNumOfPages(Integer.parseInt((String) map.get("numberOfPages")));
         } catch (Exception e) {
-            throw new BpmnError("BOOK_SAVING_FAILED", "Invalid number of pages.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Invalid number of pages.");
+            throw new BpmnError("BOOK_SAVING_FAILED", "Saving book failed.");
         }
 
         String genreName = (String) map.get("genre");
         Genre genre = this.genreService.findByName(genreName);
         if (genre == null) {
             System.out.println("Nije nasao Genre");
-            throw new BpmnError("BOOK_SAVING_FAILED", "Invalid genre.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Book genre cannot be found.");
+            throw new BpmnError("BOOK_SAVING_FAILED", "Saving book failed.");
         }
 
         Long manuscriptId = (Long) delegateExecution.getVariable("manuscriptId");
         Manuscript manuscript = manuscriptService.findById(manuscriptId);
         if (manuscript == null) {
             System.out.println("Nije nasao manuscript");
-            throw new BpmnError("BOOK_SAVING_FAILED", "Invalid manuscript.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Manuscript cannot be found.");
+            throw new BpmnError("BOOK_SAVING_FAILED", "Saving book failed.");
         }
 
         book.setGenre(genre);
@@ -73,7 +79,9 @@ public class SaveBookAndSendToIndexingService implements JavaDelegate {
         Writer writer = (Writer) userService.findByUsername(writerUsername);
         if (writer == null) {
             System.out.println("Nije nasao writer");
-            throw new BpmnError("BOOK_SAVING_FAILED", "Invalid writer.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Writer cannot be found.");
+            throw new BpmnError("BOOK_SAVING_FAILED", "Saving book failed.");
         }
         book.setWriter(writer);
 
@@ -81,7 +89,9 @@ public class SaveBookAndSendToIndexingService implements JavaDelegate {
         Editor editor = (Editor) userService.findByUsername(editorUsername);
         if (editor == null) {
             System.out.println("Nije nasao editor");
-            throw new BpmnError("BOOK_SAVING_FAILED", "Invalid editor.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Editor cannot be found.");
+            throw new BpmnError("BOOK_SAVING_FAILED", "Saving book failed.");
         }
         book.setEditor(editor);
 
@@ -89,7 +99,9 @@ public class SaveBookAndSendToIndexingService implements JavaDelegate {
         Lecturer lecturer = (Lecturer) userService.findByUsername(lecturerUsername);
         if (lecturer == null) {
             System.out.println("Nije nasao lecturer");
-            throw new BpmnError("BOOK_SAVING_FAILED", "Invalid lecturer.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Lecturer cannot be found.");
+            throw new BpmnError("BOOK_SAVING_FAILED", "Saving book failed.");
         }
         book.setLecturer(lecturer);
 
@@ -97,12 +109,20 @@ public class SaveBookAndSendToIndexingService implements JavaDelegate {
         Merchant merchant = merchantService.findByEmail(publisher);
         if(merchant == null) {
             System.out.println("Nije nasao merchant");
-            throw new BpmnError("BOOK_SAVING_FAILED", "Invalid merchant.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Publisher cannot be found.");
+            throw new BpmnError("BOOK_SAVING_FAILED", "Saving book failed.");
         }
         book.setPublisher(merchant);
         book.setPublishersAddress("Trg Nikole Pasica 4, Beograd");
 
-        bookService.save(book);
+        try {
+            bookService.save(book);
+        } catch (Exception e) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving book failed.");
+            throw new BpmnError("BOOK_SAVING_FAILED", "Saving book failed.");
+        }
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {

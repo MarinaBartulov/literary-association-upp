@@ -30,11 +30,27 @@ public class SaveEditorsFinalDecisionService implements JavaDelegate {
         Manuscript manuscript = manuscriptService.findById(manuscriptId);
         if(manuscript == null) {
             System.out.println("Nije nasao Manuscript");
-            throw new BpmnError("FINAL_EDITOR_DECISION_FAILED", "Invalid manuscript.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Manuscript cannot be found.");
+            throw new BpmnError("FINAL_EDITOR_DECISION_FAILED", "Saving editor's final decision failed.");
         }
         manuscript.setFinalEditorsApproval(approved);
+        try {
+            manuscriptService.save(manuscript);
+        } catch (Exception e) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving editor's final decision failed.");
+            throw new BpmnError("FINAL_EDITOR_DECISION_FAILED", "Saving editor's final decision failed.");
+        }
+
         if(!approved) {
-            manuscript.setSuggestions(suggestions);
+            try {
+                manuscript.setSuggestions(suggestions);
+            } catch (Exception e) {
+                delegateExecution.setVariable("globalError", true);
+                delegateExecution.setVariable("globalErrorMessage", "Saving editor's final decision failed.");
+                throw new BpmnError("FINAL_EDITOR_DECISION_FAILED", "Saving editor's final decision failed.");
+            }
 
             System.out.println("Salje se mejl da je odbio i koje su mu sugestije");
             String subject = "Manuscript rejected with suggestions";

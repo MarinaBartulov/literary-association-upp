@@ -47,7 +47,9 @@ public class SaveBetaReaderCommentService implements JavaDelegate {
         if(manuscript == null)
         {
             System.out.println("Nije nasao Manuscript");
-            throw new BpmnError("COMMENT_SAVING_FAILED", "Invalid manuscript.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Manuscript cannot be found.");
+            throw new BpmnError("COMMENT_SAVING_FAILED", "Saving comment failed.");
         }
 
         String username = this.identityService.getCurrentAuthentication().getUserId();
@@ -55,14 +57,22 @@ public class SaveBetaReaderCommentService implements JavaDelegate {
         if(betaReader == null)
         {
             System.out.println("Nije nasao Reader-a");
-            throw new BpmnError("COMMENT_SAVING_FAILED", "Beta-Reader not found.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Beta-Reader cannot be found.");
+            throw new BpmnError("COMMENT_SAVING_FAILED", "Saving comment failed.");
         }
 
         Comment comment = new Comment();
         comment.setContent((String) map.get("comment"));
         comment.setBetaReader(betaReader);
         comment.setManuscript(manuscript);
-        commentService.save(comment);
+        try {
+            commentService.save(comment);
+        } catch (Exception e) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving comment failed.");
+            throw new BpmnError("COMMENT_SAVING_FAILED", "Saving comment failed.");
+        }
 
     }
 

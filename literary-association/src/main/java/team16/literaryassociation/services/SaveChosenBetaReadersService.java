@@ -42,26 +42,32 @@ public class SaveChosenBetaReadersService implements JavaDelegate {
         if(manuscript == null)
         {
             System.out.println("Nije nasao Manuscript");
-            throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding manuscript failed.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Finding manuscript failed.");
+            throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving beta-reader failed.");
         }
 
         List<String> betaReaders = (List<String>) map.get("betaReaders");
         for (String betaReader : betaReaders) {
             Reader r = this.readerService.findById(Long.parseLong(betaReader));
             if(r == null) {
-                throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
+                delegateExecution.setVariable("globalError", true);
+                delegateExecution.setVariable("globalErrorMessage", "Finding beta-reader failed.");
+                throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving beta-reader failed.");
             }
             manuscript.getBetaReaders().add(r);
         }
 
-        Manuscript saved = manuscriptService.save(manuscript);
-        if(saved == null) {
-            System.out.println("Nije sacuvao Manuscript");
-            throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
+        Manuscript saved = null;
+        try {
+            manuscriptService.save(manuscript);
+        } catch (Exception e) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving manuscript failed.");
+            throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving beta-reader failed.");
         }
 
         List<BetaReaderDTO> betaReaderDTOs = saved.getBetaReaders().stream().map( br -> betaReaderMapper.toDto(br)).collect(Collectors.toList());
-
         delegateExecution.setVariable("chosenBetaReaders", betaReaderDTOs);
     }
 
