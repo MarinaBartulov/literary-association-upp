@@ -42,6 +42,8 @@ public class SaveBookRequestService implements JavaDelegate {
         String username = (String) execution.getVariable("writer");
         Writer writer  = this.writerService.findByUsername(username);
         if(writer == null){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Writer can't be found. Saving book request failed.");
             throw new BpmnError("SAVING_BOOK_REQUEST_FAILED");
         }
         br.setWriter(writer);
@@ -49,6 +51,8 @@ public class SaveBookRequestService implements JavaDelegate {
             this.bookRequestService.save(br);
             execution.setVariable("bookRequestId", br.getId());
         }catch(Exception e){
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", "Saving book request failed.");
             throw new BpmnError("SAVING_BOOK_REQUEST_FAILED");
         }
     }
