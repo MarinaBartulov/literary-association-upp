@@ -48,4 +48,9 @@ public class MembershipApplicationServiceImpl implements MembershipApplicationSe
 
            return new MembershipApplicationInfoDTO(membershipApplication, literaryWorks);
     }
+
+    @Override
+    public MembershipApplication findById(Long id) {
+        return membershipApplicationRepository.findById(id).orElse(null);
+    }
 }

@@ -12,4 +12,5 @@ public interface MembershipApplicationService {
     MembershipApplication getOne(Long id);
     List<MembershipApplicationDTO> getAllMembershipApplicationsDTO();
     MembershipApplicationInfoDTO getMembershipApplicationInfoDTO(String id);
+    MembershipApplication findById(Long id);
  }
