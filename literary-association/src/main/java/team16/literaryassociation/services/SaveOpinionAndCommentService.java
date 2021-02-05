@@ -1,6 +1,7 @@
 package team16.literaryassociation.services;
 
 import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +39,18 @@ public class SaveOpinionAndCommentService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         System.out.println("Usao u save opinion and comment");
+        String errorMsg = "";
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
         Map<String, Object> map = this.listFieldsToMap(formData);
 
         Long membershipApplicationId = (Long) execution.getVariable("membership_application_id");
-        MembershipApplication membershipApplication = membershipApplicationService.getOne(membershipApplicationId);
+        MembershipApplication membershipApplication = membershipApplicationService.findById(membershipApplicationId);
         if(membershipApplication == null)
         {
-            System.out.println("Nije nasao MembershipApplication");
-            return;
+            errorMsg = "Error saving opinion and comment, membership application not found";
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", errorMsg);
+            throw new BpmnError("SAVE_OPINION_AND_COMMENT_FAILED", "Membership application not found.");
         }
 
         String username = this.identityService.getCurrentAuthentication().getUserId();
@@ -54,18 +58,16 @@ public class SaveOpinionAndCommentService implements JavaDelegate {
         if(boardMember == null)
         {
             System.out.println("Nije nasao BoardMembera");
-            return;
+            errorMsg = "Error saving opinion and comment, board member not found";
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", errorMsg);
+            throw new BpmnError("SAVE_OPINION_AND_COMMENT_FAILED", "Board member not found.");
         }
 
         BoardOpinion boardOpinion = new BoardOpinion();
-        //List<Map<String, String>> opinions = (List<Map<String, String>>) map.get("opinion");
-        //Map<String,String> opinion = opinions.get(0);
-        //System.out.println("Vrednost enuma: " + opinion.get("name"));
-        //boardOpinion.setOpinion(Opinion.valueOf(opinion.get("name")));
         String opinion = (String) map.get("opinion");
         System.out.println("Vrednost enuma: " + opinion);
         boardOpinion.setOpinion(Opinion.valueOf(opinion));
-
         boardOpinion.setMembershipApplication(membershipApplication);
         boardOpinion.setBoardMember(boardMember);
 

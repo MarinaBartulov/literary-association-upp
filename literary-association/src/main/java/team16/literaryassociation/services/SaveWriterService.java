@@ -40,6 +40,7 @@ public class SaveWriterService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         System.out.println("Uslo u SaveWriterService");
+        String errorMsg = "";
 
         List<FormSubmissionDTO> formData = (List<FormSubmissionDTO>) execution.getVariable("formData");
         Map<String, Object> map = this.listFieldsToMap(formData);
@@ -59,10 +60,14 @@ public class SaveWriterService implements JavaDelegate {
         List<String> genres = (List<String>) map.get("genres");
         for (String genre : genres) {
             Genre g = this.genreService.findByName(genre);
-            newWriter.getGenres().add(g);
+            if(g != null){
+                newWriter.getGenres().add(g);
+            }
         }
 
-        if(writerService.saveWriter(newWriter) != null){
+        try {
+            writerService.saveWriter(newWriter);
+            System.out.println("Sacuvao pisca");
             org.camunda.bpm.engine.identity.User cmdUser = identityService.newUser(newWriter.getUsername());
             cmdUser.setEmail(newWriter.getEmail());
             cmdUser.setFirstName(newWriter.getFirstName());
@@ -70,9 +75,21 @@ public class SaveWriterService implements JavaDelegate {
             cmdUser.setPassword(newWriter.getPassword());
             try {
                 identityService.saveUser(cmdUser);
+                System.out.println("Sacuvao camunda usera");
             }catch(Exception e){
-                throw new BpmnError("SAVE_CAMUNDA_USER_FAILED", "Saving camunda user failed.");
+                System.out.println("Nije Sacuvao camunda usera");
+                errorMsg="Saving camunda user failed";
+                execution.setVariable("globalError", true);
+                execution.setVariable("globalErrorMessage", errorMsg);
+                throw new BpmnError("SAVE_USER_FAILED", "Saving camunda user failed.");
             }
+        }
+        catch(Exception e){
+            System.out.println(" Nije Sacuvao pisca");
+            errorMsg="Saving user failed";
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", errorMsg);
+            throw new BpmnError("SAVE_USER_FAILED", "Saving user failed.");
         }
 
         execution.setVariable("currentUser", newWriter.getUsername());

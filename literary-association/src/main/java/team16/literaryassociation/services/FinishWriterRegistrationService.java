@@ -20,17 +20,14 @@ public class FinishWriterRegistrationService implements JavaDelegate {
         System.out.println("Usao u Finish Writer Registration");
 
         Long id = (Long)execution.getVariable("membership_application_id");
-        MembershipApplication membershipApplication = membershipApplicationService.getOne(id);
+        MembershipApplication membershipApplication = membershipApplicationService.findById(id);
         if(membershipApplication == null)
         {
-            throw new BpmnError("WRITER_REGISTRATION_FINISH_FAILED", "Membership application not found.");
+            throw new BpmnError("WRITER_REGISTRATION_FINISH_FAILED", "Writer registration failed, Membership application not found.");
         }
         membershipApplication.setApproved(true);
         membershipApplication.setPaid(true);
-        MembershipApplication membershipApplicationSaved = membershipApplicationService.save(membershipApplication);
-        if(membershipApplicationSaved == null)
-        {
-            throw new BpmnError("WRITER_REGISTRATION_FINISH_FAILED", "Error saving membership application.");
-        }
+        membershipApplicationService.save(membershipApplication);
+
     }
 }
