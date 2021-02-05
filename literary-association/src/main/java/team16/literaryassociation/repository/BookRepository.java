@@ -16,7 +16,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(value = "select * from book b where b.writer_id = ?1 and b.title = ?2", nativeQuery = true)
     Book findBookByWriterAndTitle(Long writerId, String title);
 
-    @Query(value = "select * from book b, user u where b.writer_id = u.id and b.title = ?1 and u.first_name = ?2 and u.last_name = ?3", nativeQuery = true)
+    @Query(value = "select * from book b, user u where b.writer_id = u.id and lower(b.title) like lower(concat('%', ?1, '%')) and lower(u.first_name) like lower(concat('%', ?2, '%')) and lower(u.last_name) like lower(concat('%', ?3, '%'))", nativeQuery = true)
     Book findBookByTitleAndWritersNameIgnoreCase(String title, String writersFirstName, String writersLastName);
 
 }

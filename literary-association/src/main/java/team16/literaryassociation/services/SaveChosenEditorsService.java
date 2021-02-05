@@ -52,8 +52,9 @@ public class SaveChosenEditorsService implements JavaDelegate {
         if(plagiarismComplaint == null)
         {
             System.out.println("Nije nasao PlagiarismComplaint");
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding manuscript failed.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Plagiarism complaint could not be found.");
+            throw new BpmnError("SAVING_CHOSEN_EDITORS_FAILED", "Saving chosen editors failed.");
         }
 
         Book myBook = plagiarismComplaint.getMyBook();
@@ -66,22 +67,22 @@ public class SaveChosenEditorsService implements JavaDelegate {
         for (String editor : editors) {
             Editor e = editorService.findById(Long.parseLong(editor));
             if(e == null) {
-                return;
-                //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
+                delegateExecution.setVariable("globalError", true);
+                delegateExecution.setVariable("globalErrorMessage", "Chosen editor could not be found.");
+                throw new BpmnError("SAVING_CHOSEN_EDITORS_FAILED", "Saving chosen editors failed.");
             }
             myBook.getOtherEditors().add(e);
         }
 
-        Book saved = bookService.save(myBook);
-        if(saved == null) {
-            System.out.println("Nije sacuvao Book");
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Saving manuscript failed.");
+        try {
+            Book saved = bookService.save(myBook);
+            List<EditorDTO> editorDTOs = saved.getOtherEditors().stream().map(e -> editorMapper.toDto(e)).collect(Collectors.toList());
+            delegateExecution.setVariable("chosenEditors", editorDTOs);
+        } catch (Exception e) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving chosen editors to plagiarism complaint failed.");
+            throw new BpmnError("SAVING_CHOSEN_EDITORS_FAILED", "Saving chosen editors failed.");
         }
-
-        List<EditorDTO> editorDTOs = saved.getOtherEditors().stream().map(e -> editorMapper.toDto(e)).collect(Collectors.toList());
-
-        delegateExecution.setVariable("chosenEditors", editorDTOs);
     }
 
     private Map<String, Object> listFieldsToMap(List<FormSubmissionDTO> formData) {

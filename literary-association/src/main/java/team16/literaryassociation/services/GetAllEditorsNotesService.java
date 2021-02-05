@@ -1,5 +1,6 @@
 package team16.literaryassociation.services;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,9 @@ public class GetAllEditorsNotesService implements JavaDelegate {
         PlagiarismComplaint plagiarismComplaint = plagiarismComplaintService.findById(plagiarismComplaintId);
         if(plagiarismComplaint == null) {
             System.out.println("Nije nasao plagiarism complaint");
-            return;
-            //throw new BpmnError("BETA_READER_SAVING_FAILED", "Finding beta-reader failed.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Plagiarism complaint doesn't exist.");
+            throw new BpmnError("GETTING_EDITORS_NOTES_FAILED", "Saving editors notes failed.");
         }
 
         String notes = "";

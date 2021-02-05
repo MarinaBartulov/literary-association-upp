@@ -32,7 +32,9 @@ public class SaveUpdatedManuscriptService implements JavaDelegate {
         if(manuscript == null)
         {
             System.out.println("Nije nasao Manuscript");
-            throw new BpmnError("MANUSCRIPT_SAVING_FAILED", "Invalid manuscript.");
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Manuscript cannot be found.");
+            throw new BpmnError("MANUSCRIPT_SAVING_FAILED", "Saving manuscript failed.");
         }
 
         String pdfManuscript = (String) delegateExecution.getVariable("pdfManuscript"); //putanja do fajla
@@ -40,6 +42,8 @@ public class SaveUpdatedManuscriptService implements JavaDelegate {
         try {
             manuscriptService.save(manuscript);
         } catch(Exception e) {
+            delegateExecution.setVariable("globalError", true);
+            delegateExecution.setVariable("globalErrorMessage", "Saving manuscript failed.");
             throw new BpmnError("MANUSCRIPT_SAVING_FAILED", "Saving manuscript failed.");
         }
     }
