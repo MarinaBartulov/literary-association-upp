@@ -44,6 +44,10 @@ public class WriterValidationService implements JavaDelegate {
             isValid = false;
             errorMsg += "Email is not valid. ";
         }
+        if(userService.findByEmail((String)map.get("email"))!=null){
+            isValid = false;
+            errorMsg += "Email already exists.";
+        }
         if(!map.get("password").equals(map.get("confirmPassword"))){
             isValid = false;
             errorMsg += "Passwords don't match. ";

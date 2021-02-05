@@ -27,15 +27,20 @@ public class SaveLiteraryWorkService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         System.out.println("Usao u save literary work service");
+        String errorMsg = "";
+
         execution.setVariable("negativeOpinionCounter", 0); // daju misljenje ispocetka
         execution.setVariable("moreMaterialNeeded", 0); // daju misljenje ispocetka
-
         Long membershipApplicationId = (Long) execution.getVariable("membership_application_id");
         System.out.println("membership application id: " + membershipApplicationId);
-        MembershipApplication membershipApplication = membershipApplicationService.getOne(membershipApplicationId);
+
+        MembershipApplication membershipApplication = membershipApplicationService.findById(membershipApplicationId);
         if(membershipApplication == null)
         {
             System.out.println("Nije nasao MembershipApplication");
+            errorMsg = "Error saving literary work, membership application not found";
+            execution.setVariable("globalError", true);
+            execution.setVariable("globalErrorMessage", errorMsg);
             throw new BpmnError("SAVE_LITERARY_WORK_FAILED", "Membership application not found.");
         }
 
@@ -49,9 +54,12 @@ public class SaveLiteraryWorkService implements JavaDelegate {
             String path = uploadFolder + execution.getProcessInstanceId() + "/" + title;
             LiteraryWork literaryWork = new LiteraryWork(title,path);
             literaryWork.setMembershipApplication(membershipApplication);
-            LiteraryWork literaryWorkSaved = literaryWorkService.save(literaryWork);
-            if (literaryWorkSaved == null)
-            {
+            try{
+                literaryWorkService.save(literaryWork);
+            }catch (Exception e){
+                errorMsg = "Error saving literary work";
+                execution.setVariable("globalError", true);
+                execution.setVariable("globalErrorMessage", errorMsg);
                 throw new BpmnError("SAVE_LITERARY_WORK_FAILED", "Literary work not created.");
             }
         }

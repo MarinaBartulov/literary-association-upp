@@ -23,6 +23,7 @@ const RegistrationConfirmation = () => {
       setMessage(response);
     } catch (error) {
       setMessage(error.response ? error.response.data : error.message);
+      setShowSpinner(false);
     }
   };
 
