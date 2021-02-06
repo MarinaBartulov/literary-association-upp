@@ -70,8 +70,12 @@ const Header = () => {
     history.push("/shoppingCart");
   };
 
-  const goToSubscriptions = () => {
+  const goToSubscription = () => {
     history.push("/subscription");
+  };
+
+  const goToSubscriptions = () => {
+    history.push("/subscriptions");
   };
 
   const goToOrders = () => {
@@ -119,7 +123,7 @@ const Header = () => {
     <div>
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="#home">Literary Association</Navbar.Brand>
-        <Nav className="mr-auto">
+        <Nav className="mr-auto" style={{ width: "100%" }}>
           <Button className="ml-2" variant="link" onClick={goToHomePage}>
             Home
           </Button>
@@ -197,7 +201,15 @@ const Header = () => {
           )}
           {loggedIn && role === "ROLE_READER" && (
             <Button className="ml-2" variant="link" onClick={goToSubscriptions}>
-              Subscription
+              My Subscriptions
+            </Button>
+          )}
+        </Nav>
+
+        <Nav className="justify-content-end" style={{ width: "50%" }}>
+          {loggedIn && role === "ROLE_READER" && (
+            <Button className="ml-2" variant="link" onClick={goToSubscription}>
+              Subscribe
             </Button>
           )}
           {!loggedIn && (

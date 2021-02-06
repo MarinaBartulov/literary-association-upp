@@ -16,6 +16,11 @@ class SubscriptionService extends HttpService {
 
     return data;
   };
+
+  getSubscriptions = async () => {
+    const response = await this.client.get(ROUTES.SUBSCRIPTIONS);
+    return response.data;
+  };
 }
 
 export const subscriptionService = new SubscriptionService();

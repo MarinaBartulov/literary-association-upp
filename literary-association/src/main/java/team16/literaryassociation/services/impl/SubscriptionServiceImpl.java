@@ -5,14 +5,16 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import team16.literaryassociation.config.EndpointConfig;
 import team16.literaryassociation.config.RestConfig;
-import team16.literaryassociation.dto.BillingPlanDTO;
-import team16.literaryassociation.dto.SubscriptionRequestDTO;
-import team16.literaryassociation.dto.SubscriptionResponseDTO;
+import team16.literaryassociation.dto.*;
+import team16.literaryassociation.enums.SubscriptionStatus;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.model.Reader;
 import team16.literaryassociation.model.Subscription;
@@ -87,6 +89,53 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
 
         return response;
+    }
+
+    @Override
+    public List<SubscriptionHistoryDTO> getSubscriptions() {
+
+        Authentication currentReader = SecurityContextHolder.getContext().getAuthentication();
+        String username = currentReader.getName();
+        List<Subscription> subscriptions = this.subscriptionRepository.getSubscriptions(username);
+        List<SubscriptionHistoryDTO> subscriptionsDTO = new ArrayList<>();
+        for (Subscription s : subscriptions) {
+            SubscriptionHistoryDTO subscriptionDTO = new SubscriptionHistoryDTO(s);
+            subscriptionsDTO.add(subscriptionDTO);
+        }
+        return subscriptionsDTO;
+    }
+
+    @Scheduled(initialDelay = 60000, fixedRate = 300000) //delay je 1 min, posle na svakih 5 minuta
+    public void updateSubscriptionStatus(){
+
+        System.out.println("Updating subscription status started...");
+        //pronadju se INITIATED i CREATED
+        List<Subscription> unfinishedSubscriptions = this.subscriptionRepository.findAllUnfinishedSubscriptions();
+
+        for(Subscription s : unfinishedSubscriptions){
+
+            ResponseEntity<SubscriptionStatusDTO> response = null;
+            try{
+                //mora i email jer pc mogu koristiti razlicite aplikacije a one mogu imati ordere sa istim id
+                String merchantEmail = s.getMerchant().getMerchantEmail();
+                response = restTemplate.getForEntity("https://localhost:8083/psp-service/api/subscriptions/status?subscriptionId=" + s.getSubscriptionId() + "&merchantEmail=" + merchantEmail, SubscriptionStatusDTO.class);
+
+            }catch(Exception e){
+                e.printStackTrace();
+                return;
+            }
+
+            if(response.getBody().getStatus() != null) {
+                SubscriptionStatus status = SubscriptionStatus.valueOf(response.getBody().getStatus());
+                if (!status.equals(s.getStatus())) {
+                    System.out.println("Promenjen status sa " + s.getStatus().toString() + " na " + status.toString());
+                    s.setStatus(status);
+                    this.subscriptionRepository.save(s);
+                }
+            }
+        }
+        System.out.println("Updating subscription status finished...");
+
     }
 
 

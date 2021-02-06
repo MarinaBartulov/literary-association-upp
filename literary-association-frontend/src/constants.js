@@ -24,6 +24,7 @@ export const ROUTES = {
   BOOKS: "/book",
   MEMBERSHIP_FEE_PAYMENT: "/writer/membership-fee-payment",
   START_PLAGIARSM_DETECTION: "/book/start-process-plagiarism-detection",
+  SUBSCRIPTIONS: "/subscriptions",
 };
 
 export const AMOUNT = [
@@ -60,6 +61,15 @@ export const ORDER_STATUS = [
   { value: "COMPLETED", label: "COMPLETED" },
   { value: "CANCELED", label: "CANCELED" },
   { value: "INVALID", label: "INVALID" },
+  { value: "EXPIRED", label: "EXPIRED" },
+  { value: "ALL", label: "ALL" },
+];
+
+export const SUBSCRIPTION_STATUS = [
+  { value: "INITIATED", label: "INITIATED" },
+  { value: "CREATED", label: "CREATED" },
+  { value: "COMPLETED", label: "COMPLETED" },
+  { value: "CANCELED", label: "CANCELED" },
   { value: "EXPIRED", label: "EXPIRED" },
   { value: "ALL", label: "ALL" },
 ];

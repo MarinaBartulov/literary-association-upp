@@ -9,6 +9,7 @@ import team16.literaryassociation.enums.SubscriptionStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -24,10 +25,16 @@ public class Subscription {
     private Long subscriptionId; // id na PSP
 
     @Column
+    private LocalDateTime createdAt; // kada je kreirana na PSP
+
+    @Column
     private LocalDate expirationDate;
 
     @Column
     private Double price;
+
+    @Column
+    private Double discount;
 
     @Column
     private Integer cycles;
@@ -59,6 +66,8 @@ public class Subscription {
         this.merchant = merchant;
         this.reader = reader;
         this.expirationDate = dto.getExpirationDate();
-        this.status = SubscriptionStatus.PENDING;
+        this.status = SubscriptionStatus.INITIATED;
+        this.createdAt = dto.getCreatedAd();
+        this.discount = dto.getDiscount();
     }
 }

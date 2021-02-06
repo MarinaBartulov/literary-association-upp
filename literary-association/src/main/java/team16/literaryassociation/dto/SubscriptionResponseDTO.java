@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import team16.literaryassociation.enums.SubscriptionFrequency;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +14,10 @@ import java.time.LocalDate;
 public class SubscriptionResponseDTO {
 
     private Long subscriptionId; // id na PSP
+
+    private LocalDateTime createdAd;
+
+    private Double discount;
 
     private LocalDate expirationDate;
 
