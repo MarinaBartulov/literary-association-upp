@@ -28,11 +28,11 @@ const PayTest = () => {
   };
   return (
     <div>
-      {loggedIn && role === "ROLE_WRITER" && (
+      {/*{loggedIn && role === "ROLE_WRITER" && (
         <Button variant="info" onClick={membershipFeePayment}>
           Membership Fee Payment
         </Button>
-      )}
+      )}*/}
     </div>
   );
 };

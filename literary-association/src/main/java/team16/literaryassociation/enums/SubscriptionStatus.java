@@ -1,9 +1,10 @@
 package team16.literaryassociation.enums;
 
 public enum SubscriptionStatus {
-    PENDING,
-    SUCCESSFUL,
-    ERROR,
-    FAILED,
-    EXPIRED
+    INITIATED,
+    CREATED,
+    COMPLETED,
+    CANCELED,
+    EXPIRED,
+    FAILED
 }

@@ -2,6 +2,7 @@ package team16.literaryassociation.services.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import team16.literaryassociation.dto.BillingPlanDTO;
+import team16.literaryassociation.dto.SubscriptionHistoryDTO;
 import team16.literaryassociation.dto.SubscriptionRequestDTO;
 
 import team16.literaryassociation.model.Merchant;
@@ -16,5 +17,6 @@ public interface SubscriptionService {
     ResponseEntity<?> sendSubscriptionToPC(SubscriptionRequestDTO dto, Reader reader, Merchant merchant);
     Subscription save(Subscription subscription);
     Boolean readerHasSubscription(Reader reader, Merchant merchant);
+    List<SubscriptionHistoryDTO> getSubscriptions();
 
 }

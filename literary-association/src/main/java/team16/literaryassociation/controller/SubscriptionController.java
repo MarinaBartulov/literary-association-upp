@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team16.literaryassociation.dto.BillingPlanDTO;
-import team16.literaryassociation.dto.SubscriptionRequestDTO;
-import team16.literaryassociation.dto.SubscriptionResponseDTO;
+import team16.literaryassociation.dto.*;
 import team16.literaryassociation.model.Merchant;
 import team16.literaryassociation.model.Reader;
 import team16.literaryassociation.model.Subscription;
@@ -97,6 +95,13 @@ public class SubscriptionController {
             return new ResponseEntity<>("Error when creating subscription",HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @GetMapping
+    public ResponseEntity getSubscriptions(){
+
+        List<SubscriptionHistoryDTO> subscriptionsDTO = this.subscriptionService.getSubscriptions();
+        return new ResponseEntity(subscriptionsDTO, HttpStatus.OK);
     }
 
 }
