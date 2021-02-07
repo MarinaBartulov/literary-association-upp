@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDTO> getAllBooks() {
-        List<Book> books = this.bookRepository.findAll();
+        List<Book> books = this.bookRepository.findAllBook();
         List<BookDTO> booksDTO = books.stream().map(b -> new BookDTO(b)).collect(Collectors.toList());
         return booksDTO;
     }
