@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import team16.literaryassociation.dto.*;
+import team16.literaryassociation.model.Book;
+import team16.literaryassociation.model.Genre;
 import team16.literaryassociation.model.Merchant;
+import team16.literaryassociation.model.Writer;
 import team16.literaryassociation.repository.MerchantRepository;
 import team16.literaryassociation.services.interfaces.MerchantService;
 
@@ -18,6 +21,12 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Autowired
     private MerchantRepository merchantRepository;
+    @Autowired
+    private BookServiceImpl bookService;
+    @Autowired
+    private GenreServiceImpl genreService;
+    @Autowired
+    private WriterServiceImpl writerService;
 
     @Value("${application_id}")
     private String appId;
@@ -65,6 +74,25 @@ public class MerchantServiceImpl implements MerchantService {
                 pcDTO, MerchantPCDTO.class);
 
         this.merchantRepository.save(newMerchant);
+
+        //dodam odmah novu knjigu zbog testiranja placanja
+        Book newBook = new Book();
+        newBook.setTitle("Knjiga od novog merchanta");
+        newBook.setISBN("3241234324234");
+        newBook.setNumOfPages(200);
+        newBook.setOpenAccess(false);
+        newBook.setPrice(10.45);
+        Genre genre = this.genreService.findByName("Thriller");
+        newBook.setGenre(genre);
+        newBook.setPublisher(newMerchant);
+        newBook.setPdf("/uploaded-files/knjiga3.pdf");
+        newBook.setPublishersAddress("Adresa 2");
+        Writer writer = this.writerService.findByUsername("writer123");
+        newBook.setWriter(writer);
+        newBook.setSynopsis("Ovo je sinopsis nove knjige");
+        newBook.setYear("2020");
+        this.bookService.save(newBook);
+
         return new MerchantDTO(newMerchant);
     }
 
