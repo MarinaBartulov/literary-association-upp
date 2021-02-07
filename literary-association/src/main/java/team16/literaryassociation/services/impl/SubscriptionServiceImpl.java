@@ -72,7 +72,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         else {
             for(Subscription subscription: subscriptions)
             {
-                if(subscription.getStatus().equals(SubscriptionStatus.INITIATED) || subscription.getStatus().equals(SubscriptionStatus.CREATED))
+                if(subscription.getStatus().equals(SubscriptionStatus.INITIATED) || subscription.getStatus().equals(SubscriptionStatus.CREATED) || subscription.getStatus().equals(SubscriptionStatus.COMPLETED))
                 {
                     return true;
                 }
