@@ -65,11 +65,20 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Boolean readerHasSubscription(Reader reader, Merchant merchant) {
-        List<Subscription> subscription = subscriptionRepository.readerHasSubscription(reader.getId(), merchant.getId(), LocalDate.now());
-        if(subscription.size() == 0){
+        List<Subscription> subscriptions = subscriptionRepository.readerHasSubscription(reader.getId(), merchant.getId(), LocalDate.now());
+        if(subscriptions.size() == 0){
             return false;
         }
-        else return true;
+        else {
+            for(Subscription subscription: subscriptions)
+            {
+                if(subscription.getStatus().equals(SubscriptionStatus.INITIATED) || subscription.getStatus().equals(SubscriptionStatus.CREATED))
+                {
+                    return true;
+                }
+            }
+        }
+        return false; // moze da ima expired, failed, canceled i da napravi novi subscription
     }
 
     @Override

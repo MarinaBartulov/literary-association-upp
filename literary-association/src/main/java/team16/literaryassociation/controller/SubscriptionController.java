@@ -92,7 +92,7 @@ public class SubscriptionController {
                 return new ResponseEntity<>(response.getBody(), HttpStatus.BAD_REQUEST);
 
         }catch (Exception e) {
-            return new ResponseEntity<>("Error when creating subscription",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Publisher doesn't have payment method for paying subscription",HttpStatus.BAD_REQUEST);
         }
 
     }
